@@ -1,0 +1,12 @@
+version: '3'
+services:
+  cyberlab:
+    build: .
+    volumes:
+      - ./projects:/app/projects
+      - ./reports:/app/reports
+      - ./evidence:/app/evidence
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      - DISPLAY=${DISPLAY}
+    network_mode: host
