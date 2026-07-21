@@ -12,7 +12,7 @@ class SettingsPanel:
             "dark": {"bg": "#1a1a2e", "fg": "#00ff88", "accent": "#16213e"},
             "amoled": {"bg": "#000000", "fg": "#00ff88", "accent": "#111111"},
             "matrix": {"bg": "#0a0a0a", "fg": "#00ff41", "accent": "#0d0d0d"},
-            "light": {"bg": "#f0f0f0", "fg": "#000000", "accent": "#ffffff"}
+            "light": {"bg": "#f5f5f5", "fg": "#333333", "accent": "#ffffff"}, "cyberpunk": {"bg": "#0d0221", "fg": "#ff2a6d", "accent": "#1a0533"}, "ocean": {"bg": "#0a192f", "fg": "#64ffda", "accent": "#112240"}
         }
     
     def build(self):

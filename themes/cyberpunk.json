@@ -1,0 +1,8 @@
+{
+    "name": "Cyberpunk",
+    "bg": "#0d0221", "fg": "#ff2a6d", "accent": "#1a0533",
+    "btn": "#2d1b69", "text": "#05d9e8", "secondary": "#d1f7ff",
+    "error": "#ff124f", "warning": "#ffaa00",
+    "sidebar_bg": "#120330", "toolbar_bg": "#0a0118",
+    "card_bg": "#150530", "input_bg": "#0d0221", "output_bg": "#050010"
+}

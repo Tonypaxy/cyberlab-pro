@@ -1,11 +1,8 @@
 {
     "name": "Light",
-    "bg": "#f0f0f0",
-    "fg": "#333333",
-    "accent": "#ffffff",
-    "btn": "#dddddd",
-    "text": "#000000",
-    "secondary": "#666666",
-    "error": "#cc0000",
-    "warning": "#cc8800"
+    "bg": "#f5f5f5", "fg": "#333333", "accent": "#ffffff",
+    "btn": "#e0e0e0", "text": "#000000", "secondary": "#666",
+    "error": "#cc0000", "warning": "#cc8800",
+    "sidebar_bg": "#e8e8e8", "toolbar_bg": "#ddd",
+    "card_bg": "#ffffff", "input_bg": "#f0f0f0", "output_bg": "#fafafa"
 }

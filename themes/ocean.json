@@ -1,0 +1,8 @@
+{
+    "name": "Ocean",
+    "bg": "#0a192f", "fg": "#64ffda", "accent": "#112240",
+    "btn": "#1d3a6e", "text": "#e6f1ff", "secondary": "#8892b0",
+    "error": "#ff6b6b", "warning": "#ffd93d",
+    "sidebar_bg": "#0d1f3c", "toolbar_bg": "#081525",
+    "card_bg": "#112240", "input_bg": "#0a192f", "output_bg": "#060f1f"
+}

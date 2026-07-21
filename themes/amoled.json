@@ -1,11 +1,8 @@
 {
     "name": "AMOLED",
-    "bg": "#000000",
-    "fg": "#00ff88",
-    "accent": "#111111",
-    "btn": "#1a1a1a",
-    "text": "#ffffff",
-    "secondary": "#888",
-    "error": "#ff0000",
-    "warning": "#ffaa00"
+    "bg": "#000000", "fg": "#00ff88", "accent": "#111111",
+    "btn": "#1a1a1a", "text": "#ffffff", "secondary": "#888",
+    "error": "#ff0000", "warning": "#ffaa00",
+    "sidebar_bg": "#0a0a0a", "toolbar_bg": "#050505",
+    "card_bg": "#111111", "input_bg": "#0a0a0a", "output_bg": "#000000"
 }
