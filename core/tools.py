@@ -126,3 +126,14 @@ class ToolDetector:
                 if name not in installed_names:
                     missing.append({'name': name, 'category': category})
         return missing
+
+    def refresh_args_for_new_tools(self):
+        """Auto-discover arguments for newly installed tools"""
+        try:
+            from core.tool_args import ToolArgsDatabase
+            args_db = ToolArgsDatabase()
+            all_tools = self.get_installed_tools()
+            discovered = args_db.discover_all_installed(all_tools)
+            return discovered
+        except:
+            return 0

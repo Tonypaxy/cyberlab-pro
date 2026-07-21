@@ -159,7 +159,8 @@ class ToolCenter:
         
         # Quick args
         if self.args_db:
-            tool_args = self.args_db.get_args(tool['name'])
+            tool_args = self.args_db.get_args(tool["name"])
+            grouped = self.args_db.get_args_grouped(tool["name"])
             if tool_args:
                 qf = tk.LabelFrame(dialog, text=" Quick Args (click to add) ", font=('Courier', 9),
                         fg='#ffaa00', bg='#16213e', padx=8, pady=5)

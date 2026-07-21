@@ -55,6 +55,10 @@ class CyberLabApp:
         self.monitor = SystemMonitor()
         self.detector = ToolDetector()
         self.detector.detect_all()
+        # Auto-discover tool arguments for new tools
+        discovered = self.detector.refresh_args_for_new_tools()
+        if discovered > 0:
+            self.logger.app_logger.info(f"Discovered arguments for {discovered} new tools")
         self.session = SessionManager(self.config, self.db)
         self.project_core = ProjectCore(self.db, self.logger)
         self.services = ServiceManager(self.logger)

@@ -93,3 +93,51 @@ class ToolArgsDatabase:
     
     def get_all_tools(self):
         return list(self.cache.keys())
+
+    def discover_all_installed(self, tool_list):
+        """Auto-discover arguments for all newly installed tools"""
+        discovered_count = 0
+        for tool_name in tool_list:
+            if tool_name.lower() not in self.cache:
+                args = self._discover_args(tool_name)
+                if args and len(args) > 2:
+                    self.cache[tool_name.lower()] = args
+                    discovered_count += 1
+        if discovered_count > 0:
+            self._save_cache()
+        return discovered_count
+    
+    def get_args_grouped(self, tool_name):
+        """Get arguments grouped by category"""
+        args = self.get_args(tool_name)
+        groups = {
+            "Basic": [],
+            "Attack/Brute": [],
+            "Output": [],
+            "Advanced": [],
+            "Other": []
+        }
+        
+        attack_keywords = ['brute', 'attack', 'exploit', 'inject', 'tamper', 'dump', 'shell',
+                          'pwn', 'spoof', 'flood', 'poison', 'crack', 'bypass']
+        output_keywords = ['-o', '--output', '-w', '--write', 'save', 'export', 'json', 'xml', 'html', 'csv']
+        advanced_keywords = ['proxy', 'tor', 'evasion', 'stealth', 'spoof', 'fragment', 'timeout',
+                            'thread', 'delay', 'recursive', 'depth', 'rotate']
+        
+        for arg, desc in args:
+            desc_lower = desc.lower()
+            arg_lower = arg.lower()
+            
+            if any(kw in desc_lower or kw in arg_lower for kw in attack_keywords):
+                groups["Attack/Brute"].append((arg, desc))
+            elif any(kw in desc_lower or kw in arg_lower for kw in output_keywords):
+                groups["Output"].append((arg, desc))
+            elif any(kw in desc_lower or kw in arg_lower for kw in advanced_keywords):
+                groups["Advanced"].append((arg, desc))
+            elif len(args) < 10:
+                groups["Basic"].append((arg, desc))
+            else:
+                groups["Basic"].append((arg, desc))
+        
+        # Remove empty groups
+        return {k: v for k, v in groups.items() if v}
