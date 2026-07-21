@@ -167,3 +167,54 @@ Storage permission is needed only to save your projects reports and evidence fil
 ## How The App Works
 
 CyberLab Pro is a GUI wrapper for your existing security tools. It does not install tools by itself it detects what you already have. When you click Run on nmap the app executes nmap on your device and shows the output in a window same as running it in terminal but with a nicer interface. The app organizes your work into projects with folders for reports evidence notes. Everything is stored in SQLite database locally. The app uses Python tkinter for graphics which is built into Python with no extra downloads. No cloud no subscription no login required.
+
+---
+
+## Manual Installation - Step by Step Without Git
+
+### If you cannot use git or prefer manual download
+
+#### Method 1: Download ZIP from GitHub
+1. Open browser on your phone or computer
+2. Go to https://github.com/Tonypaxy/cyberlab-pro
+3. Click green "Code" button then "Download ZIP"
+4. Extract the ZIP file to your home directory
+5. Rename the extracted folder to cyberlab-pro
+6. Continue with setup below based on your platform
+
+#### Method 2: Using wget (Termux/Linux)
+```bash
+# Download the latest version
+wget https://github.com/Tonypaxy/cyberlab-pro/archive/refs/heads/main.zip
+unzip main.zip
+mv cyberlab-pro-main cyberlab-pro
+cd cyberlab-pro
+python3 setup.py
+
+---
+
+## Manual Installation - Step by Step Without Git
+
+### If you cannot use git or prefer manual download
+
+#### Method 1: Download ZIP from GitHub
+1. Open browser on your phone or computer
+2. Go to https://github.com/Tonypaxy/cyberlab-pro
+3. Click green "Code" button then "Download ZIP"
+4. Extract the ZIP file to your home directory
+5. Rename the extracted folder to cyberlab-pro
+6. Continue with setup below based on your platform
+
+#### Method 2: Using wget (Termux/Linux)
+```bash
+# Download the latest version
+wget https://github.com/Tonypaxy/cyberlab-pro/archive/refs/heads/main.zip
+unzip main.zip
+mv cyberlab-pro-main cyberlab-pro
+cd cyberlab-pro
+python3 setup.py
+curl -L https://github.com/Tonypaxy/cyberlab-pro/archive/refs/heads/main.zip -o cyberlab.zip
+unzip cyberlab.zip
+mv cyberlab-pro-main cyberlab-pro
+cd cyberlab-pro
+python3 setup.py
