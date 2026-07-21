@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=CyberLab Pro
+Comment=Professional Cybersecurity Workspace
+Exec=python3 /opt/cyberlab/launcher.py
+Icon=/opt/cyberlab/assets/icon.png
+Terminal=false
+Type=Application
+Categories=Security;Development;
+Keywords=cybersecurity;pentest;recon;network;tools;
+StartupNotify=true

@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Virtual Environment
+venv/
+env/
+
+# Database
+database/*.db
+*.sqlite3
+
+# Logs
+logs/*.log
+*.log
+
+# Cache
+cache/
+tmp/
+
+# User data
+projects/*
+!projects/.gitkeep
+
+# Reports (user generated)
+reports/*
+!reports/.gitkeep
+
+# Evidence (user generated)
+evidence/*
+!evidence/.gitkeep
+
+# Config (user settings)
+config/settings.json
+
+# OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Sensitive
+*.pcap
+*.cap
+*.hash
+*.key

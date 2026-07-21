@@ -1,0 +1,11 @@
+{
+    "name": "Matrix",
+    "bg": "#0a0a0a",
+    "fg": "#00ff41",
+    "accent": "#0d0d0d",
+    "btn": "#1a2a1a",
+    "text": "#00ff41",
+    "secondary": "#008800",
+    "error": "#ff0041",
+    "warning": "#aaff00"
+}

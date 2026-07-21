@@ -1,0 +1,11 @@
+{
+    "name": "AMOLED",
+    "bg": "#000000",
+    "fg": "#00ff88",
+    "accent": "#111111",
+    "btn": "#1a1a1a",
+    "text": "#ffffff",
+    "secondary": "#888",
+    "error": "#ff0000",
+    "warning": "#ffaa00"
+}

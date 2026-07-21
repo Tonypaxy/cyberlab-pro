@@ -1,0 +1,11 @@
+{
+    "name": "Light",
+    "bg": "#f0f0f0",
+    "fg": "#333333",
+    "accent": "#ffffff",
+    "btn": "#dddddd",
+    "text": "#000000",
+    "secondary": "#666666",
+    "error": "#cc0000",
+    "warning": "#cc8800"
+}
