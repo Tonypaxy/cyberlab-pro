@@ -16,6 +16,7 @@ class ToolCenter:
         
         try:
             from core.tool_args import ToolArgsDatabase
+from core.install_commands import get_install_cmd, get_available_methods, get_env_name
             self.args_db = ToolArgsDatabase()
         except:
             self.args_db = None
@@ -261,7 +262,7 @@ class ToolCenter:
                 fg='#fff', bg='#666', relief='flat', padx=15, pady=6,
                 command=dialog.destroy).pack(side='right', padx=5)
 
-    def _manual_install_dialog(self, tool_name):
+    def _manual_install_dialog(self, tool_name, method="auto"):
         """Manual installation dialog with step by step instructions"""
         dialog = tk.Toplevel(self.parent, bg='#1a1a2e')
         dialog.title(f"Manual Install: {tool_name}")
@@ -335,7 +336,7 @@ class ToolCenter:
         }
         
         # Get instructions or generate default
-        cmd = instructions.get(tool_name, f"# No specific instructions for {tool_name}\n# Try these methods:\n\n# Method 1: pkg\npkg install {tool_name} -y\n\n# Method 2: pip\npip install {tool_name}\n\n# Method 3: search\npkg search {tool_name}")
+        cmd = get_install_cmd(tool_name, method) if "get_install_cmd" in dir() else instructions.get(tool_name, f"# No specific instructions for {tool_name}\n# Try these methods:\n\n# Method 1: pkg\npkg install {tool_name} -y\n\n# Method 2: pip\npip install {tool_name}\n\n# Method 3: search\npkg search {tool_name}")
         
         # Instruction text
         inst_frame = tk.LabelFrame(dialog, text=" Installation Commands ", font=('Courier', 10, 'bold'),
@@ -496,3 +497,63 @@ class ToolCenter:
         tk.Button(dialog, text="Close", font=('Courier', 10),
                 fg='#fff', bg='#666', relief='raised', padx=15, pady=5,
                 command=dialog.destroy).pack(pady=5)
+
+    def _build_missing_list(self, parent, tools):
+        canvas = tk.Canvas(parent, bg='#1a1a2e', highlightthickness=0)
+        scrollbar = tk.Scrollbar(parent, orient='vertical', command=canvas.yview)
+        scroll_frame = tk.Frame(canvas, bg='#1a1a2e')
+        scroll_frame.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox('all')))
+        canvas.create_window((0,0), window=scroll_frame, anchor='nw')
+        canvas.configure(yscrollcommand=scrollbar.set)
+        canvas.pack(side='left', fill='both', expand=True)
+        scrollbar.pack(side='right', fill='y')
+        
+        # Show environment
+        env_name = get_env_name() if 'get_env_name' in dir() else "Termux"
+        tk.Label(scroll_frame, text=f"🖥️  Environment: {env_name}",
+                font=('Courier', 9, 'bold'), fg='#00ccff', bg='#1a1a2e').pack(anchor='w', pady=5)
+        
+        tk.Label(scroll_frame, text="Click any button to see install instructions",
+                font=('Courier', 8), fg='#888', bg='#1a1a2e').pack(anchor='w', pady=3)
+        
+        from collections import defaultdict
+        by_cat = defaultdict(list)
+        for t in tools:
+            by_cat[t['category']].append(t['name'])
+        
+        for cat, names in sorted(by_cat.items()):
+            frame = tk.LabelFrame(scroll_frame, text=f" {cat.upper()} ", font=('Courier', 9),
+                    fg='#00ccff', bg='#16213e', padx=10, pady=5)
+            frame.pack(fill='x', pady=3, padx=5)
+            
+            for name in sorted(names):
+                row = tk.Frame(frame, bg='#16213e')
+                row.pack(fill='x', pady=1)
+                tk.Label(row, text=f"⬜ {name}", font=('Courier', 9),
+                        fg='#888', bg='#16213e').pack(side='left')
+                
+                # Get available methods for this tool in current environment
+                try:
+                    methods = get_available_methods(name)
+                except:
+                    methods = ['pkg', 'pip', 'git']
+                
+                # Method icons and colors
+                method_styles = {
+                    'pkg': ('📦 pkg', '#00ccff'),
+                    'apt': ('📦 apt', '#00ccff'),
+                    'pacman': ('📦 pac', '#00ccff'),
+                    'dnf': ('📦 dnf', '#00ccff'),
+                    'pip': ('🐍 pip', '#ffaa00'),
+                    'git': ('📥 git', '#cc88ff'),
+                    'go': ('🔵 go', '#00ff88'),
+                    'gem': ('💎 gem', '#ff4488'),
+                    'auto': ('🔧 auto', '#888888'),
+                }
+                
+                for method in methods[:4]:  # Show max 4 buttons
+                    style = method_styles.get(method, ('📥 ' + method, '#888'))
+                    tk.Button(row, text=style[0], font=('Courier', 7),
+                            fg='#000', bg=style[1], relief='flat', padx=4,
+                            command=lambda n=name, m=method: self._manual_install_dialog(n, m)
+                            ).pack(side='right', padx=1)
