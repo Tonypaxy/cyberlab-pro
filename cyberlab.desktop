@@ -1,10 +1,10 @@
 [Desktop Entry]
 Name=CyberLab Pro
 Comment=Professional Cybersecurity Workspace
-Exec=python3 /opt/cyberlab/launcher.py
-Icon=/opt/cyberlab/assets/icon.png
+Exec=bash -c 'export DISPLAY=:0 && cd ~/CyberLab && python3 launcher.py'
+Icon=/data/data/com.termux/files/home/CyberLab/assets/icon.png
 Terminal=false
 Type=Application
 Categories=Security;Development;
-Keywords=cybersecurity;pentest;recon;network;tools;
+Keywords=cybersecurity;pentest;recon;network;hacking;
 StartupNotify=true

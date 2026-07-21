@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a0e1a"/>
+      <stop offset="100%" stop-color="#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="shield" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00ff88"/>
+      <stop offset="100%" stop-color="#00cc66"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="64" height="64" rx="12" fill="url(#bg)"/>
+  
+  <!-- Shield -->
+  <path d="M32 8 L46 14 L46 30 C46 42 32 54 32 54 C32 54 18 42 18 30 L18 14 Z" 
+        fill="none" stroke="url(#shield)" stroke-width="2.5"/>
+  
+  <!-- Inner shield -->
+  <path d="M32 14 L42 18 L42 30 C42 39 32 48 32 48 C32 48 22 39 22 30 L22 18 Z" 
+        fill="#0a1a0f" stroke="#00ff88" stroke-width="1"/>
+  
+  <!-- CL text -->
+  <text x="32" y="34" text-anchor="middle" fill="#00ff88" 
+        font-family="monospace" font-size="10" font-weight="bold">CL</text>
+  
+  <!-- Corner accents -->
+  <circle cx="12" cy="12" r="2" fill="#00ff88" opacity="0.5"/>
+  <circle cx="52" cy="12" r="2" fill="#00ff88" opacity="0.5"/>
+  <circle cx="12" cy="52" r="2" fill="#00ff88" opacity="0.5"/>
+  <circle cx="52" cy="52" r="2" fill="#00ff88" opacity="0.5"/>
+</svg>

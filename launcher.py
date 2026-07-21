@@ -99,6 +99,13 @@ class CyberLabApp:
         splash.show()
 
         self.root = tk.Tk()
+        # Set icon
+        try:
+            icon = tk.PhotoImage(file=os.path.join(os.path.dirname(__file__), "assets", "icon.png"))
+            self.root.iconphoto(True, icon)
+        except:
+            pass
+
         self.root.title(f"🛡️ CyberLab Pro v{self.config.get('version')}")
         self.root.configure(bg='#1a1a2e')
         
