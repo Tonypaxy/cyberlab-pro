@@ -45,12 +45,12 @@ class WordlistGenerator:
         
         tk.Label(opts, text="Min Length:", font=('Courier', 10), fg='#fff', bg='#16213e').pack(anchor='w', pady=(10,0))
         self.min_var = tk.IntVar(value=1)
-        tk.Scale(opts, from_=1, to=8, variable=self.min_var, orient='horizontal',
+        tk.Scale(opts, from_=1, to=15, variable=self.min_var, orient='horizontal',
                 bg='#16213e', fg='#00ff88', troughcolor='#0f3460').pack(fill='x')
         
-        tk.Label(opts, text="Max Length:", font=('Courier', 10), fg='#fff', bg='#16213e').pack(anchor='w')
+        tk.Label(opts, text="Max Length (15):", font=('Courier', 10), fg='#fff', bg='#16213e').pack(anchor='w')
         self.max_var = tk.IntVar(value=4)
-        tk.Scale(opts, from_=1, to=8, variable=self.max_var, orient='horizontal',
+        tk.Scale(opts, from_=1, to=15, variable=self.max_var, orient='horizontal',
                 bg='#16213e', fg='#00ff88', troughcolor='#0f3460').pack(fill='x')
         
         # Generate button
@@ -98,7 +98,7 @@ class WordlistGenerator:
             return
         
         min_len = self.min_var.get()
-        max_len = self.max_var.get()
+        max_len = min(self.max_var.get(), 15)
         
         if min_len > max_len:
             messagebox.showwarning("Warning", "Min length must be <= max length")
