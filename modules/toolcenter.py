@@ -1,3 +1,4 @@
+from core.install_commands import get_install_cmd, get_available_methods, get_env_name
 import tkinter as tk
 from tkinter import ttk, messagebox
 import subprocess
@@ -16,7 +17,6 @@ class ToolCenter:
         
         try:
             from core.tool_args import ToolArgsDatabase
-from core.install_commands import get_install_cmd, get_available_methods, get_env_name
             self.args_db = ToolArgsDatabase()
         except:
             self.args_db = None
