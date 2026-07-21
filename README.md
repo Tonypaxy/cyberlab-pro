@@ -153,3 +153,17 @@ Slow performance on low-end phone means insufficient RAM close all apps use AMOL
 MIT License free to use modify and distribute. Built for security professionals who need mobile penetration testing capabilities.
 
 GitHub https://github.com/Tonypaxy/cyberlab-pro
+
+---
+
+## Privacy
+
+CyberLab Pro collects ZERO data. No analytics no tracking no telemetry no ads no network calls to any server. Everything runs locally on your device. The app never connects to the internet unless you explicitly run a security tool that connects to a target you specify. All files stay on your phone in the cyberlab-pro folder. Delete the folder and everything is gone. Source code is open for you to verify. Read full privacy policy in PRIVACY.md file.
+
+## Permissions The App Requests
+
+Storage permission is needed only to save your projects reports and evidence files locally on your phone. Camera permission is optional only used if you manually test camera in the Permissions module. Network permission is needed for security tools to scan targets you specify. Root access is optional only used if your phone is rooted and you run root-required tools. The app never uses any permission automatically without your action. You control everything.
+
+## How The App Works
+
+CyberLab Pro is a GUI wrapper for your existing security tools. It does not install tools by itself it detects what you already have. When you click Run on nmap the app executes nmap on your device and shows the output in a window same as running it in terminal but with a nicer interface. The app organizes your work into projects with folders for reports evidence notes. Everything is stored in SQLite database locally. The app uses Python tkinter for graphics which is built into Python with no extra downloads. No cloud no subscription no login required.
