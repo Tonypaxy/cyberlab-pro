@@ -28,6 +28,7 @@ class Sidebar:
             ("Macro Rec", "macro"),
             ("Hash Crack", "hashcrack"),
             ("Exploits", "exploits"),
+            ("WiFi Audit", "wifi"),
             ("Permissions", "permissions"), ("Settings", "settings")
         ]
     
