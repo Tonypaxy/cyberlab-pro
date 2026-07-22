@@ -138,15 +138,52 @@ class NetworkMapper(BaseModule):
     def _scan_host(self, host):
         ip = host.get("ip","")
         if not ip: return
-        self.status_label.config(text="Scanning " + ip + "...")
+        d = tk.Toplevel(self.frame, bg="#1a1a2e")
+        d.title("Scan: " + ip); d.geometry("500x350")
+        tk.Label(d, text="Choose scan type for " + ip, font=("Courier",12,"bold"), fg="#00ff88", bg="#1a1a2e").pack(pady=10)
+        scans = [
+            ("Fast Port Scan", ["nmap","-F","-T4",ip]),
+            ("Full Port Scan", ["nmap","-p-","-T4",ip]),
+            ("Service Version", ["nmap","-sV","-T4",ip]),
+            ("OS Detection", ["nmap","-O","-T4",ip]),
+            ("Default Scripts", ["nmap","-sC","-T4",ip]),
+            ("Vuln Scripts", ["nmap","--script","vuln","-T4",ip]),
+            ("Brute Force Scripts", ["nmap","--script","brute","-T4",ip]),
+            ("Auth Scripts", ["nmap","--script","auth","-T4",ip]),
+            ("Discovery Scripts", ["nmap","--script","discovery","-T4",ip]),
+            ("Exploit Scripts", ["nmap","--script","exploit","-T4",ip]),
+            ("Aggressive (-A)", ["nmap","-A","-T4",ip]),
+        ]
+        for text, cmd in scans:
+            tk.Button(d, text=text, font=("Courier",9), fg="#00ccff", bg="#16213e", relief="flat", anchor="w", padx=15, pady=4,
+                    command=lambda c=cmd, n=text, ip=ip: self._run_scan(ip, c, n, d)).pack(fill="x", pady=1)
+        tk.Button(d, text="Cancel", font=("Courier",10), fg="#fff", bg="#666", relief="flat", padx=15, pady=5, command=d.destroy).pack(pady=10)
+    
+    def _run_scan(self, ip, cmd, name, dialog):
+        dialog.destroy()
+        self.status_label.config(text="Running " + name + " on " + ip + "...")
         def do():
             try:
-                r = subprocess.run(["nmap","-F","-T4",ip], capture_output=True, text=True, timeout=30)
-                host["scan"] = r.stdout
-                self.frame.after(0, lambda: self._show_scan(host))
+                r = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+                self.frame.after(0, lambda: self._show_result(ip, name, r.stdout))
             except Exception as e:
-                self.frame.after(0, lambda err=e: messagebox.showerror("Error",str(err)))
+                self.frame.after(0, lambda err=e: self.status_label.config(text="Error: " + str(err)[:50]))
         threading.Thread(target=do, daemon=True).start()
+    
+    def _show_result(self, ip, name, output):
+        d = tk.Toplevel(self.frame, bg="#1a1a2e")
+        d.title(ip + " - " + name); d.geometry("650x450")
+        tk.Label(d, text=ip + " - " + name, font=("Courier",12,"bold"), fg="#00ff88", bg="#1a1a2e").pack(pady=10)
+        t = tk.Text(d, font=("Courier",9), bg="#0a0a0a", fg="#00ff88", relief="flat")
+        t.pack(fill="both", expand=True, padx=10, pady=10)
+        t.insert("1.0", output or "No output")
+        t.config(state="disabled")
+        bf = tk.Frame(d, bg="#1a1a2e")
+        bf.pack(pady=5)
+        tk.Button(bf, text="Copy", font=("Courier",10), fg="#000", bg="#00ccff", relief="flat", padx=15, pady=5,
+                command=lambda: [d.clipboard_clear(), d.clipboard_append(output)]).pack(side="left", padx=3)
+        tk.Button(bf, text="Close", font=("Courier",10), fg="#fff", bg="#666", relief="flat", padx=15, pady=5, command=d.destroy).pack(side="left", padx=3)
+        self.status_label.config(text="Done - " + name)
 
     def _show_scan(self, host):
         d = tk.Toplevel(self.frame, bg="#1a1a2e")
