@@ -1,4 +1,4 @@
-from core.install_commands import get_install_methods_ranked, get_best_install_cmd, get_env_name, METHOD_ICONS, METHOD_COLORS
+from core.install_commands import get_install_methods_ranked, get_best_install_cmd, get_env_name, METHOD_ICONS, METHOD_COLORS, detect_environment
 import tkinter as tk
 from tkinter import ttk, messagebox
 import subprocess
@@ -56,6 +56,12 @@ class ToolCenter:
         if missing_tools:
             tab = tk.Frame(self.notebook, bg='#1a1a2e')
             self.notebook.add(tab, text=f"  ⬜ AVAILABLE ({len(missing_tools)})  ")
+            
+            # Add custom install info button
+            info_btn = tk.Button(tab, text="📖 How to install other tools", font=("Courier", 9),
+                    fg="#000", bg="#ffaa00", relief="raised", padx=10, pady=5,
+                    command=self._show_custom_install_info)
+            info_btn.pack(pady=5)
             self._build_missing_list(tab, missing_tools)
             
             # Install All button
@@ -618,3 +624,130 @@ class ToolCenter:
             f.write(f'#!/bin/bash\n# Install {tool_name}\n{cmd}\n')
         os.chmod(script_path, 0o755)
         messagebox.showinfo("Saved", f"Script saved:\n{script_path}")
+
+    def _show_custom_install_info(self):
+        """Show info about installing tools not in the available list"""
+        dialog = tk.Toplevel(self.parent, bg='#1a1a2e')
+        dialog.title("Install Custom Tools")
+        dialog.geometry("550x500")
+        
+        tk.Label(dialog, text="📦 Install Any Security Tool", font=('Courier', 14, 'bold'),
+                fg='#00ff88', bg='#1a1a2e').pack(pady=15)
+        
+        tk.Label(dialog, text="If your tool is not listed, install it from terminal:",
+                font=('Courier', 10), fg='#fff', bg='#1a1a2e').pack()
+        
+        # Methods by environment
+        env_name = get_env_name()
+        env = detect_environment()
+        
+        methods_text = f"🖥️  Your Environment: {env_name}\n\n"
+        
+        if env == 'termux':
+            methods_text += """📦 pkg (Termux Package Manager):
+   pkg search <toolname>
+   pkg install <toolname> -y
+
+🐍 pip (Python Packages):
+   pip search <toolname>
+   pip install <toolname>
+
+📥 git (Clone from GitHub):
+   git clone https://github.com/\<author\>/\<toolname\>.git
+
+🔵 go (Go Tools):
+   go install github.com/<path>/<toolname>@latest
+
+💎 gem (Ruby Gems):
+   gem install <toolname>
+
+📦 npm (Node.js Packages):
+   npm install -g <toolname>
+
+🔧 curl/wget (Direct Download):
+   wget https://example.com/tool.sh && chmod +x tool.sh"""
+        elif env == 'debian':
+            methods_text += """📦 apt (Debian/Ubuntu/Kali):
+   apt search <toolname>
+   sudo apt install <toolname> -y
+
+🐍 pip (Python):
+   pip install <toolname>
+
+📥 git (Clone):
+   git clone https://github.com/\<author\>/\<toolname\>.git
+
+🔵 go (Go):
+   go install github.com/<path>/<toolname>@latest
+
+📦 snap (Snap Store):
+   snap find <toolname>
+   sudo snap install <toolname>
+
+📦 flatpak (FlatHub):
+   flatpak search <toolname>
+   flatpak install <toolname>"""
+        elif env == 'arch':
+            methods_text += """📦 pacman (Arch):
+   pacman -Ss <toolname>
+   sudo pacman -S <toolname>
+
+🐍 pip (Python):
+   pip install <toolname>
+
+📥 git (Clone):
+   git clone https://github.com/\<author\>/\<toolname\>.git
+
+📦 yay (AUR):
+   yay -Ss <toolname>
+   yay -S <toolname>"""
+        elif env == 'fedora':
+            methods_text += """📦 dnf (Fedora):
+   dnf search <toolname>
+   sudo dnf install <toolname>
+
+🐍 pip (Python):
+   pip install <toolname>
+
+📥 git (Clone):
+   git clone https://github.com/\<author\>/\<toolname\>.git"""
+        
+        methods_frame = tk.LabelFrame(dialog, text=" Installation Methods ", font=('Courier', 10, 'bold'),
+                fg='#00ccff', bg='#16213e', padx=10, pady=10)
+        methods_frame.pack(fill='both', expand=True, padx=15, pady=10)
+        
+        methods_label = tk.Label(methods_frame, text=methods_text, font=('Courier', 9),
+                fg='#aaa', bg='#16213e', justify='left')
+        methods_label.pack()
+        
+        # Tips
+        tips_frame = tk.LabelFrame(dialog, text=" 💡 Tips ", font=('Courier', 10, 'bold'),
+                fg='#ffaa00', bg='#16213e', padx=10, pady=10)
+        tips_frame.pack(fill='x', padx=15, pady=10)
+        
+        tips = [
+            "• After installing, click 🔄 Refresh in Tool Center",
+            "• New tools auto-appear in their category tab",
+            "• Use the 💻 Terminal tab to run install commands",
+            "• Some tools need PATH update: export PATH=$PATH:~/go/bin",
+            "• Restart CyberLab if tool doesn't appear after install",
+        ]
+        
+        for tip in tips:
+            tk.Label(tips_frame, text=tip, font=('Courier', 9),
+                    fg='#888', bg='#16213e').pack(anchor='w')
+        
+        # Open terminal button
+        tk.Button(dialog, text="💻 Open Terminal to Install", font=('Courier', 10, 'bold'),
+                fg='#000', bg='#00ff88', relief='raised', padx=15, pady=8,
+                command=lambda: [dialog.destroy(), self._open_terminal_for_install()]).pack(pady=5)
+        
+        tk.Button(dialog, text="Close", font=('Courier', 10),
+                fg='#fff', bg='#666', relief='raised', padx=15, pady=5,
+                command=dialog.destroy).pack(pady=5)
+    
+    def _open_terminal_for_install(self):
+        """Open terminal with helpful install instructions"""
+        self.pending_install = "# Install your tool here\n# Examples:\n# pkg install <toolname> -y\n# pip install <toolname>\n# git clone <url>\n# After install, click Refresh in Tool Center"
+        if self.navigate:
+            self.navigate("terminal")
