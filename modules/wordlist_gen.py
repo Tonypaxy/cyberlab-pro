@@ -1,6 +1,7 @@
 from gui.scrollable_frame import create_scrollable
 """Wordlist Generator Module"""
 import tkinter as tk
+from datetime import datetime
 from gui.scrollable import make_scrollable
 from tkinter import ttk, messagebox
 import os
@@ -71,9 +72,47 @@ class WordlistGenerator:
                 fg='#00ccff', bg='#16213e', padx=10, pady=10)
         out.pack(fill='both', expand=True, pady=10)
         
+        self.output_frame = out
         self.output = tk.Text(out, font=('Courier', 9), bg='#0a0a0a', fg='#00ff88',
                 relief='flat', wrap='word')
         self.output.pack(fill='both', expand=True)
+    
+    def _show_save_button(self):
+        """Show save button after generation"""
+        if hasattr(self, 'save_btn'):
+            self.save_btn.destroy()
+        self.save_btn = tk.Button(self.output_frame, text="Save Wordlist", font=("Courier",10,"bold"),
+                fg="#000", bg="#00ff88", relief="raised", padx=15, pady=6, command=self._save_wordlist)
+        self.save_btn.pack(pady=5)
+    
+    def _save_wordlist(self):
+        """Save generated wordlist to file"""
+        text = self.output.get("1.0", "end-1c")
+        if not text.strip():
+            messagebox.showwarning("Warning", "No words to save")
+            return
+        
+        d = tk.Toplevel(self.frame, bg="#1a1a2e")
+        d.title("Save Wordlist"); d.geometry("500x250")
+        tk.Label(d, text="Save Wordlist", font=("Courier",14,"bold"), fg="#00ff88", bg="#1a1a2e").pack(pady=10)
+        tk.Label(d, text="File name:", font=("Courier",10), fg="#fff", bg="#1a1a2e").pack(anchor="w", padx=20)
+        name_e = tk.Entry(d, font=("Courier",10), bg="#16213e", fg="#fff", relief="flat")
+        name_e.pack(fill="x", padx=20, pady=5)
+        name_e.insert(0, "wordlist_" + datetime.now().strftime("%Y%m%d_%H%M%S") + ".txt")
+        
+        def save():
+            fname = name_e.get().strip()
+            if not fname: return
+            wordlist_dir = os.path.expanduser("~/wordlists")
+            os.makedirs(wordlist_dir, exist_ok=True)
+            fpath = os.path.join(wordlist_dir, fname)
+            with open(fpath, "w") as f:
+                f.write(text)
+            messagebox.showinfo("Saved", "Wordlist saved to:\n" + fpath)
+            d.destroy()
+        
+        tk.Button(d, text="Save", font=("Courier",10,"bold"), fg="#000", bg="#00ff88",
+                relief="raised", padx=15, pady=8, command=save).pack(pady=10)
     
     def _toggle_custom(self):
         if self.charset_var.get() == 'custom':
@@ -128,5 +167,7 @@ class WordlistGenerator:
                     self.output.see('end')
                     self.output.update()
         
-        self.count_label.config(text=f"✅ Done! {count:,} words generated")
+        self.count_label.config(text=f"Done! {count:,} words generated")
         self.logger.log_tool_execution("wordlist_gen", f"{count} words", "completed")
+        # Show save button
+        self.frame.after(0, self._show_save_button)
