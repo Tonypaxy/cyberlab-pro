@@ -551,7 +551,7 @@ class ToolCenter:
                     
                     btn = tk.Button(row, text=f"{rank_label} {icon}", font=('Courier', 7),
                             fg='#000', bg=color, relief='flat', padx=4,
-                            command=lambda n=name, m=method, c=cmd: self._show_install_dialog(n, m, c))
+                            command=lambda n=name, m=method, c=cmd: self._direct_install(n, m, c))
                     btn.pack(side='right', padx=1)
 
     def _show_install_dialog(self, tool_name, method, cmd):
@@ -751,3 +751,23 @@ class ToolCenter:
         self.pending_install = "# Install your tool here\n# Examples:\n# pkg install <toolname> -y\n# pip install <toolname>\n# git clone <url>\n# After install, click Refresh in Tool Center"
         if self.navigate:
             self.navigate("terminal")
+
+    def _direct_install(self, tool_name, method, cmd):
+        """Directly open terminal with install command - no extra dialog"""
+        # Show brief confirmation
+        icon = METHOD_ICONS.get(method, '📥')
+        
+        # Set command and navigate to terminal immediately
+        self.pending_install = cmd
+        self.logger.log_tool_execution(tool_name, cmd, f"install_via_{method}")
+        
+        if self.navigate:
+            self.navigate("terminal")
+        
+        # Brief toast notification
+        try:
+            self.frame.after(500, lambda: messagebox.showinfo(
+                "📦 Installing", 
+                f"Installing {tool_name} via {method}\n\nCommand ready in terminal.\nPress Enter to run."))
+        except:
+            pass
