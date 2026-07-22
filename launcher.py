@@ -44,6 +44,7 @@ from modules.encrypted_vault import EncryptedVault
 from modules.network_mapper import NetworkMapper
 from modules.wordlist_manager import WordlistManager
 from modules.log_analyzer import LogAnalyzer
+from modules.clipboard_sanitizer import ClipboardSanitizer
 
 class CyberLabApp:
     def __init__(self):
@@ -135,6 +136,7 @@ class CyberLabApp:
             "mapper": lambda: NetworkMapper(self.content, self.db, self.logger).build(),
             "wordlists": lambda: WordlistManager(self.content, self.db, self.logger).build(),
             "loganalyzer": lambda: LogAnalyzer(self.content, self.db, self.logger).build(),
+            "sanitizer": lambda: ClipboardSanitizer(self.content, self.db, self.logger).build(),
             "settings": lambda: SettingsPanel(self.content, self.config, self.logger, self._apply_theme).build(),
         }
         if cmd in views: views[cmd](); self.db.log_activity('module_opened', cmd)

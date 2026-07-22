@@ -21,6 +21,7 @@ class Sidebar:
             ("Net Map", "mapper"),
             ("Wordlists", "wordlists"),
             ("Log Analyzer", "loganalyzer"),
+            ("Sanitizer", "sanitizer"),
             ("Permissions", "permissions"), ("Settings", "settings")
         ]
     
