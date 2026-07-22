@@ -37,6 +37,35 @@ class ToolDetector:
             "exiftool": ["exiftool"], "steghide": ["steghide"], "zsteg": ["zsteg"]
         },
         
+        
+        "phishing_social": {
+            "setoolkit": ["setoolkit"], "socialfish": ["socialfish"], "zphisher": ["zphisher"],
+            "blackeye": ["blackeye"], "gophish": ["gophish"], "evilginx2": ["evilginx2"],
+            "modlishka": ["modlishka"], "muraena": ["muraena"], "king-phisher": ["king-phisher"]
+        },
+        "osint": {
+            "sherlock": ["sherlock"], "holehe": ["holehe"], "theHarvester": ["theHarvester"],
+            "recon-ng": ["recon-ng"], "spiderfoot": ["spiderfoot"], "twint": ["twint"],
+            "instaloader": ["instaloader"], "facebook-scraper": ["facebook-scraper"],
+            "tiktok-scraper": ["tiktok-scraper"]
+        },
+        "wifi_bluetooth": {
+            "bettercap": ["bettercap"], "kismet": ["kismet"], "fluxion": ["fluxion"],
+            "wifite": ["wifite"], "pixiewps": ["pixiewps"], "reaver": ["reaver"],
+            "bluetoothctl": ["bluetoothctl"], "hcitool": ["hcitool"]
+        },
+        "web_exploit": {
+            "burpsuite": ["burpsuite"], "zap": ["zap"], "commix": ["commix"],
+            "xsser": ["xsser"], "xsstrike": ["xsstrike"], "nosqlmap": ["nosqlmap"]
+        },
+        "android_hacking": {
+            "msfvenom": ["msfvenom"], "apktool": ["apktool"], "jadx": ["jadx"],
+            "dex2jar": ["dex2jar"], "androguard": ["androguard"]
+        },
+        "voip": {
+            "sipvicious": ["sipvicious", "svmap", "svwar", "svcrack"],
+            "voiphopper": ["voiphopper"]
+        },
         "hash_crypto": {
             "md5sum": ["md5sum"], "sha256sum": ["sha256sum"], "sha1sum": ["sha1sum"],
             "base64": ["base64"], "xxd": ["xxd"], "openssl": ["openssl"]

