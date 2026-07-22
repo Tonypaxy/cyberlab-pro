@@ -19,6 +19,14 @@ class PTYHandler:
     
     def run_command(self, cmd, output_widget, on_complete=None, module_id=None):
         """Run a command in PTY and stream output to any tkinter Text widget"""
+        # Try PTY first, fall back to subprocess
+        try:
+            return self._run_pty(cmd, output_widget, on_complete)
+        except Exception as e:
+            return self._run_fallback(cmd, output_widget, on_complete)
+    
+    def _run_pty(self, cmd, output_widget, on_complete=None):
+        """Run using PTY"""
         try:
             master_fd, slave_fd = pty.openpty()
             

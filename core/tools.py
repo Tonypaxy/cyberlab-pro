@@ -36,6 +36,28 @@ class ToolDetector:
             "binwalk": ["binwalk"], "foremost": ["foremost"], "strings": ["strings"],
             "exiftool": ["exiftool"], "steghide": ["steghide"], "zsteg": ["zsteg"]
         },
+        
+        "hash_crypto": {
+            "md5sum": ["md5sum"], "sha256sum": ["sha256sum"], "sha1sum": ["sha1sum"],
+            "base64": ["base64"], "xxd": ["xxd"], "openssl": ["openssl"]
+        },
+        "stegano": {
+            "steghide": ["steghide"], "zsteg": ["zsteg"], "stegsolve": ["stegsolve"],
+            "stegcracker": ["stegcracker"], "binwalk": ["binwalk"], "foremost": ["foremost"],
+            "strings": ["strings"], "exiftool": ["exiftool"], "bulk_extractor": ["bulk_extractor"]
+        },
+        "dos": {
+            "hping3": ["hping3"], "slowloris": ["slowloris"], "goldeneye": ["goldeneye"],
+            "ab": ["ab"], "siege": ["siege"]
+        },
+        "secure_delete": {
+            "shred": ["shred"], "wipe": ["wipe"], "dd": ["dd"], "srm": ["srm"]
+        },
+        "malware_analysis": {
+            "clamscan": ["clamscan"], "lynis": ["lynis"], "chkrootkit": ["chkrootkit"],
+            "rkhunter": ["rkhunter"], "testssl.sh": ["testssl.sh"], "sslscan": ["sslscan"],
+            "sslyze": ["sslyze"]
+        },
         "programming": {
             "python": ["python3"], "go": ["go"], "git": ["git"], "ruby": ["ruby"],
             "perl": ["perl"], "php": ["php"], "node": ["node"], "gcc": ["gcc"], "make": ["make"]

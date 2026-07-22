@@ -1,3 +1,23 @@
+import subprocess as _sp
+
+def _run_cmd(cmd, widget):
+    """Run command and stream output to widget"""
+    def _run():
+        try:
+            p = _sp.Popen(cmd, shell=True, stdout=_sp.PIPE, stderr=_sp.STDOUT, text=True, bufsize=1)
+            for line in iter(p.stdout.readline, ''):
+                widget.insert('end', line)
+                widget.see('end')
+                widget.update_idletasks()
+            p.wait()
+            widget.insert('end', f'\n✅ Exit: {p.returncode}\n')
+            widget.see('end')
+        except Exception as e:
+            widget.insert('end', f'\n❌ {e}\n')
+            widget.see('end')
+    import threading
+    threading.Thread(target=_run, daemon=True).start()
+
 import tkinter as tk
 from tkinter import ttk, messagebox
 import subprocess
@@ -117,7 +137,7 @@ class ReconWorkspace:
         def run():
             try:
                 self.running_processes.append(cmd)
-                shared_pty.run_command(cmd, self.output_text)
+                _run_cmd(cmd, self.output_text)
                 if cmd in self.running_processes:
                     self.running_processes.remove(cmd)
                 exit_code = 0
