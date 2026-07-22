@@ -26,6 +26,7 @@ class Sidebar:
             ("Phishing", "phishing"),
             ("DoS Tools", "dos"),
             ("Macro Rec", "macro"),
+            ("Hash Crack", "hashcrack"),
             ("Permissions", "permissions"), ("Settings", "settings")
         ]
     
