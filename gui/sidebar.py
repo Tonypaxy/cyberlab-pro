@@ -24,6 +24,7 @@ class Sidebar:
             ("💻 Terminal", "terminal"),
             ("🔌 Plugins", "plugins"),
             ("📝 Wordlist Gen", "wordlist"),
+            ("⚠️ CVE Lookup", "cve"),
             ("🔐 Permissions", "permissions"),
             ("⚙️ Settings", "settings")
         ]
