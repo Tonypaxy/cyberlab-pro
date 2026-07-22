@@ -37,6 +37,8 @@ from modules.permissions_view import PermissionsView
 from modules.wordlist_gen import WordlistGenerator
 from modules.cve_lookup import CVELookup
 from modules.payload_generator import PayloadGenerator
+from modules.session_logger import SessionLogger
+from modules.api_integrations import APIIntegrations
 
 class CyberLabApp:
     def __init__(self):
@@ -121,9 +123,11 @@ class CyberLabApp:
             "wordlist": lambda: WordlistGenerator(self.content, self.db, self.logger).build(),
             "cve": lambda: CVELookup(self.content, self.db, self.logger).build(),
             "payloads": lambda: PayloadGenerator(self.content, self.db, self.logger).build(),
+            "sessions": lambda: SessionLogger(self.content, self.db, self.logger).build(),
+            "api": lambda: APIIntegrations(self.content, self.db, self.logger).build(),
             "settings": lambda: SettingsPanel(self.content, self.config, self.logger, self._apply_theme).build(),
         }
-        if cmd in views: views[cmd]()
+        if cmd in views: views[cmd](); self.db.log_activity('module_opened', cmd)
         self.statusbar.set_status(cmd.title())
 
     def _apply_theme(self, name):

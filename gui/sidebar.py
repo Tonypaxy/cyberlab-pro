@@ -14,6 +14,8 @@ class Sidebar:
             ("Notes", "notes"), ("Terminal", "terminal"), ("Plugins", "plugins"),
             ("CVE Lookup", "cve"), ("Wordlist Gen", "wordlist"),
             ("Payload Gen", "payloads"),
+            ("Sessions", "sessions"),
+            ("API Lookup", "api"),
             ("Permissions", "permissions"), ("Settings", "settings")
         ]
     
