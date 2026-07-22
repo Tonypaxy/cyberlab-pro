@@ -150,3 +150,17 @@ def get_best_install_cmd(tool_name):
 
 def get_env_name():
     return ENV_NAMES.get(ENV, 'Linux')
+
+def get_smart_install_cmd(tool_name, method):
+    """Get install command with duplicate/exists handling"""
+    base_cmd = get_best_install_cmd(tool_name)
+    
+    if method == 'git' or 'git clone' in base_cmd:
+        # Add check for existing directory
+        home = os.path.expanduser('~')
+        return f"# Checking if already cloned...\n[ -d ~/{tool_name} ] && echo 'Already exists!' || {base_cmd}"
+    
+    if method == 'pkg' or method == 'apt' or method == 'pacman' or method == 'dnf':
+        return f"{base_cmd} 2>&1 || echo 'Already installed or failed'"
+    
+    return base_cmd
