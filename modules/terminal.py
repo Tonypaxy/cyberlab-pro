@@ -1,4 +1,5 @@
 import tkinter as tk
+from gui.scrollable import make_scrollable
 from tkinter import ttk
 import subprocess
 import os

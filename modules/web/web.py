@@ -19,6 +19,7 @@ def _run_cmd(cmd, widget):
     threading.Thread(target=_run, daemon=True).start()
 
 import tkinter as tk
+from gui.scrollable import make_scrollable
 from tkinter import ttk, messagebox
 import subprocess
 import threading

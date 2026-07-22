@@ -1,5 +1,6 @@
 from gui.scrollable_frame import create_scrollable
 import tkinter as tk
+from gui.scrollable import make_scrollable
 from tkinter import ttk, messagebox
 import os
 import shutil
@@ -128,7 +129,7 @@ class PluginsManager:
         tk.Label(d, text="Code:", font=('Courier', 10), fg='#fff', bg='#1a1a2e').pack()
         code = tk.Text(d, font=('Courier', 9), bg='#0a0a0a', fg='#00ff88', relief='flat', height=12)
         code.pack(fill='both', expand=True, padx=20, pady=5)
-        code.insert('1.0', '"""My Plugin"""\nimport tkinter as tk\n\ndef run(parent, db, logger, config):\n    frame = tk.Frame(parent, bg="#1a1a2e")\n    frame.pack(fill="both", expand=True)\n    tk.Label(frame, text="Hello!", fg="#00ff88", bg="#1a1a2e", font=("Courier", 14)).pack(expand=True)\n    return frame\n')
+        code.insert('1.0', '"""My Plugin"""\nimport tkinter as tk\n\ndef run(parent, db, logger, config):\n    frame = tk.Frame(parent, bg="#1a1a2e")\n    frame.pack(fill="both", expand=True)\n    tk.Label(frame, text="Hello!", fg="#00ff88", bg="#1a1a2e", font=("Courier", 14, wraplength=500)).pack(expand=True)\n    return frame\n')
         def save():
             name = name_e.get().strip()
             if not name: messagebox.showwarning("Warning", "Enter name"); return

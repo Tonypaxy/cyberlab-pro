@@ -4,6 +4,7 @@ Search CVEs by service name, version, or keyword.
 Works offline with local database, online with NVD API.
 """
 import tkinter as tk
+from gui.scrollable import make_scrollable
 from gui.scrollable_frame import create_scrollable
 from tkinter import ttk, messagebox
 import json

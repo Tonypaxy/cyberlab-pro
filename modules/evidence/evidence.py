@@ -1,5 +1,6 @@
 from gui.scrollable_frame import create_scrollable
 import tkinter as tk
+from gui.scrollable import make_scrollable
 from tkinter import ttk, messagebox, filedialog
 import os
 import shutil
