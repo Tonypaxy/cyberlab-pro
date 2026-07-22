@@ -17,6 +17,7 @@ class Sidebar:
             ("Sessions", "sessions"),
             ("API Lookup", "api"),
             ("Templates", "templates"),
+            ("Vault", "vault"),
             ("Permissions", "permissions"), ("Settings", "settings")
         ]
     
