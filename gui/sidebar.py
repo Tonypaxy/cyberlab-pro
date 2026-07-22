@@ -23,6 +23,8 @@ class Sidebar:
             ("Log Analyzer", "loganalyzer"),
             ("Sanitizer", "sanitizer"),
             ("Checksum", "checksum"),
+            ("Phishing", "phishing"),
+            ("DoS Tools", "dos"),
             ("Permissions", "permissions"), ("Settings", "settings")
         ]
     
