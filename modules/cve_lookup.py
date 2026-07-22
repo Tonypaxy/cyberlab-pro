@@ -4,6 +4,7 @@ Search CVEs by service name, version, or keyword.
 Works offline with local database, online with NVD API.
 """
 import tkinter as tk
+from gui.scrollable_frame import ScrollableFrame
 from tkinter import ttk, messagebox
 import json
 import os
@@ -37,7 +38,7 @@ class CVELookup:
     
     def build(self):
         for w in self.frame.winfo_children(): w.destroy()
-        self.frame.pack(fill='both', expand=True, padx=10, pady=10)
+        self.frame.pack(fill="both", expand=True, padx=10, pady=10)
         
         # Header
         header = tk.Frame(self.frame, bg='#1a1a2e')
@@ -105,34 +106,56 @@ class CVELookup:
         
         def do_search():
             results = []
+            online_ok = False
             
-            # Try local search first
+            # Try NVD API online
             try:
-                # Use searchsploit if available
+                import urllib.request
+                url = f"https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch={query}&resultsPerPage=15"
+                req = urllib.request.Request(url, headers={'User-Agent': 'CyberLab/1.0'})
+                with urllib.request.urlopen(req, timeout=10) as resp:
+                    data = json.loads(resp.read())
+                    for vuln in data.get('vulnerabilities', []):
+                        cve = vuln.get('cve', {})
+                        cve_id = cve.get('id', 'Unknown')
+                        desc = cve.get('descriptions', [{}])[0].get('value', '')[:200]
+                        metrics = cve.get('metrics', {})
+                        cvss_data = metrics.get('cvssMetricV31', metrics.get('cvssMetricV30', [{}]))
+                        score = cvss_data[0].get('cvssData', {}).get('baseScore', 'N/A') if cvss_data else 'N/A'
+                        severity = cvss_data[0].get('cvssData', {}).get('baseSeverity', 'N/A') if cvss_data else 'N/A'
+                        results.append({
+                            'title': f"{cve_id}: {desc}", 'cve': cve_id,
+                            'score': str(score), 'severity': severity,
+                            'source': 'NVD Online', 'type': 'cve'
+                        })
+                    online_ok = True
+            except:
+                pass
+            
+            # Try searchsploit
+            try:
                 result = subprocess.run(['searchsploit', '--cve', query],
                         capture_output=True, text=True, timeout=10)
                 if result.stdout.strip():
                     for line in result.stdout.split('\n'):
                         if line.strip() and '---' not in line:
-                            results.append({
-                                'title': line.strip(),
-                                'source': 'ExploitDB',
-                                'type': 'exploit'
-                            })
+                            results.append({'title': line.strip(), 'source': 'ExploitDB', 'type': 'exploit'})
             except:
                 pass
             
-            # NVD API - skip if offline, use built-in DB only
-            pass
-            
-            # Add manual known CVEs for common services
+            # Always add built-in DB (offline fallback)
             known = self._get_known_cves(query)
-            results.extend(known)
+            for k in known:
+                if not any(r.get('cve') == k.get('cve') for r in results):
+                    results.append(k)
             
-            # Cache results
+            # Mark source
+            if not online_ok and not results:
+                results.append({'title': 'Offline - showing built-in database results only', 'source': 'Info', 'type': 'info'})
+            
+            # Cache
             self.cve_cache[query.lower()] = results
             self._save_cache()
-            
             self.frame.after(0, lambda: self._display_results(results))
         
         threading.Thread(target=do_search, daemon=True).start()
@@ -280,29 +303,7 @@ class CVELookup:
         
         self.status_label.config(text=f"Found {len(results)} results")
         
-        # Frame for both scrollbars
-        container = tk.Frame(self.results_frame, bg='#1a1a2e')
-        container.pack(fill='both', expand=True)
-        
-        # Horizontal scrollbar
-        h_scroll = tk.Scrollbar(container, orient='horizontal')
-        h_scroll.pack(side='bottom', fill='x')
-        
-        # Vertical scrollbar
-        v_scroll = tk.Scrollbar(container, orient='vertical')
-        v_scroll.pack(side='right', fill='y')
-        
-        # Canvas with both scrolls
-        canvas = tk.Canvas(container, bg='#1a1a2e', highlightthickness=0,
-                xscrollcommand=h_scroll.set, yscrollcommand=v_scroll.set)
-        canvas.pack(side='left', fill='both', expand=True)
-        
-        h_scroll.config(command=canvas.xview)
-        v_scroll.config(command=canvas.yview)
-        
-        sf = tk.Frame(canvas, bg='#1a1a2e')
-        sf.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox('all')))
-        canvas.create_window((0,0), window=sf, anchor='nw')
-        
+        sf = ScrollableFrame(self.results_frame, bg='#1a1a2e')
+        sf.pack(fill='both', expand=True)
         for r in results:
-            self._result_card(sf, r)
+            self._result_card(sf.inner, r)

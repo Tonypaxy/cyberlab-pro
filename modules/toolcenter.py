@@ -1,6 +1,7 @@
 from modules.terminal.pty_handler import shared_pty
 from core.install_commands import get_install_methods_ranked, get_best_install_cmd, get_env_name, METHOD_ICONS, METHOD_COLORS, detect_environment
 import tkinter as tk
+from gui.scrollable_frame import ScrollableFrame
 from tkinter import ttk, messagebox
 import subprocess
 import threading
@@ -23,7 +24,7 @@ class ToolCenter:
             self.args_db = None
     
     def build(self):
-        self.frame.pack(fill='both', expand=True, padx=10, pady=10)
+        self.frame.pack(fill="both", expand=True, padx=10, pady=10)
         
         header = tk.Frame(self.frame, bg='#1a1a2e')
         header.pack(fill='x', pady=(0,10))

@@ -12,7 +12,7 @@ class NotePad:
         self.current_note = None
     
     def build(self):
-        self.frame.pack(fill='both', expand=True)
+        self.frame.pack(fill="both", expand=True)
         
         # Main layout - split into project selector and editor
         self.left_panel = tk.Frame(self.frame, bg='#16213e', width=200)

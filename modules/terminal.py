@@ -11,7 +11,7 @@ class Terminal:
         self.process = None
     
     def build(self):
-        self.frame.pack(fill='both', expand=True)
+        self.frame.pack(fill="both", expand=True)
         
         # Terminal output
         self.output = tk.Text(self.frame, font=('Courier', 10),

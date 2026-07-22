@@ -17,7 +17,7 @@ class SOCDashboard:
         self.alerts = []
     
     def build(self):
-        self.frame.pack(fill='both', expand=True, padx=10, pady=10)
+        self.frame.pack(fill="both", expand=True, padx=10, pady=10)
         
         # Header
         header = tk.Frame(self.frame, bg='#0a0a0a')

@@ -16,7 +16,7 @@ class Terminal:
         
     def build(self):
         for w in self.frame.winfo_children(): w.destroy()
-        self.frame.pack(fill='both', expand=True)
+        self.frame.pack(fill="both", expand=True)
         
         bar = tk.Frame(self.frame, bg='#1a1a1a', height=24)
         bar.pack(fill='x'); bar.pack_propagate(False)

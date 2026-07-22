@@ -13,7 +13,7 @@ class WordlistGenerator:
         self.frame = tk.Frame(parent, bg='#1a1a2e')
     
     def build(self):
-        self.frame.pack(fill='both', expand=True, padx=15, pady=15)
+        self.frame.pack(fill="both", expand=True, padx=15, pady=15)
         
         tk.Label(self.frame, text="📝 Wordlist Generator", font=('Courier', 18, 'bold'),
                 fg='#00ff88', bg='#1a1a2e').pack(anchor='w', pady=(0,20))

@@ -37,7 +37,7 @@ class ReconWorkspace:
         self.running_processes = []
     
     def build(self):
-        self.frame.pack(fill='both', expand=True)
+        self.frame.pack(fill="both", expand=True)
         
         control_frame = tk.Frame(self.frame, bg='#16213e', width=300)
         control_frame.pack(side='left', fill='y')

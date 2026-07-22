@@ -12,7 +12,7 @@ class ProjectManager:
         self.frame = tk.Frame(parent, bg='#1a1a2e')
     
     def build(self):
-        self.frame.pack(fill='both', expand=True, padx=10, pady=10)
+        self.frame.pack(fill="both", expand=True, padx=10, pady=10)
         
         # Header
         header = tk.Frame(self.frame, bg='#1a1a2e')

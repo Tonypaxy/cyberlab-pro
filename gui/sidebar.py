@@ -32,6 +32,7 @@ class Sidebar:
     def build(self):
         self.frame.pack(side='left', fill='y')
         self.frame.pack_propagate(False)
+        self.frame.grid_propagate(False)
         
         title_frame = tk.Frame(self.frame, bg='#0f3460', height=50)
         title_frame.pack(fill='x')

@@ -16,7 +16,7 @@ class PluginsManager:
     
     def build(self):
         for w in self.frame.winfo_children(): w.destroy()
-        self.frame.pack(fill='both', expand=True, padx=10, pady=10)
+        self.frame.pack(fill="both", expand=True, padx=10, pady=10)
         
         header = tk.Frame(self.frame, bg='#1a1a2e')
         header.pack(fill='x', pady=(0,10))

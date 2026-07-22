@@ -15,7 +15,7 @@ class Settings:
         }
     
     def build(self):
-        self.frame.pack(fill='both', expand=True, padx=20, pady=20)
+        self.frame.pack(fill="both", expand=True, padx=20, pady=20)
         
         tk.Label(self.frame, text="Settings", font=('Courier', 18, 'bold'),
                 fg='#00ff88', bg='#1a1a2e').pack(anchor='w', pady=(0,20))

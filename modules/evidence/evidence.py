@@ -13,7 +13,7 @@ class EvidenceModule:
         self.current_project = None
     
     def build(self):
-        self.frame.pack(fill='both', expand=True, padx=10, pady=10)
+        self.frame.pack(fill="both", expand=True, padx=10, pady=10)
         
         # Header
         header = tk.Frame(self.frame, bg='#1a1a2e')
