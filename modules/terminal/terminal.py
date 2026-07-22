@@ -317,19 +317,79 @@ class Terminal:
     def _auto_save_data(self, cmd, output):
         """Auto-detect and save valuable data from command output"""
         try:
-            from modules.credential_locker import CredentialLocker
-            # Get the output text from the widget
+            import re
+            import sys
+            sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            from core.database import Database
+            
+            db = Database()
+            projects = db.get_all_projects()
+            if not projects:
+                db.close()
+                return
+            
+            project_id = projects[0]['id']
+            tool_name = cmd.split()[0] if ' ' in cmd else cmd
             all_text = self.output.get('1.0', 'end-1c')
-            # Find the output from this command
-            if cmd and all_text:
-                # Create a temporary locker instance to store data
-                locker = CredentialLocker(self.frame, None, None)
-                projects = locker.db.get_all_projects()
-                if projects:
-                    locker.current_project = projects[0]
-                    found = locker.auto_store(cmd.split()[0] if ' ' in cmd else cmd, all_text[-5000:], cmd)
-                    if found > 0:
-                        self._write(f"\n💎 Auto-saved {found} items to Data Locker\n", '#ff4488')
+            output_text = all_text[-8000:] if len(all_text) > 8000 else all_text
+            found = 0
+            
+            # Emails
+            for email in set(re.findall(r'[\w\.-]+@[\w\.-]+\.\w+', output_text)):
+                try:
+                    db.cursor.execute('INSERT INTO discovered_emails (project_id, email, source, tool) VALUES (?, ?, ?, ?)',
+                            (project_id, email, 'terminal', tool_name))
+                    found += 1
+                except: pass
+            
+            # IPs
+            for ip in set(re.findall(r'\b(?:\d{1,3}\.){3}\d{1,3}\b', output_text)):
+                if ip not in ('0.0.0.0','255.255.255.255','127.0.0.1','0.0.0.0/0'):
+                    try:
+                        db.cursor.execute('INSERT INTO discovered_hosts (project_id, ip_address, tool) VALUES (?, ?, ?)',
+                                (project_id, ip, tool_name))
+                        found += 1
+                    except: pass
+            
+            # URLs
+            for url in set(re.findall(r'https?://[^\s<>"\'']+', output_text)):
+                try:
+                    db.cursor.execute('INSERT INTO discovered_urls (project_id, url, tool) VALUES (?, ?, ?)',
+                            (project_id, url[:500], tool_name))
+                    found += 1
+                except: pass
+            
+            # Credentials (user:pass patterns)
+            for u, p in set(re.findall(r'([\w.-]{3,}):([\w.@#$%^&*!]{3,})', output_text)):
+                if u.lower() not in ('http','https','ftp','ssh','file'):
+                    try:
+                        db.cursor.execute('INSERT INTO credentials (project_id, username, password, tool, target) VALUES (?, ?, ?, ?, ?)',
+                                (project_id, u, p, tool_name, 'terminal'))
+                        found += 1
+                    except: pass
+            
+            # Hashes
+            for h in set(re.findall(r'\b[a-fA-F0-9]{32}\b', output_text)):
+                try:
+                    db.cursor.execute('INSERT INTO discovered_hashes (project_id, hash_value, hash_type, tool) VALUES (?, ?, ?, ?)',
+                            (project_id, h, 'MD5', tool_name))
+                    found += 1
+                except: pass
+            
+            # Subdomains
+            for sub in set(re.findall(r'(?:[\w-]+\.)+[\w-]+', output_text)):
+                if '.' in sub and len(sub) < 100 and not sub.startswith('http'):
+                    try:
+                        db.cursor.execute('INSERT INTO discovered_subdomains (project_id, subdomain, tool) VALUES (?, ?, ?)',
+                                (project_id, sub, tool_name))
+                        found += 1
+                    except: pass
+            
+            db.conn.commit()
+            db.close()
+            
+            if found > 0:
+                self._write(f"\n💎 Auto-saved {found} items to Data Locker\n", '#ff4488')
         except Exception as e:
             pass
 
