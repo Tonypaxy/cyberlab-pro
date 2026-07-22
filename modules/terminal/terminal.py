@@ -230,6 +230,7 @@ class Terminal:
         self.output.tag_config(tag, foreground=color)
         self.output.insert('end', text, tag)
         self.output.see('end')
+        self.output_buffer = (self.output_buffer + text)[-10000:]
         self.output.update_idletasks()
     
     def _send_to_shell(self, data):
