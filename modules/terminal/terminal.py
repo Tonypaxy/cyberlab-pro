@@ -1,33 +1,20 @@
 """
-CyberLab Pro - Pure Native Terminal
-Uses a PTY (pseudo-terminal) so commands behave EXACTLY like the real terminal.
-No more freezing. Progress bars work. Colors work. Everything works.
+CyberLab Pro - Native System Terminal
+Launches the actual system terminal (Termux/bash) directly.
+No emulation. Just the real thing in a window.
 """
 import tkinter as tk
 import subprocess
-import threading
 import os
-import platform
 import sys
-import signal
-import pty
-import select
-import termios
-import struct
-import fcntl
-import time
+import platform
 
 class Terminal:
     def __init__(self, parent, config, pending_cmd=None):
         self.parent = parent
         self.config = config
         self.pending_cmd = pending_cmd
-        self.output_buffer = ""
-        self.frame = tk.Frame(parent, bg='#0d1117')
-        self.master_fd = None
-        self.slave_fd = None
-        self.shell_pid = None
-        self.read_thread = None
+        self.frame = tk.Frame(parent, bg='#000000')
         self.is_termux = os.path.exists('/data/data/com.termux/files/usr/bin/bash')
         self.shell = os.environ.get('SHELL', '/bin/bash')
         
@@ -35,397 +22,115 @@ class Terminal:
         for w in self.frame.winfo_children(): w.destroy()
         self.frame.pack(fill='both', expand=True)
         
-        # Toolbar
-        toolbar = tk.Frame(self.frame, bg='#161b22', height=28)
-        toolbar.pack(fill='x')
-        toolbar.pack_propagate(False)
+        # Header bar
+        bar = tk.Frame(self.frame, bg='#222222', height=26)
+        bar.pack(fill='x')
+        bar.pack_propagate(False)
         
-        env_name = "TERMUX" if self.is_termux else platform.system().upper()
-        tk.Label(toolbar, text=f"  {env_name} | {self.shell}", font=('Courier', 9, 'bold'),
-                fg='#58a6ff', bg='#161b22').pack(side='left', pady=4)
+        env = "TERMUX" if self.is_termux else platform.system().upper()
+        tk.Label(bar, text=f"  {env} | {self.shell}", font=('Courier', 8),
+                fg='#888', bg='#222222').pack(side='left', pady=4)
         
-        self.status_dot = tk.Label(toolbar, text="●", font=('Courier', 9),
-                fg='#3fb950', bg='#161b22')
-        self.status_dot.pack(side='left', padx=5)
+        # Launch real terminal button
+        tk.Button(bar, text="Open Real Terminal", font=('Courier', 9),
+                fg='#000', bg='#00ff88', relief='flat', padx=15,
+                command=self._launch_native_terminal).pack(side='right', padx=5, pady=2)
         
-        tk.Button(toolbar, text="[X] Kill", font=('Courier', 9),
-                fg='#f85149', bg='#161b22', relief='flat', padx=10,
-                command=self._kill_shell).pack(side='right')
-        tk.Button(toolbar, text="[R] Restart", font=('Courier', 9),
-                fg='#d2991d', bg='#161b22', relief='flat', padx=10,
-                command=self._restart_shell).pack(side='right')
-        tk.Button(toolbar, text="Clear", font=('Courier', 9),
-                fg='#8b949e', bg='#161b22', relief='flat', padx=10,
-                command=self._clear).pack(side='right')
+        # Message area
+        msg = tk.Frame(self.frame, bg='#000000')
+        msg.pack(fill='both', expand=True)
         
-        # Terminal output area
-        self.output = tk.Text(self.frame, font=('Courier', 10),
-                bg='#0d1117', fg='#c9d1d9', insertbackground='#58a6ff',
-                relief='flat', wrap='char', padx=5, pady=5,
-                blockcursor=True)
-        self.output.pack(fill='both', expand=True)
+        info = f"""
+    CyberLab Terminal
+    
+    This uses your real system terminal.
+    
+    Shell: {self.shell}
+    System: {'Termux/Android' if self.is_termux else platform.system()}
+    Home: {os.path.expanduser('~')}
+    
+    Click 'Open Real Terminal' to launch.
+    Or use the embedded command runner below.
+    """
         
-        # Welcome message
-        env_name = "Termux/Android" if self.is_termux else "Linux Desktop"
+        tk.Label(msg, text=info, font=('Courier', 10),
+                fg='#00ff88', bg='#000000', justify='left').pack(pady=20)
         
-        # Pre-fill command if pending
+        # Quick command input
+        input_frame = tk.Frame(self.frame, bg='#111111')
+        input_frame.pack(fill='x', side='bottom')
+        
+        tk.Label(input_frame, text="$", font=('Courier', 11, 'bold'),
+                fg='#00ff88', bg='#111111').pack(side='left', padx=8, pady=5)
+        
+        self.cmd_entry = tk.Entry(input_frame, font=('Courier', 11),
+                bg='#000000', fg='#00ff88', insertbackground='#00ff88', relief='flat')
+        self.cmd_entry.pack(side='left', fill='x', expand=True, padx=5, pady=5)
+        self.cmd_entry.bind('<Return>', self._run_quick_cmd)
+        
+        tk.Button(input_frame, text="Run", font=('Courier', 10),
+                fg='#000', bg='#00ff88', relief='flat', padx=10,
+                command=lambda: self._run_quick_cmd(None)).pack(side='right', padx=5, pady=5)
+        
+        # Output area
+        self.output = tk.Text(self.frame, font=('Courier', 9),
+                bg='#000000', fg='#00ff88', relief='flat', wrap='word', height=8)
+        self.output.pack(fill='both', expand=True, padx=5, pady=5)
+        
+        # Pre-fill pending command
         if self.pending_cmd:
             self.cmd_entry.insert(0, self.pending_cmd)
-        # Make output read-only but allow selection
-        self.output.bind('<Key>', self._handle_key)
-        self.output.bind('<Return>', lambda e: self._send_to_shell('\r'))
-        self.output.bind('<BackSpace>', lambda e: self._send_to_shell('\x7f'))
-        self.output.bind('<Tab>', lambda e: self._send_to_shell('\t'))
-        self.output.bind('<Control-c>', lambda e: self._send_to_shell('\x03'))
-        self.output.bind('<Control-d>', lambda e: self._send_to_shell('\x04'))
-        self.output.bind('<Control-l>', lambda e: self._clear())
-        self.output.bind('<Up>', lambda e: self._send_to_shell('\x1b[A'))
-        self.output.bind('<Down>', lambda e: self._send_to_shell('\x1b[B'))
-        self.output.bind('<Left>', lambda e: self._send_to_shell('\x1b[D'))
-        self.output.bind('<Right>', lambda e: self._send_to_shell('\x1b[C'))
-        self.output.bind('<Home>', lambda e: self._send_to_shell('\x1b[H'))
-        self.output.bind('<End>', lambda e: self._send_to_shell('\x1b[F'))
-        self.output.focus_set()
         
-        # Start shell
-        self._start_shell()
-        
-        # Send pending command if any
-        if self.pending_cmd:
-            self.frame.after(500, lambda: self._send_to_shell(self.pending_cmd + '\r'))
+        self.cmd_entry.focus()
     
-    def _start_shell(self):
-        """Start a real shell in a PTY"""
-        try:
-            # Create pseudo-terminal
-            self.master_fd, self.slave_fd = pty.openpty()
-            
-            # Set terminal size
-            self._set_pty_size()
-            
-            # Start the shell
-            self.shell_pid = os.fork()
-            
-            if self.shell_pid == 0:
-                # Child process - this IS the real terminal
-                os.close(self.master_fd)
-                os.setsid()
-                
-                # Set controlling terminal
-                name = os.ttyname(self.slave_fd)
-                for fd in range(3):
-                    try: os.close(fd)
-                    except: pass
-                os.open(name, os.O_RDWR)
-                os.dup2(0, 1)
-                os.dup2(0, 2)
-                
-                # Set environment
-                os.environ['TERM'] = 'xterm-256color'
-                os.environ['COLORTERM'] = 'truecolor'
-                os.environ['HOME'] = os.path.expanduser('~')
-                os.environ['SHELL'] = self.shell
-                
-                # Execute shell
-                os.execve(self.shell, [self.shell, '-i'], os.environ)
-                os._exit(1)
-            
-            # Parent process
-            os.close(self.slave_fd)
-            
-            # Start reading from PTY
-            self.reading = True
-            self.read_thread = threading.Thread(target=self._read_pty, daemon=True)
-            self.read_thread.start()
-            
-            # Monitor shell process
-            self.frame.after(500, self._check_shell)
-            
-        except Exception as e:
-            self._write(f"\n[X] Failed to start shell: {e}\n", '#f85149')
-            self._start_fallback_shell()
-    
-    def _start_fallback_shell(self):
-        """Fallback: use subprocess if fork fails (some Termux versions)"""
-        self._write("\n[!]  Using fallback terminal mode\n", '#d2991d')
-        # Use simple subprocess mode
-        self.fallback_mode = True
-    
-    def _set_pty_size(self):
-        """Set PTY window size to match output widget"""
-        try:
-            if self.master_fd:
-                cols = 120
-                rows = 40
-                winsize = struct.pack("HHHH", rows, cols, 0, 0)
-                fcntl.ioctl(self.master_fd, termios.TIOCSWINSZ, winsize)
-        except:
-            pass
-    
-    def _read_pty(self):
-        """Read output from PTY continuously"""
-        buffer = b''
-        while self.reading and self.master_fd:
+    def _launch_native_terminal(self):
+        """Open the actual system terminal"""
+        if self.is_termux:
+            # Open Termux app
             try:
-                ready, _, _ = select.select([self.master_fd], [], [], 0.1)
-                if ready:
-                    data = os.read(self.master_fd, 4096)
-                    if data:
-                        # Decode and write to output
-                        try:
-                            text = data.decode('utf-8', errors='replace')
-                        except:
-                            text = data.decode('latin-1', errors='replace')
-                        
-                        # Handle ANSI escape codes for colors
-                        self.frame.after(0, lambda t=text: self._write_ansi(t))
-                    else:
-                        break
+                subprocess.Popen(['am', 'start', '-n', 'com.termux/.app.TermuxActivity'],
+                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             except:
-                break
-        
-        self.frame.after(0, lambda: self.status_dot.config(fg='#f85149'))
-        self.master_fd = None
-    
-    def _write_ansi(self, text):
-        """Write text - strips terminal control sequences"""
-        import re
-        # Strip OSC sequences (]0;, ]1;, ]2;, ]7;)
-        text = re.sub(r'\x1b\][^\x07]*\x07', '', text)
-        # Strip CSI sequences ([?1h, [?2004h, etc)
-        text = re.sub(r'\x1b\[[0-9?;]*[hl]', '', text)
-        # Strip cursor position sequences
-        text = re.sub(r'\x1b\[[0-9]*[ABCDGJK]', '', text)
-        # Strip color codes
-        text = re.sub(r'\x1b\[[0-9;]*m', '', text)
-        # Strip other escape sequences
-        text = re.sub(r'\x1b[=>]', '', text)
-        # Strip remaining escape chars
-        text = text.replace('\x1b', '')
-        if text.strip():
-            self.output.insert('end', text)
-            self.output.see('end')
-            self.output.update_idletasks()
-            self.output_buffer = (self.output_buffer + text)[-10000:]
-    
-    def _write_ansi_old(self, text):
-        """Legacy ANSI color support"""
-        ansi_colors = {
-            '30': '#000000', '31': '#f85149', '32': '#3fb950', '33': '#d2991d',
-            '34': '#58a6ff', '35': '#bc8cff', '36': '#39c5cf', '37': '#c9d1d9',
-            '90': '#6e7681', '91': '#f85149', '92': '#3fb950', '93': '#d2991d',
-            '94': '#58a6ff', '95': '#bc8cff', '96': '#39c5cf', '97': '#ffffff',
-        }
-        
-        current_color = 'c9d1d9'
-        clean_text = ''
-        i = 0
-        while i < len(text):
-            if text[i] == '\x1b' and i+1 < len(text) and text[i+1] == '[':
-                # Found ANSI escape
-                if clean_text:
-                    tag = f'c_{current_color}'
-                    self.output.tag_config(tag, foreground=f'#{current_color}')
-                    self.output.insert('end', clean_text, tag)
-                    clean_text = ''
-                
-                end = text.find('m', i)
-                if end > i:
-                    code = text[i+2:end]
-                    if code in ansi_colors:
-                        current_color = ansi_colors[code].replace('#', '')
-                    elif code == '0':
-                        current_color = 'c9d1d9'
-                    i = end + 1
-                else:
-                    clean_text += text[i]
-                    i += 1
-            else:
-                clean_text += text[i]
-                i += 1
-        
-        if clean_text:
-            tag = f'c_{current_color}'
-            self.output.tag_config(tag, foreground=f'#{current_color}')
-            self.output.insert('end', clean_text, tag)
-        
-        self.output.see('end')
-        self.output.update_idletasks()
-    
-    def _write(self, text, color='#c9d1d9'):
-        """Write plain text to output"""
-        tag = f'color_{color.replace("#", "")}'
-        self.output.tag_config(tag, foreground=color)
-        self.output.insert('end', text, tag)
-        self.output.see('end')
-        self.output_buffer = (self.output_buffer + text)[-10000:]
-        self.output.update_idletasks()
-    
-    def _send_to_shell(self, data):
-        """Send keystrokes to the shell PTY"""
-        if self.master_fd:
-            try:
-                if isinstance(data, str):
-                    data = data.encode('utf-8')
-                os.write(self.master_fd, data)
-            except:
-                pass
-        elif hasattr(self, 'fallback_mode'):
-            self._write(data.replace('\r', '\n'), '#c9d1d9')
-    
-    def _handle_key(self, event):
-        """Handle keypresses and send to shell"""
-        if event.char and event.char.isprintable():
-            self._send_to_shell(event.char)
-        elif event.keysym == 'Return':
-            self._send_to_shell('\r')
-        elif event.keysym == 'BackSpace':
-            self._send_to_shell('\x7f')
-        elif event.keysym == 'Tab':
-            self._send_to_shell('\t')
-        elif event.keysym == 'Escape':
-            self._send_to_shell('\x1b')
-        elif event.keysym == 'Up':
-            self._send_to_shell('\x1b[A')
-        elif event.keysym == 'Down':
-            self._send_to_shell('\x1b[B')
-        elif event.keysym == 'Left':
-            self._send_to_shell('\x1b[D')
-        elif event.keysym == 'Right':
-            self._send_to_shell('\x1b[C')
-        return 'break'
-    
-    def _kill_shell(self):
-        """Kill the current shell and all its children"""
-        if self.shell_pid:
-            try:
-                os.killpg(os.getpgid(self.shell_pid), signal.SIGKILL)
-            except:
+                os.system('termux-open 2>/dev/null &')
+        else:
+            # Open Linux terminal
+            terms = ['x-terminal-emulator', 'gnome-terminal', 'xfce4-terminal', 
+                    'konsole', 'lxterminal', 'terminator', 'alacritty', 'kitty', 'xterm']
+            for term in terms:
                 try:
-                    os.kill(self.shell_pid, signal.SIGKILL)
+                    subprocess.Popen([term], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    break
                 except:
-                    pass
-        self.reading = False
-        if self.master_fd:
-            try: os.close(self.master_fd)
-            except: pass
-        self.master_fd = None
-        self.shell_pid = None
-        self._write("\n[!] Shell killed\n", '#f85149')
-        self.status_dot.config(fg='#f85149')
+                    continue
     
-    def _restart_shell(self):
-        """Kill and restart the shell"""
-        self._kill_shell()
-        self.frame.after(200, self._start_shell)
-        self._write("\n[R] Restarting shell...\n", '#d2991d')
-    
-    def _check_shell(self):
-        """Check if shell is still alive"""
-        if self.shell_pid:
-            try:
-                pid, status = os.waitpid(self.shell_pid, os.WNOHANG)
-                if pid == self.shell_pid:
-                    self._write(f"\n[!] Shell exited ({status})\n", '#f85149')
-                    self.shell_pid = None
-                    self.status_dot.config(fg='#f85149')
-                    # Auto-restart
-                    self.frame.after(500, self._start_shell)
-                    self._write("[R] Auto-restarting...\n", '#d2991d')
-            except:
-                pass
+    def _run_quick_cmd(self, event=None):
+        """Run a command and show output"""
+        cmd = self.cmd_entry.get().strip()
+        if not cmd: return
         
-        if self.frame.winfo_exists():
-            self.frame.after(2000, self._check_shell)
+        self.cmd_entry.delete(0, 'end')
+        self.output.insert('end', f"\n$ {cmd}\n{'='*40}\n", 'prompt')
+        self.output.see('end')
+        self.output.tag_config('prompt', foreground='#ffff00')
+        
+        def run():
+            try:
+                p = subprocess.Popen(cmd, shell=True, executable=self.shell,
+                        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+                for line in p.stdout:
+                    self.output.insert('end', line)
+                    self.output.see('end')
+                p.wait()
+                self.output.insert('end', f"\n[Exit: {p.returncode}]\n\n")
+                self.output.see('end')
+            except Exception as e:
+                self.output.insert('end', f"[X] {e}\n")
+                self.output.see('end')
+        
+        import threading
+        threading.Thread(target=run, daemon=True).start()
     
-    def _clear(self):
-        self.output.delete('1.0', 'end')
-        self._send_to_shell('\x0c')  # Ctrl+L to shell
-    
-    
-    def _auto_save_data(self, cmd, output):
-        """Auto-detect and save valuable data from command output"""
-        try:
-            import re
-            import sys
-            sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-            from core.database import Database
-            
-            db = Database()
-            projects = db.get_all_projects()
-            if not projects:
-                db.close()
-                return
-            
-            project_id = projects[0]['id']
-            tool_name = cmd.split()[0] if ' ' in cmd else cmd
-            all_text = self.output.get('1.0', 'end-1c')
-            output_text = all_text[-8000:] if len(all_text) > 8000 else all_text
-            found = 0
-            
-            # Emails
-            for email in set(re.findall(r'[\w\.-]+@[\w\.-]+\.\w+', output_text)):
-                try:
-                    db.cursor.execute('INSERT INTO discovered_emails (project_id, email, source, tool) VALUES (?, ?, ?, ?)',
-                            (project_id, email, 'terminal', tool_name))
-                    found += 1
-                except: pass
-            
-            # IPs
-            for ip in set(re.findall(r'\b(?:\d{1,3}\.){3}\d{1,3}\b', output_text)):
-                if ip not in ('0.0.0.0','255.255.255.255','127.0.0.1','0.0.0.0/0'):
-                    try:
-                        db.cursor.execute('INSERT INTO discovered_hosts (project_id, ip_address, tool) VALUES (?, ?, ?)',
-                                (project_id, ip, tool_name))
-                        found += 1
-                    except: pass
-            
-            # URLs
-            for url in set(re.findall(r'https?://[^\s<>]+', output_text)):
-                try:
-                    db.cursor.execute('INSERT INTO discovered_urls (project_id, url, tool) VALUES (?, ?, ?)',
-                            (project_id, url[:500], tool_name))
-                    found += 1
-                except: pass
-            
-            # Credentials (user:pass patterns)
-            for u, p in set(re.findall(r'([\w.-]{3,}):([\w.@#$%^&*!]{3,})', output_text)):
-                if u.lower() not in ('http','https','ftp','ssh','file'):
-                    try:
-                        db.cursor.execute('INSERT INTO credentials (project_id, username, password, tool, target) VALUES (?, ?, ?, ?, ?)',
-                                (project_id, u, p, tool_name, 'terminal'))
-                        found += 1
-                    except: pass
-            
-            # Hashes
-            for h in set(re.findall(r'\b[a-fA-F0-9]{32}\b', output_text)):
-                try:
-                    db.cursor.execute('INSERT INTO discovered_hashes (project_id, hash_value, hash_type, tool) VALUES (?, ?, ?, ?)',
-                            (project_id, h, 'MD5', tool_name))
-                    found += 1
-                except: pass
-            
-            # Subdomains
-            for sub in set(re.findall(r'(?:[\w-]+\.)+[\w-]+', output_text)):
-                if '.' in sub and len(sub) < 100 and not sub.startswith('http'):
-                    try:
-                        db.cursor.execute('INSERT INTO discovered_subdomains (project_id, subdomain, tool) VALUES (?, ?, ?)',
-                                (project_id, sub, tool_name))
-                        found += 1
-                    except: pass
-            
-            db.conn.commit()
-            db.close()
-            
-            if found > 0:
-                self._write(f"\n[+] Auto-saved {found} items to Data Locker\n", '#ff4488')
-        except Exception as e:
-            pass
-
     def set_command(self, cmd):
-        """Send command to shell"""
-        self.frame.after(300, lambda: self._send_to_shell(cmd + '\r'))
-    
-    def destroy(self):
-        """Clean up on exit"""
-        self._kill_shell()
+        self.cmd_entry.delete(0, 'end')
+        self.cmd_entry.insert(0, cmd)
+        self.cmd_entry.focus()
