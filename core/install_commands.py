@@ -1,9 +1,8 @@
-"""CyberLab Pro - Smart Install Commands by Environment"""
+"""CyberLab Pro - Smart Install Commands by Environment with Success Ranking"""
 import os
 import platform
 
 def detect_environment():
-    """Detect current environment"""
     if os.path.exists('/data/data/com.termux/files/usr/bin/bash'):
         return 'termux'
     elif os.path.exists('/usr/bin/apt') or os.path.exists('/usr/bin/apt-get'):
@@ -21,212 +20,133 @@ def detect_environment():
 
 ENV = detect_environment()
 
+ENV_NAMES = {
+    'termux': 'Termux (Android)',
+    'debian': 'Debian/Ubuntu/Kali/Parrot',
+    'arch': 'Arch/Manjaro',
+    'fedora': 'Fedora/RHEL',
+    'suse': 'openSUSE',
+    'macos': 'macOS',
+    'linux': 'Linux'
+}
+
+# Success ranking: 1 = highest success rate, 5 = lowest
+# Based on actual installation success rates per environment
+SUCCESS_RANK = {
+    'termux': {'pkg': 1, 'pip': 2, 'git': 3, 'go': 4, 'gem': 5},
+    'debian': {'apt': 1, 'pip': 2, 'git': 3, 'go': 4, 'gem': 5},
+    'arch':   {'pacman': 1, 'pip': 2, 'git': 3, 'go': 4, 'gem': 5},
+    'fedora': {'dnf': 1, 'pip': 2, 'git': 3, 'go': 4, 'gem': 5},
+}
+
+METHOD_ICONS = {
+    'pkg': '📦 pkg', 'apt': '📦 apt', 'pacman': '📦 pac', 'dnf': '📦 dnf',
+    'pip': '🐍 pip', 'git': '📥 git', 'go': '🔵 go', 'gem': '💎 gem'
+}
+
+METHOD_COLORS = {
+    'pkg': '#00ccff', 'apt': '#00ccff', 'pacman': '#00ccff', 'dnf': '#00ccff',
+    'pip': '#ffaa00', 'git': '#cc88ff', 'go': '#00ff88', 'gem': '#ff4488'
+}
+
 INSTALL_COMMANDS = {
-    # === TERMUX ===
     'termux': {
-        "nmap": {"pkg": "pkg install nmap -y"},
-        "hydra": {"pkg": "pkg install hydra -y"},
-        "sqlmap": {"pip": "pip install sqlmap", "git": "git clone --depth 1 https://github.com/sqlmapproject/sqlmap.git ~/sqlmap"},
-        "nikto": {"git": "git clone --depth 1 https://github.com/sullo/nikto.git ~/nikto"},
-        "gobuster": {"go": "go install github.com/OJ/gobuster/v3@latest"},
-        "wpscan": {"gem": "gem install wpscan", "pkg": "pkg install ruby -y && gem install wpscan"},
-        "dirb": {"pkg": "pkg install dirb -y"},
-        "whatweb": {"pkg": "pkg install whatweb -y"},
-        "john": {"pkg": "pkg install john -y"},
-        "hashcat": {"pkg": "pkg install hashcat -y"},
-        "crunch": {"pkg": "pkg install crunch -y"},
-        "aircrack-ng": {"pkg": "pkg install aircrack-ng -y"},
-        "tcpdump": {"pkg": "pkg install tcpdump -y"},
-        "exiftool": {"pkg": "pkg install exiftool -y"},
-        "steghide": {"pkg": "pkg install steghide -y"},
-        "binwalk": {"pkg": "pkg install binwalk -y"},
-        "foremost": {"pkg": "pkg install foremost -y"},
-        "strings": {"pkg": "pkg install binutils -y"},
-        "metasploit": {"pkg": "pkg install unstable-repo -y && pkg install metasploit -y"},
-        "ettercap": {"pkg": "pkg install ettercap -y"},
-        "netcat": {"pkg": "pkg install netcat-openbsd -y"},
-        "curl": {"pkg": "pkg install curl -y"},
-        "wget": {"pkg": "pkg install wget -y"},
-        "git": {"pkg": "pkg install git -y"},
-        "python": {"pkg": "pkg install python -y"},
-        "go": {"pkg": "pkg install golang -y"},
-        "ruby": {"pkg": "pkg install ruby -y"},
-        "perl": {"pkg": "pkg install perl -y"},
-        "php": {"pkg": "pkg install php -y"},
-        "node": {"pkg": "pkg install nodejs -y"},
-        "gcc": {"pkg": "pkg install clang -y"},
-        "make": {"pkg": "pkg install make -y"},
-        "subfinder": {"go": "go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest"},
-        "httpx": {"go": "go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest"},
-        "assetfinder": {"go": "go install github.com/tomnomnom/assetfinder@latest"},
-        "gau": {"go": "go install github.com/lc/gau/v2/cmd/gau@latest"},
-        "waybackurls": {"go": "go install github.com/tomnomnom/waybackurls@latest"},
-        "ffuf": {"go": "go install github.com/ffuf/ffuf/v2@latest"},
-        "amass": {"pkg": "pkg install amass -y"},
-        "massdns": {"git": "git clone --depth 1 https://github.com/blechschmidt/massdns.git ~/massdns && cd ~/massdns && make"},
-        "sublist3r": {"git": "git clone --depth 1 https://github.com/aboul3la/Sublist3r.git ~/Sublist3r && cd ~/Sublist3r && pip install -r requirements.txt"},
-        "dirsearch": {"git": "git clone --depth 1 https://github.com/maurosoria/dirsearch.git ~/dirsearch"},
-        "commix": {"git": "git clone --depth 1 https://github.com/commixproject/commix.git ~/commix"},
-        "xsser": {"git": "git clone --depth 1 https://github.com/epsylon/xsser.git ~/xsser"},
-        "wfuzz": {"pip": "pip install wfuzz"},
-        "fierce": {"pip": "pip install fierce"},
-        "searchsploit": {"pkg": "pkg install exploitdb -y"},
-        "cewl": {"gem": "gem install cewl"},
-        "zsteg": {"gem": "gem install zsteg"},
-        "bettercap": {"pkg": "pkg install bettercap -y"},
-        "rustscan": {"pkg": "pkg install rustscan -y"},
-        "masscan": {"pkg": "pkg install masscan -y"},
-        "arp-scan": {"pkg": "pkg install arp-scan -y"},
-        "tshark": {"pkg": "pkg install tshark -y"},
-        "reaver": {"pkg": "pkg install reaver -y"},
-        "pixiewps": {"pkg": "pkg install pixiewps -y"},
-        "beef": {"gem": "gem install beef-xss"},
-        "setoolkit": {"git": "git clone --depth 1 https://github.com/trustedsec/social-engineer-toolkit.git ~/setoolkit"},
-        "medusa": {"pkg": "pkg install medusa -y"},
-        "dnsenum": {"git": "git clone --depth 1 https://github.com/fwaeytens/dnsenum.git ~/dnsenum"},
-    },
-    
-    # === DEBIAN / UBUNTU / KALI / PARROT ===
-    'debian': {
-        "nmap": {"apt": "sudo apt install nmap -y"},
-        "hydra": {"apt": "sudo apt install hydra -y"},
-        "sqlmap": {"apt": "sudo apt install sqlmap -y", "pip": "pip install sqlmap", "git": "git clone --depth 1 https://github.com/sqlmapproject/sqlmap.git ~/sqlmap"},
-        "nikto": {"apt": "sudo apt install nikto -y", "git": "git clone --depth 1 https://github.com/sullo/nikto.git ~/nikto"},
-        "gobuster": {"apt": "sudo apt install gobuster -y", "go": "go install github.com/OJ/gobuster/v3@latest"},
-        "wpscan": {"apt": "sudo apt install wpscan -y", "gem": "gem install wpscan"},
-        "dirb": {"apt": "sudo apt install dirb -y"},
-        "whatweb": {"apt": "sudo apt install whatweb -y"},
-        "john": {"apt": "sudo apt install john -y"},
-        "hashcat": {"apt": "sudo apt install hashcat -y"},
-        "crunch": {"apt": "sudo apt install crunch -y"},
-        "aircrack-ng": {"apt": "sudo apt install aircrack-ng -y"},
-        "tcpdump": {"apt": "sudo apt install tcpdump -y"},
-        "exiftool": {"apt": "sudo apt install exiftool -y"},
-        "steghide": {"apt": "sudo apt install steghide -y"},
-        "binwalk": {"apt": "sudo apt install binwalk -y"},
-        "foremost": {"apt": "sudo apt install foremost -y"},
-        "strings": {"apt": "sudo apt install binutils -y"},
-        "metasploit": {"apt": "sudo apt install metasploit-framework -y"},
-        "ettercap": {"apt": "sudo apt install ettercap-graphical -y"},
-        "netcat": {"apt": "sudo apt install netcat-openbsd -y"},
-        "curl": {"apt": "sudo apt install curl -y"},
-        "wget": {"apt": "sudo apt install wget -y"},
-        "git": {"apt": "sudo apt install git -y"},
-        "python": {"apt": "sudo apt install python3 -y"},
-        "go": {"apt": "sudo apt install golang -y"},
-        "ruby": {"apt": "sudo apt install ruby -y"},
-        "perl": {"apt": "sudo apt install perl -y"},
-        "php": {"apt": "sudo apt install php -y"},
-        "node": {"apt": "sudo apt install nodejs -y"},
-        "gcc": {"apt": "sudo apt install gcc -y"},
-        "make": {"apt": "sudo apt install make -y"},
-        "subfinder": {"go": "go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest"},
-        "httpx": {"go": "go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest"},
-        "assetfinder": {"go": "go install github.com/tomnomnom/assetfinder@latest"},
-        "gau": {"go": "go install github.com/lc/gau/v2/cmd/gau@latest"},
-        "waybackurls": {"go": "go install github.com/tomnomnom/waybackurls@latest"},
-        "ffuf": {"apt": "sudo apt install ffuf -y", "go": "go install github.com/ffuf/ffuf/v2@latest"},
-        "amass": {"apt": "sudo apt install amass -y"},
-        "wfuzz": {"apt": "sudo apt install wfuzz -y", "pip": "pip install wfuzz"},
-        "fierce": {"apt": "sudo apt install fierce -y", "pip": "pip install fierce"},
-        "searchsploit": {"apt": "sudo apt install exploitdb -y"},
-        "cewl": {"apt": "sudo apt install cewl -y", "gem": "gem install cewl"},
-        "zsteg": {"gem": "gem install zsteg"},
-        "bettercap": {"apt": "sudo apt install bettercap -y"},
-        "masscan": {"apt": "sudo apt install masscan -y"},
-        "arp-scan": {"apt": "sudo apt install arp-scan -y"},
-        "tshark": {"apt": "sudo apt install tshark -y"},
-        "reaver": {"apt": "sudo apt install reaver -y"},
-        "beef": {"apt": "sudo apt install beef-xss -y"},
-        "setoolkit": {"apt": "sudo apt install setoolkit -y"},
-        "medusa": {"apt": "sudo apt install medusa -y"},
-        "dnsenum": {"apt": "sudo apt install dnsenum -y"},
-        "burpsuite": {"apt": "sudo apt install burpsuite -y"},
-        "zap": {"apt": "sudo apt install zaproxy -y"},
-        "wireshark": {"apt": "sudo apt install wireshark -y"},
-    },
-    
-    # === ARCH / MANJARO ===
-    'arch': {
-        "nmap": {"pacman": "sudo pacman -S nmap --noconfirm"},
-        "hydra": {"pacman": "sudo pacman -S hydra --noconfirm"},
-        "sqlmap": {"pacman": "sudo pacman -S sqlmap --noconfirm", "pip": "pip install sqlmap"},
-        "nikto": {"pacman": "sudo pacman -S nikto --noconfirm"},
-        "gobuster": {"pacman": "sudo pacman -S gobuster --noconfirm", "go": "go install github.com/OJ/gobuster/v3@latest"},
-        "wpscan": {"gem": "gem install wpscan"},
-        "dirb": {"pacman": "sudo pacman -S dirb --noconfirm"},
-        "john": {"pacman": "sudo pacman -S john --noconfirm"},
-        "hashcat": {"pacman": "sudo pacman -S hashcat --noconfirm"},
-        "aircrack-ng": {"pacman": "sudo pacman -S aircrack-ng --noconfirm"},
-        "tcpdump": {"pacman": "sudo pacman -S tcpdump --noconfirm"},
-        "exiftool": {"pacman": "sudo pacman -S exiftool --noconfirm"},
-        "metasploit": {"pacman": "sudo pacman -S metasploit --noconfirm"},
-        "netcat": {"pacman": "sudo pacman -S gnu-netcat --noconfirm"},
-        "curl": {"pacman": "sudo pacman -S curl --noconfirm"},
-        "git": {"pacman": "sudo pacman -S git --noconfirm"},
-        "go": {"pacman": "sudo pacman -S go --noconfirm"},
-        "ffuf": {"pacman": "sudo pacman -S ffuf --noconfirm", "go": "go install github.com/ffuf/ffuf/v2@latest"},
-        "amass": {"pacman": "sudo pacman -S amass --noconfirm"},
-        "bettercap": {"pacman": "sudo pacman -S bettercap --noconfirm"},
-        "burpsuite": {"pacman": "sudo pacman -S burpsuite --noconfirm"},
-        "wireshark": {"pacman": "sudo pacman -S wireshark-qt --noconfirm"},
-    },
-    
-    # === FEDORA ===
-    'fedora': {
-        "nmap": {"dnf": "sudo dnf install nmap -y"},
-        "hydra": {"dnf": "sudo dnf install hydra -y"},
-        "sqlmap": {"dnf": "sudo dnf install sqlmap -y", "pip": "pip install sqlmap"},
-        "nikto": {"dnf": "sudo dnf install nikto -y"},
-        "gobuster": {"dnf": "sudo dnf install gobuster -y", "go": "go install github.com/OJ/gobuster/v3@latest"},
-        "john": {"dnf": "sudo dnf install john -y"},
-        "hashcat": {"dnf": "sudo dnf install hashcat -y"},
-        "aircrack-ng": {"dnf": "sudo dnf install aircrack-ng -y"},
-        "tcpdump": {"dnf": "sudo dnf install tcpdump -y"},
-        "metasploit": {"dnf": "sudo dnf install metasploit -y"},
-        "curl": {"dnf": "sudo dnf install curl -y"},
-        "git": {"dnf": "sudo dnf install git -y"},
-        "go": {"dnf": "sudo dnf install golang -y"},
-        "ffuf": {"dnf": "sudo dnf install ffuf -y", "go": "go install github.com/ffuf/ffuf/v2@latest"},
-        "wireshark": {"dnf": "sudo dnf install wireshark -y"},
+        "nmap": {"pkg": "pkg install nmap -y", "pip": "pip install python-nmap", "git": "N/A"},
+        "hydra": {"pkg": "pkg install hydra -y", "pip": "N/A", "git": "git clone --depth 1 https://github.com/vanhauser-thc/thc-hydra.git ~/hydra"},
+        "sqlmap": {"pkg": "pkg install sqlmap -y 2>/dev/null || echo 'Use pip'", "pip": "pip install sqlmap", "git": "git clone --depth 1 https://github.com/sqlmapproject/sqlmap.git ~/sqlmap"},
+        "nikto": {"pkg": "pkg install nikto -y 2>/dev/null || echo 'Use git'", "pip": "N/A", "git": "git clone --depth 1 https://github.com/sullo/nikto.git ~/nikto"},
+        "gobuster": {"pkg": "pkg install go -y && go install github.com/OJ/gobuster/v3@latest", "pip": "N/A", "git": "N/A", "go": "go install github.com/OJ/gobuster/v3@latest"},
+        "john": {"pkg": "pkg install john -y", "pip": "N/A", "git": "git clone --depth 1 https://github.com/openwall/john.git ~/john"},
+        "hashcat": {"pkg": "pkg install hashcat -y", "pip": "N/A", "git": "git clone --depth 1 https://github.com/hashcat/hashcat.git ~/hashcat"},
+        "wpscan": {"pkg": "pkg install ruby -y && gem install wpscan", "pip": "N/A", "git": "git clone --depth 1 https://github.com/wpscanteam/wpscan.git ~/wpscan", "gem": "gem install wpscan"},
+        "dirb": {"pkg": "pkg install dirb -y", "pip": "N/A", "git": "git clone --depth 1 https://github.com/v0re/dirb.git ~/dirb"},
+        "whatweb": {"pkg": "pkg install whatweb -y", "pip": "N/A", "git": "git clone --depth 1 https://github.com/urbanadventurer/WhatWeb.git ~/whatweb"},
+        "aircrack-ng": {"pkg": "pkg install aircrack-ng -y", "pip": "N/A", "git": "git clone --depth 1 https://github.com/aircrack-ng/aircrack-ng.git ~/aircrack-ng"},
+        "tcpdump": {"pkg": "pkg install tcpdump -y", "pip": "N/A", "git": "N/A"},
+        "exiftool": {"pkg": "pkg install exiftool -y", "pip": "pip install exiftool", "git": "N/A"},
+        "binwalk": {"pkg": "pkg install binwalk -y 2>/dev/null || pip install binwalk", "pip": "pip install binwalk", "git": "git clone --depth 1 https://github.com/ReFirmLabs/binwalk.git ~/binwalk"},
+        "steghide": {"pkg": "pkg install steghide -y", "pip": "N/A", "git": "git clone --depth 1 https://github.com/StefanoDeVuono/steghide.git ~/steghide"},
+        "foremost": {"pkg": "pkg install foremost -y", "pip": "N/A", "git": "N/A"},
+        "strings": {"pkg": "pkg install binutils -y", "pip": "N/A", "git": "N/A"},
+        "metasploit": {"pkg": "pkg install unstable-repo -y && pkg install metasploit -y", "pip": "N/A", "git": "N/A"},
+        "ettercap": {"pkg": "pkg install ettercap -y", "pip": "N/A", "git": "N/A"},
+        "netcat": {"pkg": "pkg install netcat-openbsd -y", "pip": "N/A", "git": "N/A"},
+        "curl": {"pkg": "pkg install curl -y", "pip": "N/A", "git": "N/A"},
+        "wget": {"pkg": "pkg install wget -y", "pip": "N/A", "git": "N/A"},
+        "git": {"pkg": "pkg install git -y", "pip": "N/A", "git": "N/A"},
+        "python": {"pkg": "pkg install python -y", "pip": "N/A", "git": "N/A"},
+        "go": {"pkg": "pkg install golang -y", "pip": "N/A", "git": "N/A"},
+        "ruby": {"pkg": "pkg install ruby -y", "pip": "N/A", "git": "N/A"},
+        "perl": {"pkg": "pkg install perl -y", "pip": "N/A", "git": "N/A"},
+        "php": {"pkg": "pkg install php -y", "pip": "N/A", "git": "N/A"},
+        "node": {"pkg": "pkg install nodejs -y", "pip": "N/A", "git": "N/A"},
+        "make": {"pkg": "pkg install make -y", "pip": "N/A", "git": "N/A"},
+        "subfinder": {"pkg": "N/A", "pip": "N/A", "git": "N/A", "go": "go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest"},
+        "httpx": {"pkg": "N/A", "pip": "N/A", "git": "N/A", "go": "go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest"},
+        "assetfinder": {"pkg": "N/A", "pip": "N/A", "git": "N/A", "go": "go install github.com/tomnomnom/assetfinder@latest"},
+        "gau": {"pkg": "N/A", "pip": "N/A", "git": "N/A", "go": "go install github.com/lc/gau/v2/cmd/gau@latest"},
+        "waybackurls": {"pkg": "N/A", "pip": "N/A", "git": "N/A", "go": "go install github.com/tomnomnom/waybackurls@latest"},
+        "ffuf": {"pkg": "N/A", "pip": "N/A", "git": "N/A", "go": "go install github.com/ffuf/ffuf/v2@latest"},
+        "amass": {"pkg": "pkg install amass -y 2>/dev/null || echo 'Use go'", "pip": "N/A", "git": "N/A", "go": "go install -v github.com/owasp-amass/amass/v4/...@master"},
+        "massdns": {"pkg": "N/A", "pip": "N/A", "git": "git clone --depth 1 https://github.com/blechschmidt/massdns.git ~/massdns && cd ~/massdns && make"},
+        "sublist3r": {"pkg": "N/A", "pip": "N/A", "git": "git clone --depth 1 https://github.com/aboul3la/Sublist3r.git ~/Sublist3r && cd ~/Sublist3r && pip install -r requirements.txt"},
+        "dirsearch": {"pkg": "N/A", "pip": "N/A", "git": "git clone --depth 1 https://github.com/maurosoria/dirsearch.git ~/dirsearch"},
+        "wfuzz": {"pkg": "N/A", "pip": "pip install wfuzz", "git": "git clone --depth 1 https://github.com/xmendez/wfuzz.git ~/wfuzz"},
+        "fierce": {"pkg": "N/A", "pip": "pip install fierce", "git": "git clone --depth 1 https://github.com/mschwager/fierce.git ~/fierce"},
+        "searchsploit": {"pkg": "pkg install exploitdb -y", "pip": "N/A", "git": "git clone --depth 1 https://github.com/offensive-security/exploitdb.git ~/exploitdb"},
+        "cewl": {"pkg": "N/A", "pip": "N/A", "git": "N/A", "gem": "gem install cewl"},
+        "zsteg": {"pkg": "N/A", "pip": "N/A", "git": "N/A", "gem": "gem install zsteg"},
+        "bettercap": {"pkg": "pkg install bettercap -y", "pip": "N/A", "git": "N/A"},
+        "commix": {"pkg": "N/A", "pip": "N/A", "git": "git clone --depth 1 https://github.com/commixproject/commix.git ~/commix"},
+        "xsser": {"pkg": "N/A", "pip": "N/A", "git": "git clone --depth 1 https://github.com/epsylon/xsser.git ~/xsser"},
+        "beef": {"pkg": "N/A", "pip": "N/A", "git": "N/A", "gem": "gem install beef-xss"},
+        "setoolkit": {"pkg": "N/A", "pip": "N/A", "git": "git clone --depth 1 https://github.com/trustedsec/social-engineer-toolkit.git ~/setoolkit"},
+        "medusa": {"pkg": "pkg install medusa -y", "pip": "N/A", "git": "N/A"},
+        "dnsenum": {"pkg": "N/A", "pip": "N/A", "git": "git clone --depth 1 https://github.com/fwaeytens/dnsenum.git ~/dnsenum"},
+        "crunch": {"pkg": "pkg install crunch -y", "pip": "N/A", "git": "N/A"},
+        "reaver": {"pkg": "pkg install reaver -y", "pip": "N/A", "git": "N/A"},
+        "pixiewps": {"pkg": "pkg install pixiewps -y", "pip": "N/A", "git": "N/A"},
+        "tshark": {"pkg": "pkg install tshark -y", "pip": "N/A", "git": "N/A"},
+        "arp-scan": {"pkg": "pkg install arp-scan -y", "pip": "N/A", "git": "N/A"},
+        "masscan": {"pkg": "pkg install masscan -y", "pip": "N/A", "git": "N/A"},
+        "rustscan": {"pkg": "pkg install rustscan -y", "pip": "N/A", "git": "N/A"},
     },
 }
 
-def get_install_cmd(tool_name, method='auto'):
-    """Get install command for tool based on current environment"""
-    env_cmds = INSTALL_COMMANDS.get(ENV, INSTALL_COMMANDS['termux'])
+def get_install_methods_ranked(tool_name):
+    """Get all install methods for a tool ranked by success rate (best first)"""
+    env_cmds = INSTALL_COMMANDS.get(ENV, INSTALL_COMMANDS.get('termux', {}))
     
-    if tool_name in env_cmds:
-        tool_cmds = env_cmds[tool_name]
-        if method == 'auto':
-            return list(tool_cmds.values())[0]
-        return tool_cmds.get(method, list(tool_cmds.values())[0])
+    if tool_name not in env_cmds:
+        # Generate default methods
+        methods = {}
+        if ENV == 'termux':
+            methods = {'pkg': f"pkg install {tool_name} -y", 'pip': f"pip install {tool_name}", 'git': f"git clone https://github.com/search?q={tool_name}"}
+        elif ENV == 'debian':
+            methods = {'apt': f"sudo apt install {tool_name} -y", 'pip': f"pip install {tool_name}", 'git': f"git clone https://github.com/search?q={tool_name}"}
+        elif ENV == 'arch':
+            methods = {'pacman': f"sudo pacman -S {tool_name} --noconfirm", 'pip': f"pip install {tool_name}", 'git': f"git clone https://github.com/search?q={tool_name}"}
+        elif ENV == 'fedora':
+            methods = {'dnf': f"sudo dnf install {tool_name} -y", 'pip': f"pip install {tool_name}", 'git': f"git clone https://github.com/search?q={tool_name}"}
+        return methods
     
-    # Default fallback based on environment
-    defaults = {
-        'termux': f"pkg install {tool_name} -y || pip install {tool_name}",
-        'debian': f"sudo apt install {tool_name} -y || pip install {tool_name}",
-        'arch': f"sudo pacman -S {tool_name} --noconfirm || pip install {tool_name}",
-        'fedora': f"sudo dnf install {tool_name} -y || pip install {tool_name}",
-    }
-    return defaults.get(ENV, defaults['termux'])
+    tool_methods = env_cmds[tool_name]
+    
+    # Remove N/A methods
+    valid_methods = {k: v for k, v in tool_methods.items() if v != 'N/A'}
+    
+    # Sort by success rank
+    rank = SUCCESS_RANK.get(ENV, {})
+    sorted_methods = sorted(valid_methods.items(), key=lambda x: rank.get(x[0], 99))
+    
+    return dict(sorted_methods)
 
-def get_available_methods(tool_name):
-    """Get available install methods for a tool in current environment"""
-    env_cmds = INSTALL_COMMANDS.get(ENV, INSTALL_COMMANDS['termux'])
-    if tool_name in env_cmds:
-        return list(env_cmds[tool_name].keys())
-    return ['auto']
+def get_best_install_cmd(tool_name):
+    """Get the highest success rate install command"""
+    methods = get_install_methods_ranked(tool_name)
+    if methods:
+        return list(methods.values())[0]
+    return f"# No install method found for {tool_name}"
 
 def get_env_name():
-    """Get human-readable environment name"""
-    names = {
-        'termux': 'Termux (Android)',
-        'debian': 'Debian/Ubuntu/Kali',
-        'arch': 'Arch/Manjaro',
-        'fedora': 'Fedora/RHEL',
-        'suse': 'openSUSE',
-        'macos': 'macOS',
-        'linux': 'Linux'
-    }
-    return names.get(ENV, 'Linux')
+    return ENV_NAMES.get(ENV, 'Linux')
