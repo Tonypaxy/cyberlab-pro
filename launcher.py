@@ -46,6 +46,7 @@ from modules.plugins_manager import PluginsManager
 from modules.soc_dashboard import SOCDashboard
 from modules.permissions_view import PermissionsView
 from modules.wordlist_gen import WordlistGenerator
+from modules.credential_locker import CredentialLocker
 
 class CyberLabApp:
     def __init__(self):
@@ -144,6 +145,7 @@ class CyberLabApp:
             "soc": lambda: SOCDashboard(self.content, self.monitor, self.detector, self.db, self.logger, self.notify).build(),
             "permissions": lambda: PermissionsView(self.content, self.permissions, self.logger, self.notify).build(),
             "wordlist": lambda: WordlistGenerator(self.content, self.db, self.logger).build(),
+            "credentials": lambda: CredentialLocker(self.content, self.db, self.logger).build(),
             "settings": lambda: SettingsPanel(self.content, self.config, self.logger, self._apply_theme).build(),
         }
         if cmd in views: views[cmd]()

@@ -24,6 +24,7 @@ class Sidebar:
             ("💻 Terminal", "terminal"),
             ("🔌 Plugins", "plugins"),
             ("📝 Wordlist Gen", "wordlist"),
+            ("🔐 Credentials", "credentials"),
             ("🔐 Permissions", "permissions"),
             ("⚙️ Settings", "settings")
         ]
