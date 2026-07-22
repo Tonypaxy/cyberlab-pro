@@ -116,19 +116,11 @@ class ReconWorkspace:
         
         def run():
             try:
-                process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
-                        stderr=subprocess.STDOUT, text=True)
-                self.running_processes.append(process)
-                
-                for line in process.stdout:
-                    self.output_text.insert('end', line)
-                    self.output_text.see('end')
-                
-                process.wait()
-                if process in self.running_processes:
-                    self.running_processes.remove(process)
-                
-                exit_code = process.returncode
+                self.running_processes.append(cmd)
+                shared_pty.run_command(cmd, self.output_text)
+                if cmd in self.running_processes:
+                    self.running_processes.remove(cmd)
+                exit_code = 0
                 status = "Complete" if exit_code == 0 else f"Exit: {exit_code}"
                 
                 self.output_text.insert('end', f"\n[{datetime.now().strftime('%H:%M:%S')}] {status}\n\n")
