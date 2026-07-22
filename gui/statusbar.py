@@ -7,8 +7,8 @@ class StatusBar:
         self.tool_text = tk.StringVar(value="")
         
     def build(self):
-        self.frame.pack(side='bottom', fill='x')
-        self.frame.pack_propagate(False)
+        # Pack handled by launcher grid
+        self.frame.grid_propagate(False)
         
         tk.Label(self.frame, textvariable=self.status_text, font=('Courier', 9),
                 fg='#00ff88', bg='#0f3460').pack(side='left', padx=10)

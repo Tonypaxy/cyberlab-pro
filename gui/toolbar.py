@@ -10,8 +10,8 @@ class ToolBar:
         self.active_button = None
         
     def build(self):
-        self.frame.pack(side='top', fill='x')
-        self.frame.pack_propagate(False)
+        # Pack handled by launcher grid
+        self.frame.grid_propagate(False)
         
         # Hamburger
         self.hamburger_btn = tk.Button(self.frame, text="☰", font=('Courier', 14, 'bold'),
