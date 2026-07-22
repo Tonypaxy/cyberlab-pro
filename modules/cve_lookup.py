@@ -122,36 +122,8 @@ class CVELookup:
             except:
                 pass
             
-            # Try NVD API
-            try:
-                import urllib.request
-                url = f"https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch={query}&resultsPerPage=10"
-                req = urllib.request.Request(url, headers={'User-Agent': 'CyberLab/1.0'})
-                with urllib.request.urlopen(req, timeout=15) as resp:
-                    data = json.loads(resp.read())
-                    for vuln in data.get('vulnerabilities', []):
-                        cve = vuln.get('cve', {})
-                        cve_id = cve.get('id', 'Unknown')
-                        desc = cve.get('descriptions', [{}])[0].get('value', '')[:200]
-                        metrics = cve.get('metrics', {})
-                        cvss_data = metrics.get('cvssMetricV31', metrics.get('cvssMetricV30', [{}]))
-                        score = cvss_data[0].get('cvssData', {}).get('baseScore', 'N/A') if cvss_data else 'N/A'
-                        severity = cvss_data[0].get('cvssData', {}).get('baseSeverity', 'N/A') if cvss_data else 'N/A'
-                        
-                        results.append({
-                            'title': f"{cve_id}: {desc}",
-                            'cve': cve_id,
-                            'score': str(score),
-                            'severity': severity,
-                            'source': 'NVD',
-                            'type': 'cve'
-                        })
-            except Exception as e:
-                results.append({
-                    'title': f"Online search unavailable: {str(e)[:100]}",
-                    'source': 'Error',
-                    'type': 'info'
-                })
+            # NVD API - skip if offline, use built-in DB only
+            pass
             
             # Add manual known CVEs for common services
             known = self._get_known_cves(query)
@@ -296,3 +268,41 @@ class CVELookup:
                 messagebox.showinfo("ExploitDB", f"No exploits found for {cve_id}")
         except:
             messagebox.showinfo("ExploitDB", f"Run: searchsploit --cve {cve_id}")
+
+    def _display_results(self, results):
+        for w in self.results_frame.winfo_children(): w.destroy()
+        
+        if not results:
+            self.status_label.config(text="No results. Try Apache, Nginx, SSH, MySQL, WordPress...")
+            tk.Label(self.results_frame, text="No CVEs found.\nTry: Apache 2.4.49, Nginx, OpenSSH, MySQL, WordPress, Tomcat, PHP, Docker, Kubernetes, Windows, Linux Kernel, Python",
+                    font=('Courier', 11), fg='#888', bg='#1a1a2e', justify='center').pack(expand=True)
+            return
+        
+        self.status_label.config(text=f"Found {len(results)} results")
+        
+        # Frame for both scrollbars
+        container = tk.Frame(self.results_frame, bg='#1a1a2e')
+        container.pack(fill='both', expand=True)
+        
+        # Horizontal scrollbar
+        h_scroll = tk.Scrollbar(container, orient='horizontal')
+        h_scroll.pack(side='bottom', fill='x')
+        
+        # Vertical scrollbar
+        v_scroll = tk.Scrollbar(container, orient='vertical')
+        v_scroll.pack(side='right', fill='y')
+        
+        # Canvas with both scrolls
+        canvas = tk.Canvas(container, bg='#1a1a2e', highlightthickness=0,
+                xscrollcommand=h_scroll.set, yscrollcommand=v_scroll.set)
+        canvas.pack(side='left', fill='both', expand=True)
+        
+        h_scroll.config(command=canvas.xview)
+        v_scroll.config(command=canvas.yview)
+        
+        sf = tk.Frame(canvas, bg='#1a1a2e')
+        sf.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox('all')))
+        canvas.create_window((0,0), window=sf, anchor='nw')
+        
+        for r in results:
+            self._result_card(sf, r)
