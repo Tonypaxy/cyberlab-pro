@@ -22,6 +22,7 @@ class Sidebar:
             ("Wordlists", "wordlists"),
             ("Log Analyzer", "loganalyzer"),
             ("Sanitizer", "sanitizer"),
+            ("Checksum", "checksum"),
             ("Permissions", "permissions"), ("Settings", "settings")
         ]
     
