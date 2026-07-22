@@ -7,6 +7,7 @@ import tkinter as tk
 import subprocess
 import threading
 import os
+import platform
 import sys
 import signal
 import pty
@@ -21,6 +22,7 @@ class Terminal:
         self.parent = parent
         self.config = config
         self.pending_cmd = pending_cmd
+        self.output_buffer = ""
         self.frame = tk.Frame(parent, bg='#0d1117')
         self.master_fd = None
         self.slave_fd = None
@@ -38,8 +40,8 @@ class Terminal:
         toolbar.pack(fill='x')
         toolbar.pack_propagate(False)
         
-        env = "[Termux]" if self.is_termux else "[Linux]"
-        tk.Label(toolbar, text=f"  {env} TERMINAL (PTY)", font=('Courier', 9, 'bold'),
+        env_name = "TERMUX" if self.is_termux else platform.system().upper()
+        tk.Label(toolbar, text=f"  {env_name} | {self.shell}", font=('Courier', 9, 'bold'),
                 fg='#58a6ff', bg='#161b22').pack(side='left', pady=4)
         
         self.status_dot = tk.Label(toolbar, text="●", font=('Courier', 9),
@@ -65,16 +67,10 @@ class Terminal:
         
         # Welcome message
         env_name = "Termux/Android" if self.is_termux else "Linux Desktop"
-        self._write("=" * 55 + "\n", '#30363d')
-        self._write(f"  CyberLab Pro Terminal\n", '#00ff88')
-        self._write(f"  {env_name} | {self.shell}\n", '#8b949e')
-        self._write("=" * 55 + "\n\n", '#30363d')
         
         # Pre-fill command if pending
         if self.pending_cmd:
             self.cmd_entry.insert(0, self.pending_cmd)
-            self._write(f"[*] Command ready - press Enter\n\n", '#d2991d')
-        
         # Make output read-only but allow selection
         self.output.bind('<Key>', self._handle_key)
         self.output.bind('<Return>', lambda e: self._send_to_shell('\r'))
@@ -192,8 +188,28 @@ class Terminal:
         self.master_fd = None
     
     def _write_ansi(self, text):
-        """Write text with basic ANSI color support"""
-        # Simple ANSI to tkinter color conversion
+        """Write text - strips terminal control sequences"""
+        import re
+        # Strip OSC sequences (]0;, ]1;, ]2;, ]7;)
+        text = re.sub(r'\x1b\][^\x07]*\x07', '', text)
+        # Strip CSI sequences ([?1h, [?2004h, etc)
+        text = re.sub(r'\x1b\[[0-9?;]*[hl]', '', text)
+        # Strip cursor position sequences
+        text = re.sub(r'\x1b\[[0-9]*[ABCDGJK]', '', text)
+        # Strip color codes
+        text = re.sub(r'\x1b\[[0-9;]*m', '', text)
+        # Strip other escape sequences
+        text = re.sub(r'\x1b[=>]', '', text)
+        # Strip remaining escape chars
+        text = text.replace('\x1b', '')
+        if text.strip():
+            self.output.insert('end', text)
+            self.output.see('end')
+            self.output.update_idletasks()
+            self.output_buffer = (self.output_buffer + text)[-10000:]
+    
+    def _write_ansi_old(self, text):
+        """Legacy ANSI color support"""
         ansi_colors = {
             '30': '#000000', '31': '#f85149', '32': '#3fb950', '33': '#d2991d',
             '34': '#58a6ff', '35': '#bc8cff', '36': '#39c5cf', '37': '#c9d1d9',
