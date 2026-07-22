@@ -352,7 +352,7 @@ class Terminal:
                     except: pass
             
             # URLs
-            for url in set(re.findall(r'https?://[^\s<>"\'']+', output_text)):
+            for url in set(re.findall(r'https?://[^\s<>]+', output_text)):
                 try:
                     db.cursor.execute('INSERT INTO discovered_urls (project_id, url, tool) VALUES (?, ?, ?)',
                             (project_id, url[:500], tool_name))
