@@ -13,6 +13,7 @@ class Sidebar:
             ("SOC Monitor", "soc"), ("Reports", "reports"), ("Evidence", "evidence"),
             ("Notes", "notes"), ("Terminal", "terminal"), ("Plugins", "plugins"),
             ("CVE Lookup", "cve"), ("Wordlist Gen", "wordlist"),
+            ("Payload Gen", "payloads"),
             ("Permissions", "permissions"), ("Settings", "settings")
         ]
     

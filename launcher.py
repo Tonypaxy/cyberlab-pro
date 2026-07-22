@@ -36,6 +36,7 @@ from modules.soc_dashboard import SOCDashboard
 from modules.permissions_view import PermissionsView
 from modules.wordlist_gen import WordlistGenerator
 from modules.cve_lookup import CVELookup
+from modules.payload_generator import PayloadGenerator
 
 class CyberLabApp:
     def __init__(self):
@@ -119,6 +120,7 @@ class CyberLabApp:
             "permissions": lambda: PermissionsView(self.content, self.permissions, self.logger, self.notify).build(),
             "wordlist": lambda: WordlistGenerator(self.content, self.db, self.logger).build(),
             "cve": lambda: CVELookup(self.content, self.db, self.logger).build(),
+            "payloads": lambda: PayloadGenerator(self.content, self.db, self.logger).build(),
             "settings": lambda: SettingsPanel(self.content, self.config, self.logger, self._apply_theme).build(),
         }
         if cmd in views: views[cmd]()
