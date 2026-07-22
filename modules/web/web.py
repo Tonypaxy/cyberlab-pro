@@ -1,114 +1,65 @@
-import subprocess as _sp
-
-def _run_cmd(cmd, widget):
-    """Run command and stream output to widget"""
-    def _run():
-        try:
-            p = _sp.Popen(cmd, shell=True, stdout=_sp.PIPE, stderr=_sp.STDOUT, text=True, bufsize=1)
-            for line in iter(p.stdout.readline, ''):
-                widget.insert('end', line)
-                widget.see('end')
-                widget.update_idletasks()
-            p.wait()
-            widget.insert('end', f'\n✅ Exit: {p.returncode}\n')
-            widget.see('end')
-        except Exception as e:
-            widget.insert('end', f'\n❌ {e}\n')
-            widget.see('end')
-    import threading
-    threading.Thread(target=_run, daemon=True).start()
-
 import tkinter as tk
-from gui.scrollable import make_scrollable
-from tkinter import ttk, messagebox
-import subprocess
-import threading
-import shutil
+from tkinter import messagebox
+import subprocess, threading, shutil
+from gui.base_module import BaseModule
+from gui.dropdown import Dropdown
 
-class WebWorkspace:
+class WebWorkspace(BaseModule):
     def __init__(self, parent, db, logger, detector):
-        self.parent = parent
-        self.db = db
-        self.logger = logger
-        self.detector = detector
-        self.frame = tk.Frame(parent, bg='#1a1a2e')
+        super().__init__(parent)
+        self.db = db; self.logger = logger; self.detector = detector
     
-    def build(self):
-        self.frame.pack(fill="both", expand=True, padx=10, pady=10)
-        
-        tk.Label(self.frame, text="Web Tools", font=('Courier', 18, 'bold'),
-                fg='#00ff88', bg='#1a1a2e').pack(anchor='w', pady=(0,10))
+    def build_content(self):
+        self.add_title("Web Tools", "Web application testing and scanning")
         
         # URL input
-        url_frame = tk.Frame(self.frame, bg='#16213e')
-        url_frame.pack(fill='x', pady=10)
-        
-        tk.Label(url_frame, text="Target URL:", font=('Courier', 10),
-                fg='#fff', bg='#16213e').pack(side='left', padx=10)
-        self.url_entry = tk.Entry(url_frame, font=('Courier', 11), bg='#0f3460',
-                fg='#fff', relief='flat')
-        self.url_entry.pack(side='left', fill='x', expand=True, padx=10, pady=8)
+        tf = tk.Frame(self.inner, bg='#16213e', padx=10, pady=8)
+        tf.pack(fill='x', padx=10, pady=5)
+        tk.Label(tf, text="Target URL:", font=('Courier', 10), fg='#fff', bg='#16213e').pack(anchor='w')
+        self.url_entry = tk.Entry(tf, font=('Courier', 11), bg='#0f3460', fg='#fff', relief='flat')
+        self.url_entry.pack(fill='x', pady=3)
         self.url_entry.insert(0, 'https://example.com')
         
-        # Web tools - only show installed ones
-        tools_frame = tk.LabelFrame(self.frame, text="Available Tools", 
-                font=('Courier', 10, 'bold'), fg='#00ccff', bg='#16213e', padx=15, pady=15)
-        tools_frame.pack(fill='x', pady=10)
+        # Web tools - VERTICAL dropdown
+        def tools_content(parent):
+            tools = [
+                ("cURL GET", "curl -v"),
+                ("cURL Headers", "curl -I"),
+                ("cURL Full", "curl -v -L"),
+                ("SQLMap", "sqlmap -u"),
+                ("Dirb", "dirb"),
+                ("Nikto", "nikto -h"),
+                ("WPScan", "wpscan --url"),
+                ("WhatWeb", "whatweb"),
+            ]
+            for name, cmd in tools:
+                tool_name = cmd.split()[0]
+                installed = shutil.which(tool_name) is not None
+                color = '#00ff88' if installed else '#444'
+                state = 'normal' if installed else 'disabled'
+                tk.Button(parent, text=name, font=('Courier', 9), fg='#000' if installed else '#666',
+                        bg=color, relief='flat', anchor='w', padx=10, pady=3, state=state,
+                        command=lambda n=name, c=cmd: self._run(n, c)).pack(fill='x', pady=1)
         
-        web_tools = [
-            ("cURL GET", "curl -v"),
-            ("cURL Headers", "curl -I"),
-            ("cURL Full", "curl -v -L"),
-            ("SQLMap", "sqlmap -u"),
-            ("Dirb", "dirb"),
-            ("Nikto", "nikto -h"),
-            ("WPScan", "wpscan --url"),
-            ("WhatWeb", "whatweb")
-        ]
-        
-        for name, cmd in web_tools:
-            tool_name = cmd.split()[0]
-            installed = shutil.which(tool_name) is not None
-            color = '#00ccff' if installed else '#444'
-            state = 'normal' if installed else 'disabled'
-            
-            btn = tk.Button(tools_frame, text=name, font=('Courier', 9),
-                    fg='#000' if installed else '#666', bg=color, relief='flat', 
-                    padx=10, pady=5, state=state,
-                    command=lambda n=name, c=cmd: self._run_web_tool(n, c))
-            btn.pack(side='left', padx=3)
+        self.add_section("Scanning Tools", tools_content, "🌍", default_open=True)
         
         # Output
-        out_frame = tk.LabelFrame(self.frame, text="Output", font=('Courier', 10, 'bold'),
-                fg='#00ccff', bg='#16213e', padx=5, pady=5)
-        out_frame.pack(fill='both', expand=True, pady=(10,0))
-        
-        self.output = tk.Text(out_frame, font=('Courier', 9),
-                bg='#0a0a0a', fg='#00ff88', relief='flat', wrap='word')
-        self.output.pack(fill='both', expand=True)
+        self.output = self.add_text(height=15)
     
-    def _run_web_tool(self, name, cmd):
+    def _run(self, name, cmd):
         url = self.url_entry.get().strip()
-        if not url:
-            messagebox.showwarning("Warning", "Enter a URL first")
-            return
-        
+        if not url: messagebox.showwarning("Warning", "Enter a URL"); return
         full_cmd = f"{cmd} {url}"
         self.output.insert('end', f"\n{'='*50}\n[{name}] {full_cmd}\n{'='*50}\n\n")
         self.output.see('end')
         
-        def run():
+        def do():
             try:
-                process = subprocess.Popen(full_cmd, shell=True, stdout=subprocess.PIPE,
-                        stderr=subprocess.STDOUT, text=True)
-                for line in process.stdout:
-                    self.output.insert('end', line)
-                    self.output.see('end')
-                process.wait()
-                self.output.insert('end', f"\n[Done - Exit: {process.returncode}]\n\n")
-                self.output.see('end')
+                p = subprocess.Popen(full_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+                for line in p.stdout:
+                    self.output.insert('end', line); self.output.see('end')
+                p.wait()
+                self.output.insert('end', f"\n[Exit: {p.returncode}]\n\n"); self.output.see('end')
             except Exception as e:
-                self.output.insert('end', f"\nError: {str(e)}\n")
-                self.output.see('end')
-        
-        threading.Thread(target=run, daemon=True).start()
+                self.output.insert('end', f"\n[X] {e}\n")
+        threading.Thread(target=do, daemon=True).start()
