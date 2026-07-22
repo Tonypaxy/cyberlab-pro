@@ -18,6 +18,9 @@ class Sidebar:
             ("API Lookup", "api"),
             ("Templates", "templates"),
             ("Vault", "vault"),
+            ("Net Map", "mapper"),
+            ("Wordlists", "wordlists"),
+            ("Log Analyzer", "loganalyzer"),
             ("Permissions", "permissions"), ("Settings", "settings")
         ]
     
