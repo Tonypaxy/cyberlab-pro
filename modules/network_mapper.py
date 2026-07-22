@@ -81,7 +81,7 @@ class NetworkMapper(BaseModule):
                 self.hosts = hosts
                 self.frame.after(0, self._render_map)
             except Exception as e:
-                self.frame.after(0, lambda: self.status_label.config(text="Error: " + str(e)))
+                self.frame.after(0, lambda err=e: self.status_label.config(text="Error: " + str(err)))
         threading.Thread(target=do, daemon=True).start()
     
     def _arp_scan(self):
