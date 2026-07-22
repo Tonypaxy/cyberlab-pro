@@ -34,13 +34,13 @@ class Sidebar:
         self.frame.grid_propagate(False)
         self.frame.grid_propagate(False)
         
-        title_frame = tk.Frame(self.frame, bg='#0f3460', height=50)
+        title_frame = tk.Frame(self.inner_frame, bg='#0f3460', height=50)
         title_frame.pack(fill='x')
         title_frame.pack_propagate(False)
         tk.Label(title_frame, text="🛡️ CyberLab Pro", font=('Courier', 11, 'bold'),
                 fg='#00ff88', bg='#0f3460').pack(pady=12)
         
-        tk.Frame(self.frame, bg='#00ff88', height=1).pack(fill='x', padx=10, pady=5)
+        tk.Frame(self.inner_frame, bg='#00ff88', height=1).pack(fill='x', padx=10, pady=5)
         
         for text, cmd in self.menu_items:
             btn = tk.Button(self.frame, text=text, font=('Courier', 9),
@@ -50,7 +50,7 @@ class Sidebar:
             btn.pack(fill='x', padx=5, pady=1)
             self.buttons[cmd] = btn
         
-        tk.Frame(self.frame, bg='#00ff88', height=1).pack(fill='x', padx=10, pady=5)
+        tk.Frame(self.inner_frame, bg='#00ff88', height=1).pack(fill='x', padx=10, pady=5)
         tk.Label(self.frame, text="v1.0.0 | ARM/Linux", font=('Courier', 7),
                 fg='#555', bg='#16213e').pack(side='bottom', pady=5)
         
@@ -65,10 +65,10 @@ class Sidebar:
     
     def toggle(self):
         if self.visible:
-            self.frame.pack_forget()
+            self.frame.grid_remove()
             self.visible = False
         else:
-            self.frame.pack(side='left', fill='y', before=self.parent.winfo_children()[0])
+            self.frame.grid()
             self.visible = True
     
     def _on_click(self, command):
