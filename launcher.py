@@ -46,7 +46,6 @@ from modules.plugins_manager import PluginsManager
 from modules.soc_dashboard import SOCDashboard
 from modules.permissions_view import PermissionsView
 from modules.wordlist_gen import WordlistGenerator
-from modules.credential_locker import CredentialLocker
 
 class CyberLabApp:
     def __init__(self):
@@ -100,8 +99,7 @@ class CyberLabApp:
         self.content.pack(side='left', fill='both', expand=True)
         
         self.notifications = NotificationManager(self.root)
-        self.data_locker = CredentialLocker(None, self.db, self.logger)
-        
+                
         start = self.session.get_last_module() or "dashboard"
         self.navigate(start)
         self._update_stats()
@@ -146,9 +144,7 @@ class CyberLabApp:
             "soc": lambda: SOCDashboard(self.content, self.monitor, self.detector, self.db, self.logger, self.notify).build(),
             "permissions": lambda: PermissionsView(self.content, self.permissions, self.logger, self.notify).build(),
             "wordlist": lambda: WordlistGenerator(self.content, self.db, self.logger).build(),
-            "credentials": lambda: CredentialLocker(self.content, self.db, self.logger).build(),
-            "credentials": lambda: CredentialLocker(self.content, self.db, self.logger).build(),
-            "settings": lambda: SettingsPanel(self.content, self.config, self.logger, self._apply_theme).build(),
+                                    "settings": lambda: SettingsPanel(self.content, self.config, self.logger, self._apply_theme).build(),
         }
         if cmd in views: views[cmd]()
         self.statusbar.set_status(cmd.title()); self.content.update()
