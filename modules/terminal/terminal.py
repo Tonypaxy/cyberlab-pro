@@ -38,7 +38,7 @@ class Terminal:
         toolbar.pack(fill='x')
         toolbar.pack_propagate(False)
         
-        env = "📱 TERMUX" if self.is_termux else "💻 LINUX"
+        env = "[Termux]" if self.is_termux else "[Linux]"
         tk.Label(toolbar, text=f"  {env} TERMINAL (PTY)", font=('Courier', 9, 'bold'),
                 fg='#58a6ff', bg='#161b22').pack(side='left', pady=4)
         
@@ -46,10 +46,10 @@ class Terminal:
                 fg='#3fb950', bg='#161b22')
         self.status_dot.pack(side='left', padx=5)
         
-        tk.Button(toolbar, text="✕ Kill", font=('Courier', 9),
+        tk.Button(toolbar, text="[X] Kill", font=('Courier', 9),
                 fg='#f85149', bg='#161b22', relief='flat', padx=10,
                 command=self._kill_shell).pack(side='right')
-        tk.Button(toolbar, text="↻ Restart", font=('Courier', 9),
+        tk.Button(toolbar, text="[R] Restart", font=('Courier', 9),
                 fg='#d2991d', bg='#161b22', relief='flat', padx=10,
                 command=self._restart_shell).pack(side='right')
         tk.Button(toolbar, text="Clear", font=('Courier', 9),
@@ -62,6 +62,18 @@ class Terminal:
                 relief='flat', wrap='char', padx=5, pady=5,
                 blockcursor=True)
         self.output.pack(fill='both', expand=True)
+        
+        # Welcome message
+        env_name = "Termux/Android" if self.is_termux else "Linux Desktop"
+        self._write("=" * 55 + "\n", '#30363d')
+        self._write(f"  CyberLab Pro Terminal\n", '#00ff88')
+        self._write(f"  {env_name} | {self.shell}\n", '#8b949e')
+        self._write("=" * 55 + "\n\n", '#30363d')
+        
+        # Pre-fill command if pending
+        if self.pending_cmd:
+            self.cmd_entry.insert(0, self.pending_cmd)
+            self._write(f"[*] Command ready - press Enter\n\n", '#d2991d')
         
         # Make output read-only but allow selection
         self.output.bind('<Key>', self._handle_key)
@@ -134,12 +146,12 @@ class Terminal:
             self.frame.after(500, self._check_shell)
             
         except Exception as e:
-            self._write(f"\n❌ Failed to start shell: {e}\n", '#f85149')
+            self._write(f"\n[X] Failed to start shell: {e}\n", '#f85149')
             self._start_fallback_shell()
     
     def _start_fallback_shell(self):
         """Fallback: use subprocess if fork fails (some Termux versions)"""
-        self._write("\n⚠️  Using fallback terminal mode\n", '#d2991d')
+        self._write("\n[!]  Using fallback terminal mode\n", '#d2991d')
         # Use simple subprocess mode
         self.fallback_mode = True
     
@@ -283,14 +295,14 @@ class Terminal:
             except: pass
         self.master_fd = None
         self.shell_pid = None
-        self._write("\n💀 Shell killed\n", '#f85149')
+        self._write("\n[!] Shell killed\n", '#f85149')
         self.status_dot.config(fg='#f85149')
     
     def _restart_shell(self):
         """Kill and restart the shell"""
         self._kill_shell()
         self.frame.after(200, self._start_shell)
-        self._write("\n🔄 Restarting shell...\n", '#d2991d')
+        self._write("\n[R] Restarting shell...\n", '#d2991d')
     
     def _check_shell(self):
         """Check if shell is still alive"""
@@ -298,12 +310,12 @@ class Terminal:
             try:
                 pid, status = os.waitpid(self.shell_pid, os.WNOHANG)
                 if pid == self.shell_pid:
-                    self._write(f"\n💀 Shell exited ({status})\n", '#f85149')
+                    self._write(f"\n[!] Shell exited ({status})\n", '#f85149')
                     self.shell_pid = None
                     self.status_dot.config(fg='#f85149')
                     # Auto-restart
                     self.frame.after(500, self._start_shell)
-                    self._write("🔄 Auto-restarting...\n", '#d2991d')
+                    self._write("[R] Auto-restarting...\n", '#d2991d')
             except:
                 pass
         
@@ -390,7 +402,7 @@ class Terminal:
             db.close()
             
             if found > 0:
-                self._write(f"\n💎 Auto-saved {found} items to Data Locker\n", '#ff4488')
+                self._write(f"\n[+] Auto-saved {found} items to Data Locker\n", '#ff4488')
         except Exception as e:
             pass
 
