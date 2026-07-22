@@ -1,3 +1,4 @@
+from modules.terminal.pty_handler import shared_pty
 import tkinter as tk
 from tkinter import ttk, messagebox
 import subprocess
