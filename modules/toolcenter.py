@@ -1,3 +1,4 @@
+from modules.terminal.pty_handler import shared_pty
 from core.install_commands import get_install_methods_ranked, get_best_install_cmd, get_env_name, METHOD_ICONS, METHOD_COLORS, detect_environment
 import tkinter as tk
 from tkinter import ttk, messagebox
