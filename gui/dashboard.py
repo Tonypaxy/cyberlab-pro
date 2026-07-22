@@ -1,4 +1,5 @@
 import tkinter as tk
+from gui.scrollable_frame import create_scrollable
 from tkinter import ttk
 import os
 
@@ -13,9 +14,14 @@ class Dashboard:
         self.frame = tk.Frame(parent, bg='#1a1a2e')
         
     def build(self):
-        self.frame.pack(fill='both', expand=True, padx=15, pady=15)
+        self.frame.pack(fill='both', expand=True)
+        scroll_frame, _ = create_scrollable(self.frame, '#1a1a2e')
+        # Move everything into scroll_frame
+        self.inner = scroll_frame
+        # Padding
+        tk.Frame(self.inner, bg='#1a1a2e', height=10).pack()
         
-        header = tk.Frame(self.frame, bg='#1a1a2e')
+        header = tk.Frame(self.inner, bg='#1a1a2e')
         header.pack(fill='x', pady=(0,10))
         
         tk.Label(header, text="🛡️", font=('Courier', 28),
@@ -34,12 +40,12 @@ class Dashboard:
         
         last_proj = self.config.get('last_project') if self.config else None
         if last_proj:
-            proj_frame = tk.Frame(self.frame, bg='#0f3460', padx=10, pady=5)
+            proj_frame = tk.Frame(self.inner, bg='#0f3460', padx=10, pady=5)
             proj_frame.pack(fill='x', pady=(0,10))
             tk.Label(proj_frame, text=f"📁 Active Project: {last_proj}", font=('Courier', 9, 'bold'),
                     fg='#00ff88', bg='#0f3460').pack(side='left')
         
-        cards1 = tk.Frame(self.frame, bg='#1a1a2e')
+        cards1 = tk.Frame(self.inner, bg='#1a1a2e')
         cards1.pack(fill='x', pady=3)
         
         info = self.monitor.get_summary()
@@ -57,7 +63,7 @@ class Dashboard:
         else:
             self._card(cards1, "🔋 Batt", "N/A", "#666")
         
-        cards2 = tk.Frame(self.frame, bg='#1a1a2e')
+        cards2 = tk.Frame(self.inner, bg='#1a1a2e')
         cards2.pack(fill='x', pady=3)
         
         net_status = "Connected" if network.get('connected') else "Offline"
@@ -69,7 +75,7 @@ class Dashboard:
         svcs = info.get("services", 0)
         self._card(cards2, "⚙️ Svcs", str(svcs), "#ff8800" if svcs > 0 else "#888")
         
-        act_frame = tk.LabelFrame(self.frame, text=" Recent Activity ", font=('Courier', 10, 'bold'),
+        act_frame = tk.LabelFrame(self.inner, text=" Recent Activity ", font=('Courier', 10, 'bold'),
                 fg='#00ccff', bg='#16213e', padx=10, pady=8)
         act_frame.pack(fill='x', pady=10)
         
@@ -88,7 +94,7 @@ class Dashboard:
             tk.Label(act_frame, text="No recent activity", font=('Courier', 9),
                     fg='#666', bg='#16213e').pack()
         
-        tools_frame = tk.LabelFrame(self.frame, text=" Installed Tools ", font=('Courier', 10, 'bold'),
+        tools_frame = tk.LabelFrame(self.inner, text=" Installed Tools ", font=('Courier', 10, 'bold'),
                 fg='#00ccff', bg='#16213e', padx=10, pady=8)
         tools_frame.pack(fill='both', expand=True, pady=(0,10))
         
@@ -100,7 +106,7 @@ class Dashboard:
                 tk.Label(tools_frame, text=f"{icon} {cat}: {names}", font=('Courier', 8),
                         fg='#aaa', bg='#16213e', wraplength=550).pack(anchor='w', pady=1)
         
-        quick_frame = tk.Frame(self.frame, bg='#1a1a2e')
+        quick_frame = tk.Frame(self.inner, bg='#1a1a2e')
         quick_frame.pack(fill='x')
         
         tk.Label(quick_frame, text="Quick Actions:", font=('Courier', 9, 'bold'),

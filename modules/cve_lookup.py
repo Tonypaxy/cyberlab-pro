@@ -4,7 +4,7 @@ Search CVEs by service name, version, or keyword.
 Works offline with local database, online with NVD API.
 """
 import tkinter as tk
-from gui.scrollable_frame import ScrollableFrame
+from gui.scrollable_frame import create_scrollable
 from tkinter import ttk, messagebox
 import json
 import os
@@ -303,7 +303,7 @@ class CVELookup:
         
         self.status_label.config(text=f"Found {len(results)} results")
         
-        sf = ScrollableFrame(self.results_frame, bg='#1a1a2e')
+        sf = create_scrollable(self.results_frame, bg='#1a1a2e')
         sf.pack(fill='both', expand=True)
         for r in results:
             self._result_card(sf.inner, r)

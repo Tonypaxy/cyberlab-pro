@@ -1,3 +1,4 @@
+from gui.scrollable_frame import create_scrollable
 """Wordlist Generator Module"""
 import tkinter as tk
 from tkinter import ttk, messagebox

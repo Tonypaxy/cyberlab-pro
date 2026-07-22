@@ -1,7 +1,8 @@
 from modules.terminal.pty_handler import shared_pty
 from core.install_commands import get_install_methods_ranked, get_best_install_cmd, get_env_name, METHOD_ICONS, METHOD_COLORS, detect_environment
 import tkinter as tk
-from gui.scrollable_frame import ScrollableFrame
+from gui.scrollable_frame import create_scrollable
+from gui.scrollable_frame import create_scrollable
 from tkinter import ttk, messagebox
 import subprocess
 import threading
@@ -74,14 +75,7 @@ class ToolCenter:
                     command=self._show_manual_install_all).pack()
     
     def _build_tool_list(self, parent, tools):
-        canvas = tk.Canvas(parent, bg='#1a1a2e', highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent, orient='vertical', command=canvas.yview)
-        scroll_frame = tk.Frame(canvas, bg='#1a1a2e')
-        scroll_frame.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox('all')))
-        canvas.create_window((0,0), window=scroll_frame, anchor='nw')
-        canvas.configure(yscrollcommand=scrollbar.set)
-        canvas.pack(side='left', fill='both', expand=True)
-        scrollbar.pack(side='right', fill='y')
+        scroll_frame, _ = create_scrollable(parent, '#1a1a2e')
         
         for tool in sorted(tools, key=lambda t: t['name']):
             card = tk.Frame(scroll_frame, bg='#16213e', relief='flat', bd=0)
@@ -107,14 +101,7 @@ class ToolCenter:
                     command=lambda t=tool: self._open_in_terminal(t)).pack(pady=1)
     
     def _build_missing_list(self, parent, tools):
-        canvas = tk.Canvas(parent, bg='#1a1a2e', highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent, orient='vertical', command=canvas.yview)
-        scroll_frame = tk.Frame(canvas, bg='#1a1a2e')
-        scroll_frame.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox('all')))
-        canvas.create_window((0,0), window=scroll_frame, anchor='nw')
-        canvas.configure(yscrollcommand=scrollbar.set)
-        canvas.pack(side='left', fill='both', expand=True)
-        scrollbar.pack(side='right', fill='y')
+        scroll_frame, _ = create_scrollable(parent, '#1a1a2e')
         
         from collections import defaultdict
         by_cat = defaultdict(list)
@@ -507,14 +494,7 @@ class ToolCenter:
                 command=dialog.destroy).pack(pady=5)
 
     def _build_missing_list(self, parent, tools):
-        canvas = tk.Canvas(parent, bg='#1a1a2e', highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent, orient='vertical', command=canvas.yview)
-        scroll_frame = tk.Frame(canvas, bg='#1a1a2e')
-        scroll_frame.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox('all')))
-        canvas.create_window((0,0), window=scroll_frame, anchor='nw')
-        canvas.configure(yscrollcommand=scrollbar.set)
-        canvas.pack(side='left', fill='both', expand=True)
-        scrollbar.pack(side='right', fill='y')
+        scroll_frame, _ = create_scrollable(parent, '#1a1a2e')
         
         env_name = get_env_name()
         tk.Label(scroll_frame, text=f"🖥️  {env_name} | Ranked by success rate",
