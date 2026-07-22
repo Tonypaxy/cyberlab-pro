@@ -3,6 +3,7 @@ CyberLab Pro - Tool Center with Vertical Dropdown Layout
 All tools organized in collapsible categories. Click to expand.
 """
 import tkinter as tk
+from gui.dropdown import Dropdown
 from tkinter import ttk, messagebox
 import subprocess, threading, os, shutil
 
