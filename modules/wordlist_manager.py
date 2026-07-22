@@ -69,6 +69,11 @@ class WordlistManager(BaseModule):
         for w in self.inner.winfo_children(): w.destroy()
         self.build_content()
 
+    def _refresh_files_only(self):
+        """Refresh just the file list without rebuilding everything"""
+        self._refresh_files()
+        self.status_label.config(text="Ready")
+
     def _refresh_files(self):
         for w in self.file_frame.winfo_children(): w.destroy()
         files = [f for f in os.listdir(self.wordlist_dir) if os.path.isfile(os.path.join(self.wordlist_dir, f))]
@@ -102,7 +107,7 @@ class WordlistManager(BaseModule):
                 self.frame.after(0, self.progress_label.pack_forget)
                 if r.returncode == 0 and os.path.exists(fpath) and os.path.getsize(fpath) > 0:
                     self.frame.after(0, lambda: messagebox.showinfo("Done", "Downloaded: " + fname))
-                    self.frame.after(100, self._refresh)
+                    self.frame.after(500, self._refresh_files_only)
                 else:
                     self.frame.after(0, lambda: messagebox.showerror("Error", "Download failed"))
             except Exception as e:
