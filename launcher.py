@@ -100,7 +100,7 @@ class CyberLabApp:
         self.content.pack(side='left', fill='both', expand=True)
         
         self.notifications = NotificationManager(self.root)
-        self.data_locker = CredentialLocker(self.content, self.db, self.logger)
+        self.data_locker = CredentialLocker(None, self.db, self.logger)
         
         start = self.session.get_last_module() or "dashboard"
         self.navigate(start)
@@ -146,9 +146,8 @@ class CyberLabApp:
             "soc": lambda: SOCDashboard(self.content, self.monitor, self.detector, self.db, self.logger, self.notify).build(),
             "permissions": lambda: PermissionsView(self.content, self.permissions, self.logger, self.notify).build(),
             "wordlist": lambda: WordlistGenerator(self.content, self.db, self.logger).build(),
-            "credentials": lambda: self._show_credentials(),
-            self.data_locker.current_project = self.current_project if hasattr(self, "current_project") else None
-            self.data_locker.build(),
+            "credentials": lambda: self.data_locker.build(),
+            self.data_locker.build()
             "settings": lambda: SettingsPanel(self.content, self.config, self.logger, self._apply_theme).build(),
         }
         if cmd in views: views[cmd]()
@@ -171,7 +170,3 @@ class CyberLabApp:
 if __name__ == "__main__":
     CyberLabApp().run()
 
-    def _show_credentials(self):
-        self.data_locker.current_project = self.project_core.get_stats(self.db.get_all_projects()[0]['id']) if self.db.get_all_projects() else None
-        self.data_locker.build()
-        self.statusbar.set_status("Data Locker")
