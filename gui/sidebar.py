@@ -25,6 +25,7 @@ class Sidebar:
             ("Checksum", "checksum"),
             ("Phishing", "phishing"),
             ("DoS Tools", "dos"),
+            ("Macro Rec", "macro"),
             ("Permissions", "permissions"), ("Settings", "settings")
         ]
     

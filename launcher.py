@@ -48,6 +48,7 @@ from modules.clipboard_sanitizer import ClipboardSanitizer
 from modules.checksum_verifier import ChecksumVerifier
 from modules.phishing_module import PhishingModule
 from modules.dos_module import DoSModule
+from modules.macro_recorder import MacroRecorder
 
 class CyberLabApp:
     def __init__(self):
@@ -143,6 +144,7 @@ class CyberLabApp:
             "checksum": lambda: ChecksumVerifier(self.content, self.db, self.logger).build(),
             "phishing": lambda: PhishingModule(self.content, self.db, self.logger, self.detector).build(),
             "dos": lambda: DoSModule(self.content, self.db, self.logger, self.detector).build(),
+            "macro": lambda: MacroRecorder(self.content, self.db, self.logger).build(),
             "settings": lambda: SettingsPanel(self.content, self.config, self.logger, self._apply_theme).build(),
         }
         if cmd in views: views[cmd](); self.db.log_activity('module_opened', cmd)
