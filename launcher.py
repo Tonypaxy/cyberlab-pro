@@ -39,6 +39,7 @@ from modules.cve_lookup import CVELookup
 from modules.payload_generator import PayloadGenerator
 from modules.session_logger import SessionLogger
 from modules.api_integrations import APIIntegrations
+from modules.report_templates import ReportTemplates
 
 class CyberLabApp:
     def __init__(self):
@@ -125,6 +126,7 @@ class CyberLabApp:
             "payloads": lambda: PayloadGenerator(self.content, self.db, self.logger).build(),
             "sessions": lambda: SessionLogger(self.content, self.db, self.logger).build(),
             "api": lambda: APIIntegrations(self.content, self.db, self.logger).build(),
+            "templates": lambda: ReportTemplates(self.content, self.db, self.logger).build(),
             "settings": lambda: SettingsPanel(self.content, self.config, self.logger, self._apply_theme).build(),
         }
         if cmd in views: views[cmd](); self.db.log_activity('module_opened', cmd)

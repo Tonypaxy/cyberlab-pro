@@ -16,6 +16,7 @@ class Sidebar:
             ("Payload Gen", "payloads"),
             ("Sessions", "sessions"),
             ("API Lookup", "api"),
+            ("Templates", "templates"),
             ("Permissions", "permissions"), ("Settings", "settings")
         ]
     
