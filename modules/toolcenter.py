@@ -508,12 +508,10 @@ class ToolCenter:
         canvas.pack(side='left', fill='both', expand=True)
         scrollbar.pack(side='right', fill='y')
         
-        # Show environment
-        env_name = get_env_name() if 'get_env_name' in dir() else "Termux"
-        tk.Label(scroll_frame, text=f"🖥️  Environment: {env_name}",
+        env_name = get_env_name()
+        tk.Label(scroll_frame, text=f"🖥️  {env_name} | Ranked by success rate",
                 font=('Courier', 9, 'bold'), fg='#00ccff', bg='#1a1a2e').pack(anchor='w', pady=5)
-        
-        tk.Label(scroll_frame, text="Click any button to see install instructions",
+        tk.Label(scroll_frame, text="Methods: #1 Best → #2 Good → #3 Fallback",
                 font=('Courier', 8), fg='#888', bg='#1a1a2e').pack(anchor='w', pady=3)
         
         from collections import defaultdict
@@ -532,28 +530,91 @@ class ToolCenter:
                 tk.Label(row, text=f"⬜ {name}", font=('Courier', 9),
                         fg='#888', bg='#16213e').pack(side='left')
                 
-                # Get available methods for this tool in current environment
+                # Get ranked methods for this tool
                 try:
-                    methods = get_available_methods(name)
+                    ranked = get_install_methods_ranked(name)
+                    methods_list = list(ranked.items())
                 except:
-                    methods = ['pkg', 'pip', 'git']
+                    methods_list = [('pkg', f'pkg install {name} -y'), ('pip', f'pip install {name}'), ('git', f'git clone https://github.com/search?q={name}')]
                 
-                # Method icons and colors
-                method_styles = {
-                    'pkg': ('📦 pkg', '#00ccff'),
-                    'apt': ('📦 apt', '#00ccff'),
-                    'pacman': ('📦 pac', '#00ccff'),
-                    'dnf': ('📦 dnf', '#00ccff'),
-                    'pip': ('🐍 pip', '#ffaa00'),
-                    'git': ('📥 git', '#cc88ff'),
-                    'go': ('🔵 go', '#00ff88'),
-                    'gem': ('💎 gem', '#ff4488'),
-                    'auto': ('🔧 auto', '#888888'),
-                }
-                
-                for method in methods[:4]:  # Show max 4 buttons
-                    style = method_styles.get(method, ('📥 ' + method, '#888'))
-                    tk.Button(row, text=style[0], font=('Courier', 7),
-                            fg='#000', bg=style[1], relief='flat', padx=4,
-                            command=lambda n=name, m=method: self._manual_install_dialog(n, m)
-                            ).pack(side='right', padx=1)
+                # Show top 3 methods ranked
+                for i, (method, cmd) in enumerate(methods_list[:3]):
+                    icon = METHOD_ICONS.get(method, f'📥 {method}')
+                    color = METHOD_COLORS.get(method, '#888')
+                    rank_label = ['🥇', '🥈', '🥉'][i] if i < 3 else ''
+                    
+                    btn = tk.Button(row, text=f"{rank_label} {icon}", font=('Courier', 7),
+                            fg='#000', bg=color, relief='flat', padx=4,
+                            command=lambda n=name, m=method, c=cmd: self._show_install_dialog(n, m, c))
+                    btn.pack(side='right', padx=1)
+
+    def _show_install_dialog(self, tool_name, method, cmd):
+        """Show install dialog with the correct command for the selected method"""
+        dialog = tk.Toplevel(self.parent, bg='#1a1a2e')
+        dialog.title(f"Install {tool_name} via {method}")
+        dialog.geometry("550x400")
+        
+        icon = METHOD_ICONS.get(method, '📥')
+        color = METHOD_COLORS.get(method, '#888')
+        
+        tk.Label(dialog, text=f"{icon} Install {tool_name}", font=('Courier', 14, 'bold'),
+                fg='#00ff88', bg='#1a1a2e').pack(pady=15)
+        
+        tk.Label(dialog, text=f"Method: {method.upper()} | Environment: {get_env_name()}",
+                font=('Courier', 9), fg='#888', bg='#1a1a2e').pack()
+        
+        # Command display
+        cmd_frame = tk.LabelFrame(dialog, text=" Installation Command ", font=('Courier', 10, 'bold'),
+                fg=color, bg='#16213e', padx=10, pady=10)
+        cmd_frame.pack(fill='x', padx=15, pady=10)
+        
+        cmd_text = tk.Text(cmd_frame, font=('Courier', 9), bg='#0a0a0a', fg='#00ff88',
+                relief='flat', wrap='word', height=4)
+        cmd_text.pack(fill='x')
+        cmd_text.insert('1.0', cmd)
+        cmd_text.config(state='disabled')
+        
+        # Action buttons
+        btn_frame = tk.Frame(dialog, bg='#1a1a2e')
+        btn_frame.pack(fill='x', padx=15, pady=10)
+        
+        tk.Button(btn_frame, text="💻 Open in Terminal", font=('Courier', 9, 'bold'),
+                fg='#000', bg='#00ff88', relief='raised', padx=12, pady=6,
+                command=lambda: [dialog.destroy(), self._run_in_terminal(cmd)]).pack(side='left', padx=3)
+        
+        tk.Button(btn_frame, text="📋 Copy Command", font=('Courier', 9),
+                fg='#000', bg='#00ccff', relief='raised', padx=12, pady=6,
+                command=lambda: self._copy_to_clipboard(cmd)).pack(side='left', padx=3)
+        
+        tk.Button(btn_frame, text="💾 Save Script", font=('Courier', 9),
+                fg='#000', bg='#ffaa00', relief='raised', padx=12, pady=6,
+                command=lambda: self._save_install_script(tool_name, cmd)).pack(side='left', padx=3)
+        
+        tk.Button(btn_frame, text="Close", font=('Courier', 9),
+                fg='#fff', bg='#666', relief='raised', padx=12, pady=6,
+                command=dialog.destroy).pack(side='right', padx=3)
+    
+    def _run_in_terminal(self, cmd):
+        """Send command to embedded terminal"""
+        self.pending_install = cmd
+        if self.navigate:
+            self.navigate("terminal")
+    
+    def _copy_to_clipboard(self, cmd):
+        """Copy command to clipboard"""
+        try:
+            self.frame.clipboard_clear()
+            self.frame.clipboard_append(cmd)
+            messagebox.showinfo("Copied", "Command copied! Paste in terminal.")
+        except:
+            messagebox.showinfo("Copy this", cmd)
+    
+    def _save_install_script(self, tool_name, cmd):
+        """Save install command as script"""
+        script_dir = os.path.join(os.path.dirname(__file__), '..', 'scripts')
+        os.makedirs(script_dir, exist_ok=True)
+        script_path = os.path.join(script_dir, f'install_{tool_name}.sh')
+        with open(script_path, 'w') as f:
+            f.write(f'#!/bin/bash\n# Install {tool_name}\n{cmd}\n')
+        os.chmod(script_path, 0o755)
+        messagebox.showinfo("Saved", f"Script saved:\n{script_path}")
