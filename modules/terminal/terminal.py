@@ -313,6 +313,26 @@ class Terminal:
         self.output.delete('1.0', 'end')
         self._send_to_shell('\x0c')  # Ctrl+L to shell
     
+    
+    def _auto_save_data(self, cmd, output):
+        """Auto-detect and save valuable data from command output"""
+        try:
+            from modules.credential_locker import CredentialLocker
+            # Get the output text from the widget
+            all_text = self.output.get('1.0', 'end-1c')
+            # Find the output from this command
+            if cmd and all_text:
+                # Create a temporary locker instance to store data
+                locker = CredentialLocker(self.frame, None, None)
+                projects = locker.db.get_all_projects()
+                if projects:
+                    locker.current_project = projects[0]
+                    found = locker.auto_store(cmd.split()[0] if ' ' in cmd else cmd, all_text[-5000:], cmd)
+                    if found > 0:
+                        self._write(f"\n💎 Auto-saved {found} items to Data Locker\n", '#ff4488')
+        except Exception as e:
+            pass
+
     def set_command(self, cmd):
         """Send command to shell"""
         self.frame.after(300, lambda: self._send_to_shell(cmd + '\r'))

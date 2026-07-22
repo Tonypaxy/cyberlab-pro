@@ -146,8 +146,8 @@ class CyberLabApp:
             "soc": lambda: SOCDashboard(self.content, self.monitor, self.detector, self.db, self.logger, self.notify).build(),
             "permissions": lambda: PermissionsView(self.content, self.permissions, self.logger, self.notify).build(),
             "wordlist": lambda: WordlistGenerator(self.content, self.db, self.logger).build(),
-            "credentials": lambda: self.data_locker.build(),
-            self.data_locker.build()
+            "credentials": lambda: CredentialLocker(self.content, self.db, self.logger).build(),
+            "credentials": lambda: CredentialLocker(self.content, self.db, self.logger).build(),
             "settings": lambda: SettingsPanel(self.content, self.config, self.logger, self._apply_theme).build(),
         }
         if cmd in views: views[cmd]()

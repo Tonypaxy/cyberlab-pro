@@ -98,6 +98,12 @@ class CredentialLocker:
         for w in self.frame.winfo_children(): w.destroy()
         self.frame.pack(fill='both', expand=True, padx=10, pady=10)
         
+        # Auto-select first project if none selected
+        if not self.current_project:
+            projects = self.db.get_all_projects()
+            if projects:
+                self.current_project = projects[0]
+        
         # Header
         header = tk.Frame(self.frame, bg='#1a1a2e')
         header.pack(fill='x', pady=(0,10))
@@ -499,257 +505,96 @@ class CredentialLocker:
                 'subdomains': ('discovered_subdomains', {'subdomain': val, 'tool': tool}),
                 'vulns': ('discovered_vulns', {'vuln_name': val, 'tool': tool, 'target': target}),
             }
-            
-            table, data = table_map[cat]
-            data['project_id'] = self.current_project['id']
-            
-            fields = ', '.join(data.keys())
-            placeholders = ', '.join(['?'] * len(data))
-            self.db.cursor.execute(f'INSERT INTO {table} ({fields}) VALUES ({placeholders})', list(data.values()))
-            self.db.conn.commit()
-            dialog.destroy()
-            self._refresh()
-tk.Button(dialog, text="💾 Save", font=('Courier', 10, 'bold'),
-                fg='#000', bg='#00ff88', relief='raised', padx=20, pady=8,
-                command=save).pack(pady=10)
     
     def _import_data(self):
-        """Import data from tool output"""
         if not self.current_project: return
-        
         dialog = tk.Toplevel(self.parent, bg='#1a1a2e')
         dialog.title("Import Data"); dialog.geometry("500x300")
-        
         tk.Label(dialog, text="Paste tool output to auto-extract data:", font=('Courier', 10),
                 fg='#fff', bg='#1a1a2e').pack(pady=5)
-        
         text = tk.Text(dialog, font=('Courier', 9), bg='#16213e', fg='#fff', relief='flat', height=12)
         text.pack(fill='both', expand=True, padx=10, pady=5)
-        
         def extract():
             content = text.get('1.0', 'end-1c')
             found = 0
-            
-            # Extract emails
-            emails = set(re.findall(r'[\w\.-]+@[\w\.-]+\.\w+', content))
-            for email in emails:
-                self.db.cursor.execute('INSERT INTO discovered_emails (project_id, email, source) VALUES (?, ?, ?)',
-                        (self.current_project['id'], email, 'imported'))
-                found += 1
-            
-            # Extract IPs
-            ips = set(re.findall(r'\b(?:\d{1,3}\.){3}\d{1,3}\b', content))
-            for ip in ips:
-                self.db.cursor.execute('INSERT INTO discovered_hosts (project_id, ip_address, tool) VALUES (?, ?, ?)',
-                        (self.current_project['id'], ip, 'imported'))
-                found += 1
-            
-            # Extract URLs
-            urls = set(re.findall(r'https?://[^\s<>"\']+', content))
-            for url in urls:
-                self.db.cursor.execute('INSERT INTO discovered_urls (project_id, url, tool) VALUES (?, ?, ?)',
-                        (self.current_project['id'], url[:500], 'imported'))
-                found += 1
-            
-            # Extract hashes (MD5, SHA1, SHA256 patterns)
-            hashes = set(re.findall(r'\b[a-fA-F0-9]{32}\b', content))  # MD5
-            hashes.update(re.findall(r'\b[a-fA-F0-9]{40}\b', content))  # SHA1
-            hashes.update(re.findall(r'\b[a-fA-F0-9]{64}\b', content))  # SHA256
-            for h in hashes:
-                self.db.cursor.execute('INSERT INTO discovered_hashes (project_id, hash_value, tool) VALUES (?, ?, ?)',
-                        (self.current_project['id'], h, 'imported'))
-                found += 1
-            
-            # Extract subdomains
-            subs = set(re.findall(r'(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}', content))
-            for sub in subs:
-                if '.' in sub and not sub.startswith('http'):
-                    self.db.cursor.execute('INSERT INTO discovered_subdomains (project_id, subdomain, tool) VALUES (?, ?, ?)',
-                            (self.current_project['id'], sub, 'imported'))
+            for email in set(re.findall(r'[\w\.-]+@[\w\.-]+\.\w+', content)):
+                try:
+                    self.db.cursor.execute('INSERT INTO discovered_emails (project_id, email, source) VALUES (?, ?, ?)',
+                            (self.current_project['id'], email, 'imported'))
                     found += 1
-            
+                except: pass
+            for ip in set(re.findall(r'\b(?:\d{1,3}\.){3}\d{1,3}\b', content)):
+                try:
+                    self.db.cursor.execute('INSERT INTO discovered_hosts (project_id, ip_address, tool) VALUES (?, ?, ?)',
+                            (self.current_project['id'], ip, 'imported'))
+                    found += 1
+                except: pass
+            for url in set(re.findall(r'https?://[^\s<>"\']+', content)):
+                try:
+                    self.db.cursor.execute('INSERT INTO discovered_urls (project_id, url, tool) VALUES (?, ?, ?)',
+                            (self.current_project['id'], url[:500], 'imported'))
+                    found += 1
+                except: pass
             self.db.conn.commit()
             dialog.destroy()
             self._refresh()
-            messagebox.showinfo("Import Complete", f"Extracted {found} items from output!")
-        
-        tk.Button(dialog, text="🔍 Auto-Extract", font=('Courier', 10, 'bold'),
+            messagebox.showinfo("Import Complete", f"Extracted {found} items!")
+        tk.Button(dialog, text="Auto-Extract", font=('Courier', 10, 'bold'),
                 fg='#000', bg='#00ff88', relief='raised', padx=15, pady=8,
-                command=extract).pack(pady=5)
+                command=extract).pack(pady=10)
         tk.Button(dialog, text="Cancel", font=('Courier', 10),
                 fg='#fff', bg='#666', relief='raised', padx=15, pady=5,
                 command=dialog.destroy).pack(pady=5)
     
     def _export_all(self):
         if not self.current_project: return
-        
         export_dir = os.path.join(self.current_project['path'], 'exports')
         os.makedirs(export_dir, exist_ok=True)
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        
-        # Export all tables to JSON
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
         all_data = {}
-        tables = ['credentials', 'discovered_hashes', 'discovered_hosts', 'discovered_urls',
-                  'discovered_emails', 'discovered_subdomains', 'discovered_vulns', 'phishing_campaigns']
-        
-        for table in tables:
+        for table in ['credentials', 'discovered_hashes', 'discovered_hosts', 'discovered_urls',
+                      'discovered_emails', 'discovered_subdomains', 'discovered_vulns']:
             self.db.cursor.execute(f'SELECT * FROM {table} WHERE project_id = ?', (self.current_project['id'],))
             all_data[table] = [dict(row) for row in self.db.cursor.fetchall()]
-        
-        json_path = os.path.join(export_dir, f'full_data_{timestamp}.json')
-        with open(json_path, 'w') as f:
-            json.dump(all_data, f, indent=2, default=str)
-        
-        # HTML report
-        html_path = os.path.join(export_dir, f'full_report_{timestamp}.html')
-        with open(html_path, 'w') as f:
-            f.write(f'''<html><head><style>
-body{{background:#0a0a0a;color:#00ff88;font:12px monospace;padding:20px}}
-h1{{color:#ff4488}}h2{{color:#ffaa00;border-bottom:1px solid #333}}
-table{{border-collapse:collapse;width:100%;margin:10px 0}}
-td,th{{border:1px solid #333;padding:8px;text-align:left}}
-th{{background:#16213e}}
-.cred{{color:#00ff88}}.hash{{color:#ff4488}}.host{{color:#58a6ff}}
-.url{{color:#d2991d}}.email{{color:#bc8cff}}.vuln{{color:#ff0000}}
-.critical{{color:#ff0000}}.high{{color:#ff4444}}.medium{{color:#ffaa00}}
-</style></head><body>
-<h1>💎 CyberLab Pro - Full Data Report</h1>
-<p>Project: {self.current_project['name']} | Date: {datetime.now()}</p>
-''')
-            
-            for table, data in all_data.items():
-                if data:
-                    f.write(f'<h2>{table} ({len(data)})</h2><table><tr>')
-                    for key in data[0].keys():
-                        if key not in ('id', 'project_id'):
-                            f.write(f'<th>{key}</th>')
-                    f.write('</tr>')
-                    for row in data:
-                        f.write('<tr>')
-                        for key, val in row.items():
-                            if key not in ('id', 'project_id'):
-                                f.write(f'<td>{str(val)[:100]}</td>')
-                        f.write('</tr>')
-                    f.write('</table>')
-            
-            f.write('</body></html>')
-        
-        messagebox.showinfo("Exported", f"Data exported to:\n{json_path}\n{html_path}")
-    
-    def _new_campaign(self):
-        if not self.current_project: return
-        dialog = tk.Toplevel(self.parent, bg='#1a1a2e')
-        dialog.title("New Campaign"); dialog.geometry("400x300")
-        
-        tk.Label(dialog, text="New Campaign", font=('Courier', 14, 'bold'), fg='#00ff88', bg='#1a1a2e').pack(pady=10)
-        
-        fields = [("Name:", "name"), ("Target Site:", "target_site"), ("Template:", "template")]
-        entries = {}
-        for label, key in fields:
-            tk.Label(dialog, text=label, font=('Courier', 9), fg='#aaa', bg='#1a1a2e').pack(anchor='w', padx=20)
-            e = tk.Entry(dialog, font=('Courier', 10), bg='#16213e', fg='#fff', relief='flat')
-            e.pack(fill='x', padx=20, pady=2)
-            entries[key] = e
-        
-        def save():
-            data = {k: v.get().strip() for k, v in entries.items()}
-            if not data['name']: return
-            self.db.cursor.execute('''INSERT INTO phishing_campaigns (project_id, name, target_site, template, started_at, status)
-                VALUES (?, ?, ?, ?, datetime('now'), 'active')''',
-                (self.current_project['id'], data['name'], data['target_site'], data['template']))
-            self.db.conn.commit()
-            dialog.destroy()
-            self._refresh()
-        
-        tk.Button(dialog, text="Create", font=('Courier', 10, 'bold'), fg='#000', bg='#00ff88',
-                relief='raised', padx=20, pady=8, command=save).pack(pady=15)
+        json_path = os.path.join(export_dir, f'data_{ts}.json')
+        with open(json_path, 'w') as f: json.dump(all_data, f, indent=2, default=str)
+        messagebox.showinfo("Exported", f"Data exported to:\n{json_path}")
     
     def auto_store(self, tool_name, output_text, command=""):
-        """Auto-detect and store valuable data from any tool output"""
-        if not self.auto_detect_enabled or not self.current_project:
-            return 0
-        
+        if not self.auto_detect_enabled or not self.current_project: return 0
         found = 0
-        
-        # Cache the output
-        try:
-            self.db.cursor.execute('INSERT INTO tool_output_cache (project_id, tool, command, output_summary) VALUES (?, ?, ?, ?)',
-                    (self.current_project['id'], tool_name, command, output_text[:5000]))
-        except:
-            pass
-        
-        # Extract emails
         for email in set(re.findall(r'[\w\.-]+@[\w\.-]+\.\w+', output_text)):
             try:
                 self.db.cursor.execute('INSERT INTO discovered_emails (project_id, email, source, tool) VALUES (?, ?, ?, ?)',
-                        (self.current_project['id'], email, 'auto-detected', tool_name))
+                        (self.current_project['id'], email, 'auto', tool_name))
                 found += 1
-            except:
-                pass
-        
-        # Extract IPs
+            except: pass
         for ip in set(re.findall(r'\b(?:\d{1,3}\.){3}\d{1,3}\b', output_text)):
-            if ip not in ('0.0.0.0', '255.255.255.255', '127.0.0.1'):
+            if ip not in ('0.0.0.0','255.255.255.255','127.0.0.1'):
                 try:
                     self.db.cursor.execute('INSERT INTO discovered_hosts (project_id, ip_address, tool) VALUES (?, ?, ?)',
                             (self.current_project['id'], ip, tool_name))
                     found += 1
-                except:
-                    pass
-        
-        # Extract credentials (user:pass patterns)
-        cred_patterns = [
-            r'([\w.-]+):([\w.@#$%^&*!]+)',  # user:pass
-            r'username[:\s=]+[\'"]?(\w+)[\'"]?.*?password[:\s=]+[\'"]?([^\s\'"]+)',  # username=xxx password=yyy
-        ]
-        for pattern in cred_patterns:
-            for match in re.finditer(pattern, output_text, re.IGNORECASE):
-                try:
-                    user, passwd = match.group(1), match.group(2)
-                    if len(user) > 2 and len(passwd) > 2:
-                        self.db.cursor.execute('INSERT INTO credentials (project_id, username, password, tool, target) VALUES (?, ?, ?, ?, ?)',
-                                (self.current_project['id'], user, passwd, tool_name, 'auto-detected'))
-                        found += 1
-                except:
-                    pass
-        
-        # Extract URLs
+                except: pass
+        for u, p in set(re.findall(r'([\w.-]{3,}):([\w.@#$%^&*!]{3,})', output_text)):
+            try:
+                self.db.cursor.execute('INSERT INTO credentials (project_id, username, password, tool, target) VALUES (?, ?, ?, ?, ?)',
+                        (self.current_project['id'], u, p, tool_name, 'auto'))
+                found += 1
+            except: pass
         for url in set(re.findall(r'https?://[^\s<>"\']+', output_text)):
             try:
                 self.db.cursor.execute('INSERT INTO discovered_urls (project_id, url, tool) VALUES (?, ?, ?)',
                         (self.current_project['id'], url[:500], tool_name))
                 found += 1
-            except:
-                pass
-        
-        # Extract hashes
+            except: pass
         for h in set(re.findall(r'\b[a-fA-F0-9]{32}\b', output_text)):
             try:
                 self.db.cursor.execute('INSERT INTO discovered_hashes (project_id, hash_value, hash_type, tool) VALUES (?, ?, ?, ?)',
                         (self.current_project['id'], h, 'MD5', tool_name))
                 found += 1
-            except:
-                pass
-        for h in set(re.findall(r'\b[a-fA-F0-9]{40}\b', output_text)):
-            try:
-                self.db.cursor.execute('INSERT INTO discovered_hashes (project_id, hash_value, hash_type, tool) VALUES (?, ?, ?, ?)',
-                        (self.current_project['id'], h, 'SHA1', tool_name))
-                found += 1
-            except:
-                pass
-        
-        # Extract subdomains
-        for sub in set(re.findall(r'(?:[\w-]+\.)+[\w-]+', output_text)):
-            if '.' in sub and not sub.startswith('http') and len(sub) < 100:
-                try:
-                    self.db.cursor.execute('INSERT INTO discovered_subdomains (project_id, subdomain, tool) VALUES (?, ?, ?)',
-                            (self.current_project['id'], sub, tool_name))
-                    found += 1
-                except:
-                    pass
-        
+            except: pass
         if found > 0:
             self.db.conn.commit()
-            self.logger.log_project_action(self.current_project['name'], f"auto_stored: {found} items from {tool_name}")
-        
+            self.logger.log_project_action(self.current_project['name'], f"auto_stored: {found} from {tool_name}")
         return found
