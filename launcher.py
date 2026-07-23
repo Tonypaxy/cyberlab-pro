@@ -98,7 +98,7 @@ class CyberLabApp:
         self.statusbar.frame.pack(side='bottom', fill='x')
         
         # Quick Access Toolbar
-        self.quick_access = QuickAccess(self.root, self.on_navigate)
+        self.quick_access = QuickAccess(self.root, self.navigate)
         self.quick_access.build()
         
         # Toolbar top
