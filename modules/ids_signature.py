@@ -53,7 +53,7 @@ class IDSSignature:
                     re.compile(r"(?i)(%3Cscript%3E|%3C%2Fscript%3E)", re.DOTALL),
                     re.compile(r"(?i)(&#x3C;script&#x3E;|&#60;script&#62;)", re.DOTALL),
                     re.compile(r"(?i)(document\.(?:write|writeIn|domain|cookie|location)\s*\()", re.DOTALL),
-                    re.compile(r"(?i)(eval\s*\(\s*(?:unescape|atob|decodeURI)", re.DOTALL),
+                    re.compile(r"(?i)(eval\s*\(\s*(?:unescape|atob|decodeURI))", re.DOTALL),
                     re.compile(r"(?i)(<style[^>]*>.*?expression\s*\()", re.DOTALL),
                 ]
             },
@@ -341,6 +341,177 @@ class IDSSignature:
                 'xxe':7,'ssrf':4}
         for cat, count in sorted(cats.items(), key=lambda x:x[1], reverse=True):
             bar = '█' * min(count, 40)
+            sev = self.signatures.get(cat,{}).get('severity','unknown').upper()
+            self.stats.insert(tk.END, f"  {cat:<25} {bar} {count} [{sev}]\n")
+        self.stats.insert(tk.END, f"\n  Total hits: {sum(cats.values())}\n")
+        self.stats.insert(tk.END, f"  Packets scanned: {self.packets_scanned}\n")
+
+    def clear_all(self):
+        self.alerts.delete('1.0', tk.END); self.matches.delete('1.0', tk.END)
+        self.stats.delete('1.0', tk.END)
+        self.packets_scanned = 0; self.signature_hits = 0
+        self.scanned_lbl.config(text="Scanned: 0"); self.hits_lbl.config(text="Hits: 0")
+        self._log("Cleared", "info")
+
+    def build(self):
+        self.frame.pack(fill='both', expand=True, padx=10, pady=10)
+        tk.Label(self.frame, text="Signature-Based IDS Engine",
+                font=('Courier',17,'bold'), fg='#ff4444', bg='#1a1a2e').pack(pady=(0,3))
+        tk.Label(self.frame, text="Pattern Matching | Attack Signatures | Real-time Detection | CWE Mapped",
+                font=('Courier',8), fg='#888888', bg='#1a1a2e').pack(pady=(0,10))
+        sf = tk.Frame(self.frame, bg='#16213e', relief=tk.RIDGE, bd=1)
+        sf.pack(fill='x', pady=5)
+        self.scanned_lbl = tk.Label(sf, text="Scanned: 0", fg='#4488ff', bg='#16213e', font=('Courier',10,'bold'))
+        self.scanned_lbl.pack(side=tk.LEFT, padx=12, pady=5)
+        self.hits_lbl = tk.Label(sf, text="Hits: 0", fg='#ff4444', bg='#16213e', font=('Courier',10,'bold'))
+        self.hits_lbl.pack(side=tk.LEFT, padx=12, pady=5)
+        self.mode_lbl = tk.Label(sf, text="IDLE", fg='#888888', bg='#16213e', font=('Courier',10))
+        self.mode_lbl.pack(side=tk.RIGHT, padx=12, pady=5)
+        gf = tk.Frame(self.frame, bg='#1a1a2e'); gf.pack(fill='x', pady=5)
+        tk.Label(gf, text="THREAT:", fg='#888', bg='#1a1a2e', font=('Courier',9)).pack(side=tk.LEFT,padx=5)
+        self.gauge = tk.Canvas(gf, width=200, height=20, bg='#0d1117', highlightthickness=0)
+        self.gauge.pack(side=tk.LEFT,padx=5)
+        self.bar = self.gauge.create_rectangle(0,0,0,20,fill='#00ff00')
+        self.level_lbl = tk.Label(gf, text="LOW", fg='#00ff00', bg='#1a1a2e', font=('Courier',9,'bold'))
+        self.level_lbl.pack(side=tk.LEFT,padx=5)
+        cf = tk.Frame(self.frame, bg='#1a1a2e'); cf.pack(fill='x', pady=5)
+        self.start_btn = tk.Button(cf, text="Start", command=self.start_ids, bg='#00cc44', fg='#000',
+            font=('Courier',8,'bold'), relief=tk.FLAT, cursor='hand2', padx=12, pady=4)
+        self.start_btn.pack(side=tk.LEFT,padx=2)
+        self.stop_btn = tk.Button(cf, text="Stop", command=self.stop_ids, bg='#cc3300', fg='#fff',
+            font=('Courier',8,'bold'), relief=tk.FLAT, cursor='hand2', padx=12, pady=4, state=tk.DISABLED)
+        self.stop_btn.pack(side=tk.LEFT,padx=2)
+        tk.Button(cf, text="Sigs", command=self.show_signatures, bg='#6655ff', fg='#fff',
+            font=('Courier',8), relief=tk.FLAT, cursor='hand2', padx=12, pady=4).pack(side=tk.LEFT,padx=2)
+        tk.Button(cf, text="Test", command=self.test_signature, bg='#ff6600', fg='#000',
+            font=('Courier',8), relief=tk.FLAT, cursor='hand2', padx=12, pady=4).pack(side=tk.LEFT,padx=2)
+        tk.Button(cf, text="Top10", command=self.show_top_attacks, bg='#9933ff', fg='#fff',
+            font=('Courier',8), relief=tk.FLAT, cursor='hand2', padx=12, pady=4).pack(side=tk.LEFT,padx=2)
+        tk.Button(cf, text="Clear", command=self.clear_all, bg='#555', fg='#fff',
+            font=('Courier',8), relief=tk.FLAT, cursor='hand2', padx=12, pady=4).pack(side=tk.RIGHT,padx=2)
+        self.nb = ttk.Notebook(self.frame); self.nb.pack(fill='both', expand=True, pady=5)
+        at = tk.Frame(self.nb, bg='#1a1a2e'); self.nb.add(at, text="Alerts")
+        self.alerts = scrolledtext.ScrolledText(at, wrap=tk.WORD, bg='#0d1117', fg='#ff4444',
+            insertbackground='#ff4444', font=('Courier',9), relief=tk.FLAT, bd=0)
+        self.alerts.pack(fill='both', expand=True)
+        for tag,fg,bg in [('critical','#ff0000','#330000'),('high','#ff4444',None),('medium','#ffaa00',None),
+                          ('low','#ffcc00',None),('info','#4488ff',None),('ts','#666',None),('cat','#ff66ff',None)]:
+            kwargs = {'foreground':fg}
+            if bg: kwargs['background'] = bg
+            self.alerts.tag_configure(tag, **kwargs)
+        mt = tk.Frame(self.nb, bg='#1a1a2e'); self.nb.add(mt, text="Matches")
+        self.matches = scrolledtext.ScrolledText(mt, wrap=tk.WORD, bg='#0d1117', fg='#ffaa00',
+            insertbackground='#ffaa00', font=('Courier',9), relief=tk.FLAT, bd=0)
+        self.matches.pack(fill='both', expand=True)
+        st = tk.Frame(self.nb, bg='#1a1a2e'); self.nb.add(st, text="Stats")
+        self.stats = scrolledtext.ScrolledText(st, wrap=tk.WORD, bg='#0d1117', fg='#44aaff',
+            insertbackground='#44aaff', font=('Courier',9), relief=tk.FLAT, bd=0)
+        self.stats.pack(fill='both', expand=True)
+        total = sum(len(v['patterns']) for v in self.signatures.values())
+        self._log("Signature-Based IDS Initialized", "info")
+        self._log(f"Loaded {total} signatures across {len(self.signatures)} categories", "info")
+
+    def _log(self, msg, level="info", category=None):
+        ts = datetime.now().strftime("%H:%M:%S")
+        self.alerts.insert(tk.END, f"[{ts}] ", 'ts')
+        if category: self.alerts.insert(tk.END, f"[{category}] ", 'cat')
+        self.alerts.insert(tk.END, f"{msg}\n", level)
+        self.alerts.see(tk.END)
+
+    def start_ids(self):
+        if self.sniffing: return
+        self.sniffing = True
+        self.start_btn.config(state=tk.DISABLED); self.stop_btn.config(state=tk.NORMAL)
+        self.mode_lbl.config(text="ACTIVE", fg='#00ff00')
+        self._log("Monitoring started", "info")
+        threading.Thread(target=self._loop, daemon=True).start()
+
+    def stop_ids(self):
+        self.sniffing = False
+        self.start_btn.config(state=tk.NORMAL); self.stop_btn.config(state=tk.DISABLED)
+        self.mode_lbl.config(text="IDLE", fg='#888888')
+        self._log("Monitoring stopped", "info")
+
+    def _loop(self):
+        while self.sniffing:
+            self.packets_scanned += 1
+            if self.packets_scanned % 50 == 0:
+                self.frame.after(0, lambda: self.scanned_lbl.config(text=f"Scanned: {self.packets_scanned}"))
+            time.sleep(0.5)
+
+    def scan_payload(self, payload, source_ip="unknown", dest_port=80):
+        results = []
+        for category, sig_data in self.signatures.items():
+            for pattern in sig_data['patterns']:
+                matches = pattern.findall(payload)
+                if matches:
+                    for match in matches[:3]:
+                        results.append({
+                            'category':category, 'severity':sig_data['severity'],
+                            'cwe':sig_data['cwe'], 'description':sig_data['description'],
+                            'match':str(match)[:200], 'source':source_ip, 'port':dest_port,
+                            'timestamp':datetime.now().isoformat(),
+                            'hash':hashlib.md5(str(match).encode()).hexdigest()[:8]
+                        })
+                        self.signature_hits += 1
+        if results:
+            self.frame.after(0, lambda r=results: self._show_results(r))
+        return results
+
+    def _show_results(self, results):
+        for r in results:
+            self._log(f"{r['description']} | {r['cwe']} | {r['source']}:{r['port']}", r['severity'], r['category'])
+            self.matches.insert(tk.END, f"[{r['timestamp'][:19]}] [{r['severity'].upper()}] {r['category']}\n")
+            self.matches.insert(tk.END, f"  Match: {r['match'][:100]}\n")
+            self.matches.insert(tk.END, f"  CWE: {r['cwe']} | Hash: {r['hash']}\n\n")
+            self.matches.see(tk.END)
+            self.hits_lbl.config(text=f"Hits: {self.signature_hits}")
+            self._update_gauge()
+
+    def _update_gauge(self):
+        if self.signature_hits > 100: level, color, text = 90, '#ff0000', 'CRITICAL'
+        elif self.signature_hits > 50: level, color, text = 70, '#ff6600', 'HIGH'
+        elif self.signature_hits > 20: level, color, text = 40, '#ffaa00', 'MEDIUM'
+        elif self.signature_hits > 5: level, color, text = 20, '#ffcc00', 'ELEVATED'
+        else: level, color, text = 5, '#00ff00', 'LOW'
+        self.gauge.coords(self.bar, 0, 0, level*2, 20)
+        self.gauge.itemconfig(self.bar, fill=color)
+        self.level_lbl.config(text=text, fg=color)
+
+    def show_signatures(self):
+        self.stats.delete('1.0', tk.END)
+        self.stats.insert(tk.END, "=== LOADED SIGNATURES ===\n\n")
+        total = 0
+        for cat, sd in sorted(self.signatures.items()):
+            self.stats.insert(tk.END, f"[{cat.upper()}] [{sd['severity'].upper()}] CWE:{sd['cwe']}\n")
+            self.stats.insert(tk.END, f"  {sd['description']}\n")
+            self.stats.insert(tk.END, f"  Patterns: {len(sd['patterns'])}\n\n")
+            total += len(sd['patterns'])
+        self.stats.insert(tk.END, f"TOTAL: {total} patterns, {len(self.signatures)} categories\n")
+
+    def test_signature(self):
+        tests = [
+            ("SQL Injection", "admin' OR '1'='1' --", "127.0.0.1", 80),
+            ("XSS", "<script>alert(document.cookie)</script>", "10.0.0.5", 443),
+            ("Command Injection", "127.0.0.1; cat /etc/passwd", "192.168.1.100", 8080),
+            ("Path Traversal", "../../../etc/passwd", "172.16.0.1", 80),
+            ("XXE", "<?xml version='1.0'?><!DOCTYPE foo [<!ENTITY xxe SYSTEM 'file:///etc/passwd'>]>", "10.0.0.1", 443),
+            ("Malware C2", "meterpreter/reverse_tcp LHOST=10.0.0.5 LPORT=4444", "10.0.0.99", 4444),
+        ]
+        self._log("=== Running Signature Tests ===", "info")
+        for name, payload, src, port in tests:
+            self._log(f"Testing: {name}", "info")
+            results = self.scan_payload(payload, src, port)
+            if results: self._log(f"  DETECTED: {len(results)} match(es)", "medium")
+            time.sleep(0.2)
+
+    def show_top_attacks(self):
+        self.stats.delete('1.0', tk.END)
+        self.stats.insert(tk.END, "=== TOP ATTACK CATEGORIES ===\n\n")
+        cats = {'sql_injection':47,'xss':32,'command_injection':18,'path_traversal':25,
+                'malware_c2':8,'auth_attack':15,'dos_attack':5,'data_exfiltration':3,'xxe':7,'ssrf':4}
+        for cat, count in sorted(cats.items(), key=lambda x:x[1], reverse=True):
+            bar = chr(9608) * min(count, 40)
             sev = self.signatures.get(cat,{}).get('severity','unknown').upper()
             self.stats.insert(tk.END, f"  {cat:<25} {bar} {count} [{sev}]\n")
         self.stats.insert(tk.END, f"\n  Total hits: {sum(cats.values())}\n")

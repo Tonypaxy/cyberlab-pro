@@ -28,7 +28,7 @@ class Sidebar:
             "Cloud":"cloud","Stego":"stego","Resources":"resources",
             "Auto Recon":"autorecon","OSINT":"osint","Passwords":"passwords",
             "Fuzzing":"fuzzing","Malware":"malware","Reverse Eng":"reverse",
-            "Social Eng":"social","Settings":"settings"
+            "Social Eng":"social","IDS Signatures":"ids_signature","IDS Anomaly":"ids_anomaly","Threat Intel":"threat_intel","Sec Hardener":"security_hardener","Settings":"settings"
         }
     
     def build(self):
