@@ -31,6 +31,7 @@ class Sidebar:
             ("WiFi Audit", "wifi"),
             ("Wireless", "wireless2"),
             ("Cloud", "cloud"),
+            ("Databases", "databases"),
             ("Subdomains", "subdomains"),
             ("Port Scan", "portscan"),
             ("Vuln Scan", "vulnscan"),
