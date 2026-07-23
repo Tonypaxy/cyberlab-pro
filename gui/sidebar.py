@@ -30,6 +30,7 @@ class Sidebar:
             ("Exploits", "exploits"),
             ("WiFi Audit", "wifi"),
             ("Wireless", "wireless2"),
+            ("Cloud", "cloud"),
             ("Subdomains", "subdomains"),
             ("Port Scan", "portscan"),
             ("Vuln Scan", "vulnscan"),
