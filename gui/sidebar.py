@@ -36,6 +36,7 @@ class Sidebar:
             ("Resources", "resources"),
             ("Auto Recon", "autorecon"),
             ("OSINT", "osint"),
+            ("Passwords", "passwords"),
             ("Subdomains", "subdomains"),
             ("Port Scan", "portscan"),
             ("Vuln Scan", "vulnscan"),
