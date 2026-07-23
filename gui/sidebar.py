@@ -31,6 +31,7 @@ class Sidebar:
             ("WiFi Audit", "wifi"),
             ("Subdomains", "subdomains"),
             ("Port Scan", "portscan"),
+            ("Vuln Scan", "vulnscan"),
             ("Permissions", "permissions"), ("Settings", "settings")
         ]
     
