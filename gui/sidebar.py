@@ -13,7 +13,7 @@ class Sidebar:
             "Wordlists", "Log Analyzer", "Sanitizer", "Checksum",
             "Exploits", "Subdomains", "Wireless", "Cloud", "Stego",
             "Resources", "Auto Recon", "OSINT", "Passwords", "Fuzzing",
-            "Malware", "Reverse Eng", "Social Eng", "Settings"
+            "Malware", "Reverse Eng", "Social Eng", "IDS Signatures", "IDS Anomaly", "Threat Intel", "Sec Hardener", "Settings"
         ]
         self.cmd_map = {
             "Dashboard":"dashboard","Projects":"projects","Tool Center":"tools",
