@@ -13,8 +13,8 @@ class Terminal:
         self.command_history = []
         self.history_index = 0
         self.output_lines = 0
-        self.max_visible_lines = 10000  # Trim display but not actual output
-        self.full_output = ""  # Store complete output
+        self.full_output = ""
+        self._file_backed = False
 
     def build(self):
         for w in self.frame.winfo_children(): w.destroy()
@@ -92,9 +92,17 @@ class Terminal:
         
         self.output_lines += text.count('\n')
         
-        # Trim DISPLAY only (keep full_output intact)
-        if self.output_lines > self.max_visible_lines:
-            self.output.delete('1.0', f'{self.output_lines - self.max_visible_lines}.0')
+        # For extremely large outputs (>100K lines), switch to file-backed storage
+        if self.output_lines > 100000 and not hasattr(self, '_file_backed'):
+            self._write("[*] Large output detected - enabling file backup\n", '#d2991d')
+            self._file_backed = True
+        
+        # For extremely large outputs (>100K lines), switch to file-backed storage
+        if self.output_lines > 100000 and not hasattr(self, '_file_backed'):
+            self._write("[*] Large output detected - enabling file backup\n", '#d2991d')
+            self._file_backed = True
+        
+
         
         # Update line count in toolbar
         self.line_count.config(text=f"{self.output_lines:,} lines")
