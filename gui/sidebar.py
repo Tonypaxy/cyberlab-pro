@@ -30,6 +30,7 @@ class Sidebar:
             ("Exploits", "exploits"),
             ("WiFi Audit", "wifi"),
             ("Subdomains", "subdomains"),
+            ("Port Scan", "portscan"),
             ("Permissions", "permissions"), ("Settings", "settings")
         ]
     
