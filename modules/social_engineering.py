@@ -51,7 +51,7 @@ class SocialEngineering(BaseModule):
             tools.append(("SWAKS Email", self._run_swaks, "#00ccff"))
         if shutil.which("sendemail"):
             tools.append(("SendEmail", self._run_sendemail, "#00ccff"))
-        if shutil.which("mail":
+        if shutil.which("mail"):
             tools.append(("Mail Send", self._run_mail, "#00ccff"))
         
         # === SMS SPOOFING ===
