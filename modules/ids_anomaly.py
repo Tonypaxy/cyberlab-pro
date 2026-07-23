@@ -102,13 +102,15 @@ class IDSAnomaly:
         self._log("Anomaly Detection Engine Initialized", "info")
         self._log("Monitoring: Port Scans | Beaconing | Data Exfil | Protocol Anomalies | Lateral Movement", "info")
 
-    def _log(self, msg, level="info"):
+    def _log(self):
+        if not hasattr(self, "anomaly_out"): return
         ts = datetime.now().strftime("%H:%M:%S")
         self.anomaly_out.insert(tk.END, f"[{ts}] ", 'ts')
         self.anomaly_out.insert(tk.END, f"{msg}\n", level)
         self.anomaly_out.see(tk.END)
 
-    def _log_traffic(self, msg):
+    def _log_traffic(self):
+        if not hasattr(self, "anomaly_out"): return
         ts = datetime.now().strftime("%H:%M:%S")
         self.traffic_out.insert(tk.END, f"[{ts}] {msg}\n")
         self.traffic_out.see(tk.END)
@@ -239,6 +241,7 @@ class IDSAnomaly:
         self.score_lbl.config(text=f"{score:.2f}", fg=color)
 
     def show_connections(self):
+        if not hasattr(self, "traffic_out"): return
         self.traffic_out.delete('1.0', tk.END)
         self.traffic_out.insert(tk.END, "=== Active Connections ===\n\n")
         sorted_conns = sorted(self.connection_tracker.items(), key=lambda x: x[1]['packets'], reverse=True)
@@ -249,6 +252,7 @@ class IDSAnomaly:
                 f"Dur:{dur:.0f}s Proto:{c['protocol']}\n")
 
     def show_beacons(self):
+        if not hasattr(self, "traffic_out"): return
         self.analysis_out.delete('1.0', tk.END)
         self.analysis_out.insert(tk.END, "=== Beacon Detection ===\n\n")
         for ip, bt in self.beacon_tracker.items():
@@ -258,6 +262,7 @@ class IDSAnomaly:
                     f"  {ip}\n    Interval: {mean:.2f}s\n    Samples: {len(bt['intervals'])}\n\n")
 
     def show_baselines(self):
+        if not hasattr(self, "traffic_out"): return
         self.analysis_out.delete('1.0', tk.END)
         self.analysis_out.insert(tk.END, "=== Traffic Baselines ===\n\n")
         for metric, vals in self.baselines.items():

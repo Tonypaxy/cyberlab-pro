@@ -69,6 +69,7 @@ class SecurityHardener:
         self._log("Click 'Full Scan' to begin vulnerability assessment")
 
     def _log(self, msg, level='info'):
+        if not hasattr(self, "output"): return
         ts = datetime.now().strftime("%H:%M:%S")
         self.output.insert(tk.END, f"[{ts}] ", 'info')
         self.output.insert(tk.END, f"{msg}\n", level)
@@ -327,6 +328,7 @@ FINDINGS:
         messagebox.showinfo("Report", f"Saved to:\n{rp}")
 
     def cis_benchmarks(self):
+        if not hasattr(self, "output"): return
         self.output.delete('1.0', tk.END)
         self._log("=== CIS BENCHMARKS REFERENCE ===", 'header')
         self._log("\nCIS Benchmarks are industry-standard configuration guidelines.\n")
