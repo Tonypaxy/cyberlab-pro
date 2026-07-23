@@ -32,6 +32,7 @@ class Sidebar:
             ("Wireless", "wireless2"),
             ("Cloud", "cloud"),
             ("Databases", "databases"),
+            ("Stego", "stego"),
             ("Subdomains", "subdomains"),
             ("Port Scan", "portscan"),
             ("Vuln Scan", "vulnscan"),

@@ -59,6 +59,7 @@ from modules.forensic_toolkit import ForensicToolkit
 from modules.wireless_toolkit import WirelessToolkit
 from modules.cloud_toolkit import CloudToolkit
 from modules.database_toolkit import DatabaseToolkit
+from modules.stego_toolkit import StegoToolkit
 
 class CyberLabApp:
     def __init__(self):
@@ -165,6 +166,7 @@ class CyberLabApp:
             "wireless2": lambda: WirelessToolkit(self.content, self.db, self.logger).build(),
             "cloud": lambda: CloudToolkit(self.content, self.db, self.logger).build(),
             "databases": lambda: DatabaseToolkit(self.content, self.db, self.logger).build(),
+            "stego": lambda: StegoToolkit(self.content, self.db, self.logger).build(),
             "settings": lambda: SettingsPanel(self.content, self.config, self.logger, self._apply_theme).build(),
         }
         if cmd in views: views[cmd](); self.db.log_activity('module_opened', cmd)
