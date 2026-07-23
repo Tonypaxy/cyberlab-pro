@@ -164,40 +164,75 @@ class ToolCenter:
                 command=d.destroy).pack(side='left', padx=3)
     
     def _build_missing_list(self, parent, tools):
-        """Build missing tools list with install buttons"""
+        """Build missing tools grouped by category with ranked install buttons"""
         from collections import defaultdict
         by_cat = defaultdict(list)
         for t in tools:
             by_cat[t['category']].append(t['name'])
         
-        try:
-            from core.install_commands import get_install_methods_ranked, METHOD_ICONS, METHOD_COLORS
-        except:
-            METHOD_ICONS = {'pkg':'pkg','pip':'pip','git':'git'}
-            METHOD_COLORS = {'pkg':'#00ccff','pip':'#ffaa00','git':'#cc88ff'}
+        # Create scrollable area
+        canvas = tk.Canvas(parent, bg='#1a1a2e', highlightthickness=0)
+        vs = tk.Scrollbar(parent, orient='vertical', command=canvas.yview)
+        scroll_frame = tk.Frame(canvas, bg='#1a1a2e')
+        scroll_frame.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox('all')))
+        canvas.create_window((0,0), window=scroll_frame, anchor='nw', width=canvas.winfo_width())
+        canvas.configure(yscrollcommand=vs.set)
+        canvas.bind('<Configure>', lambda e: canvas.itemconfig(1, width=e.width))
+        canvas.pack(side='left', fill='both', expand=True)
+        vs.pack(side='right', fill='y')
         
-        for name in sorted([t['name'] for t in tools]):
-            row = tk.Frame(parent, bg='#1a1a2e')
-            row.pack(fill='x', pady=1)
-            tk.Label(row, text=f"⬜ {name}", font=('Courier', 9),
-                    fg='#888', bg='#1a1a2e').pack(side='left', padx=5)
+        try:
+            from core.install_commands import get_install_methods_ranked, METHOD_ICONS, METHOD_COLORS, get_env_name
+            env = get_env_name()
+        except:
+            env = "Termux"
+        
+        tk.Label(scroll_frame, text=f"Environment: {env} | Ranked by success rate",
+                font=('Courier', 9, 'bold'), fg='#ffaa00', bg='#1a1a2e').pack(anchor='w', pady=5)
+        
+        # Category icons
+        cat_icons = {
+            'recon': 'Recon', 'web': 'Web', 'network': 'Network', 'credentials': 'Creds',
+            'wireless': 'Wireless', 'forensics': 'Forensics', 'programming': 'Dev',
+            'exploitation': 'Exploit', 'hash_crypto': 'Hash', 'stegano': 'Stego',
+            'dos': 'DoS', 'secure_delete': 'SecDel', 'malware_analysis': 'Malware',
+            'phishing_social': 'Phishing', 'osint': 'OSINT', 'wifi_bluetooth': 'WiFi/BT',
+            'web_exploit': 'WebExploit', 'android_hacking': 'Android', 'voip': 'VoIP',
+            'social_engineering': 'SocEng', 'crypto_stego': 'Crypto', 'reverse_engineering': 'RevEng',
+            'api_testing': 'API', 'advanced_c2': 'C2', 'evasion_bypass': 'Evasion',
+            'red_team_infra': 'RedTeam', 'initial_access': 'Access', 'privilege_escalation': 'PrivEsc',
+            'lateral_movement': 'Lateral', 'exfiltration': 'Exfil', 'persistence': 'Persist',
+            'defense_evasion': 'DefEvade', 'credential_access': 'CredAccess', 'collection': 'Collect',
+            'impact_ransomware': 'Ransom', 'cloud_attacks': 'Cloud', 'ai_ml_tools': 'AI/ML',
+            'quantum_crypto': 'Quantum', 'blockchain_web3': 'Web3', 'satellite_space': 'Space',
+            'biometric_hack': 'BioHack'
+        }
+        
+        for cat, names in sorted(by_cat.items()):
+            if not names: continue
+            icon = cat_icons.get(cat, cat.title()[:10])
             
-            # Install buttons
-            try:
-                methods = get_install_methods_ranked(name)
-                for method, cmd in list(methods.items())[:3]:
-                    icon = METHOD_ICONS.get(method, method)
-                    color = METHOD_COLORS.get(method, '#888')
-                    tk.Button(row, text=icon, font=('Courier', 7),
-                            fg='#000', bg=color, relief='flat', padx=4,
-                            command=lambda n=name, m=method, c=cmd: self._direct_install(n, m, c)
-                            ).pack(side='right', padx=1)
-            except:
-                tk.Button(row, text="pkg", font=('Courier', 7),
-                        fg='#000', bg='#00ccff', relief='flat', padx=4,
-                        command=lambda n=name: self._direct_install(n, 'pkg', f'pkg install {n} -y')
-                        ).pack(side='right', padx=1)
-    
+            sf = tk.LabelFrame(scroll_frame, text=f" {icon} ({len(names)}) ", font=('Courier', 9, 'bold'),
+                    fg='#00ccff', bg='#16213e', padx=8, pady=5)
+            sf.pack(fill='x', pady=2, padx=5)
+            
+            for name in sorted(names):
+                row = tk.Frame(sf, bg='#16213e')
+                row.pack(fill='x', pady=1)
+                tk.Label(row, text=name, font=('Courier', 9), fg='#888', bg='#16213e', width=20, anchor='w').pack(side='left', padx=5)
+                
+                try:
+                    methods = get_install_methods_ranked(name)
+                    for method, cmd in list(methods.items())[:3]:
+                        icon_txt = METHOD_ICONS.get(method, method)
+                        color = METHOD_COLORS.get(method, '#888')
+                        tk.Button(row, text=icon_txt, font=('Courier', 7), fg='#000', bg=color,
+                                relief='flat', padx=4,
+                                command=lambda n=name, m=method, c=cmd: self._direct_install(n, m, c)).pack(side='right', padx=1)
+                except:
+                    tk.Button(row, text='pkg', font=('Courier', 7), fg='#000', bg='#00ccff',
+                            relief='flat', padx=4,
+                            command=lambda n=name: self._direct_install(n, 'pkg', f'pkg install {n} -y')).pack(side='right', padx=1)
     def _direct_install(self, tool_name, method, cmd):
         """Direct install - goes to terminal"""
         self.pending_install = cmd
