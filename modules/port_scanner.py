@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-import subprocess, threading, re, socket
+import subprocess, threading, re, socket, os, shutil
 from datetime import datetime
 from gui.base_module import BaseModule
 
@@ -32,18 +32,10 @@ class PortScanner(BaseModule):
                     command=lambda v=p: self.port_entry.delete(0,"end") or self.port_entry.insert(0,v)).pack(side="left", padx=1)
         
         bf = tk.Frame(self.inner, bg="#1a1a2e"); bf.pack(fill="x", padx=10, pady=5)
-        scanners = [
-            ("Nmap Fast","nmap","-F -T4"),
-            ("Nmap Full","nmap","-p- -T4 --open"),
-            ("Nmap Service","nmap","-sV -T4 --open"),
-            ("Nmap Scripts","nmap","-sC -sV -T4"),
-            ("Masscan Fast","masscan","--rate=1000"),
-            ("Masscan Full","masscan","--rate=5000 -p1-65535"),
-            ("Rustscan","rustscan","-t 2000"),
-            ("Ping Sweep","ping",""),
-        ]
-        for name, tool, args in scanners:
-            tk.Button(bf, text=name, font=("Courier",8), fg="#000", bg="#00ccff", relief="flat", padx=6,
+        # Auto-detect available scanners and their best args
+        self.scanners = self._detect_scanners()
+        for name, tool, args, color in self.scanners:
+            tk.Button(bf, text=name, font=("Courier",8), fg="#000", bg=color, relief="flat", padx=6,
                     command=lambda t=tool,a=args: self._scan(t,a)).pack(side="left", padx=2)
         
         tk.Button(bf, text="STOP", font=("Courier",8,"bold"), fg="#fff", bg="#cc0000", relief="flat", padx=6,
@@ -56,6 +48,77 @@ class PortScanner(BaseModule):
         self.results_frame = tk.Frame(self.inner, bg="#1a1a2e")
         self.results_frame.pack(fill="both", expand=True, padx=10, pady=5)
         self.status = self.add_status("Ready - Enter target and choose scan type")
+
+    def _detect_scanners(self):
+        """Auto-detect all installed port scanners and return best configs"""
+        import shutil
+        scanners = []
+        
+        # Nmap variants
+        if shutil.which("nmap"):
+            scanners.append(("Nmap Fast","nmap","-F -T4","#00ccff"))
+            scanners.append(("Nmap Full","nmap","-p- -T4 --open","#00ccff"))
+            scanners.append(("Nmap Service","nmap","-sV -T4 --open","#00ccff"))
+            scanners.append(("Nmap Scripts","nmap","-sC -sV -T4","#00ccff"))
+        
+        # Masscan
+        if shutil.which("masscan"):
+            scanners.append(("Masscan Fast","masscan","--rate=1000","#ffaa00"))
+            scanners.append(("Masscan Full","masscan","--rate=5000 -p1-65535","#ffaa00"))
+        
+        # Rustscan
+        if shutil.which("rustscan"):
+            scanners.append(("Rustscan","rustscan","-t 2000","#cc88ff"))
+        
+        # Naabu (ProjectDiscovery)
+        if shutil.which("naabu"):
+            scanners.append(("Naabu Fast","naabu","-top-ports 100","#00ff88"))
+            scanners.append(("Naabu Full","naabu","-p -","#00ff88"))
+        
+        # Zmap
+        if shutil.which("zmap"):
+            scanners.append(("Zmap TCP","zmap","-p 443","#ff4444"))
+        
+        # MassDNS
+        if shutil.which("massdns"):
+            scanners.append(("MassDNS","massdns","-r resolvers.txt","#bc8cff"))
+        
+        # Unicornscan
+        if shutil.which("unicornscan"):
+            scanners.append(("Unicornscan","unicornscan","-Iv","#ff00ff"))
+        
+        # Sx (Fast Port Scanner)
+        if shutil.which("sx"):
+            scanners.append(("SX Fast","sx","scan tcp --top-ports 100","#00ffff"))
+        
+        # ScanCannon
+        if shutil.which("scancannon"):
+            scanners.append(("ScanCannon","scancannon","","#ff8800"))
+        
+        # Ping (always available)
+        scanners.append(("Ping Sweep","ping","-c 1 -W 1","#888888"))
+        
+        # Any future scanner in PATH with --help containing "scan" or "port"
+        import subprocess
+        for cmd in ["nmap","masscan","rustscan","naabu","zmap","sx","unicornscan","scancannon","massdns"]:
+            pass  # Already handled above
+        
+        # Discover unknown scanners
+        for path in os.environ.get("PATH","").split(":"):
+            try:
+                for f in os.listdir(path):
+                    fpath = os.path.join(path,f)
+                    if os.access(fpath, os.X_OK) and f not in [s[1] for s in scanners]:
+                        try:
+                            r = subprocess.run([f,"--help"], capture_output=True, text=True, timeout=3)
+                            help_text = r.stdout + r.stderr
+                            if any(kw in help_text.lower() for kw in ["port","scan","packet","tcp","udp","syn"]):
+                                if f not in ["nmap","masscan","rustscan","naabu","zmap","sx","unicornscan","scancannon","massdns","ping"]:
+                                    scanners.append((f" {f.title()}","{f}","","#666666"))
+                        except: pass
+            except: pass
+        
+        return scanners
 
     def _scan(self, tool, args):
         target = self.target_entry.get().strip()
