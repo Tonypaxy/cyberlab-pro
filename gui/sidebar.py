@@ -35,6 +35,7 @@ class Sidebar:
             ("Stego", "stego"),
             ("Resources", "resources"),
             ("Auto Recon", "autorecon"),
+            ("OSINT", "osint"),
             ("Subdomains", "subdomains"),
             ("Port Scan", "portscan"),
             ("Vuln Scan", "vulnscan"),

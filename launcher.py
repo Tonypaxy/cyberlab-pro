@@ -63,6 +63,7 @@ from modules.database_toolkit import DatabaseToolkit
 from modules.stego_toolkit import StegoToolkit
 from modules.resource_monitor import ResourceMonitor
 from modules.auto_recon import AutoRecon
+from modules.osint_dashboard import OSINTDashboard
 
 class CyberLabApp:
     def __init__(self):
@@ -173,6 +174,7 @@ class CyberLabApp:
             "stego": lambda: StegoToolkit(self.content, self.db, self.logger).build(),
             "resources": lambda: ResourceMonitor(self.content, self.db, self.logger, self.resource_manager).build(),
             "autorecon": lambda: AutoRecon(self.content, self.db, self.logger, self.detector).build(),
+            "osint": lambda: OSINTDashboard(self.content, self.db, self.logger).build(),
             "settings": lambda: SettingsPanel(self.content, self.config, self.logger, self._apply_theme).build(),
         }
         if cmd in views: views[cmd](); self.db.log_activity('module_opened', cmd)
