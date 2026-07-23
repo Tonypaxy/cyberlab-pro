@@ -5,7 +5,6 @@ class Sidebar:
         self.parent = parent
         self.command_callback = command_callback
         self.frame = tk.Frame(parent, bg='#16213e', width=185)
-        self.active_button = None
         
         self.menu_items = [
             "Dashboard", "Projects", "Tool Center", "Recon", "Network", "Web",
@@ -13,7 +12,10 @@ class Sidebar:
             "CVE Lookup", "Wordlist Gen", "Permissions", "Payload Gen",
             "Session Log", "API Lookup", "Templates", "Vault", "Net Map",
             "Wordlists", "Log Analyzer", "Sanitizer", "Checksum",
+            "Exploits", "Subdomains", "Port Scan", "Forensics",
+            "Wireless", "Cloud", "Stego", "Resources",
             "Auto Recon", "OSINT", "Passwords", "Fuzzing", "Malware",
+            "Reverse Eng", "Social Eng", "Settings"
         ]
         
         self.cmd_map = {
@@ -26,24 +28,18 @@ class Sidebar:
             "Vault":"vault","Net Map":"mapper","Wordlists":"wordlists",
             "Log Analyzer":"loganalyzer","Sanitizer":"sanitizer","Checksum":"checksum",
             "Exploits":"exploits","Subdomains":"subdomains","Port Scan":"portscan",
-            "Forensics":"forensics","Wireless":"wireless2",
-            "Cloud":"cloud","Stego":"stego",
-            "Resources":"resources","Auto Recon":"autorecon","OSINT":"osint",
-            "Passwords":"passwords","Fuzzing":"fuzzing","Malware":"malware",
-            "Reverse Eng":"reverse","Social Eng":"social",
-            "API Security":"api",
-            "Settings":"settings"
+            "Forensics":"forensics","Wireless":"wireless2","Cloud":"cloud",
+            "Stego":"stego","Resources":"resources","Auto Recon":"autorecon",
+            "OSINT":"osint","Passwords":"passwords","Fuzzing":"fuzzing","Malware":"malware",
+            "Reverse Eng":"reverse","Social Eng":"social","Settings":"settings"
         }
     
     def build(self):
         self.frame.pack_propagate(False)
         
-        # Title
-        title = tk.Label(self.frame, text="CyberLab Pro", font=('Courier', 11, 'bold'),
-                fg='#00ff88', bg='#0f3460', height=2)
-        title.pack(fill='x')
+        tk.Label(self.frame, text="CyberLab Pro", font=('Courier', 11, 'bold'),
+                fg='#00ff88', bg='#0f3460', height=2).pack(fill='x')
         
-        # Scrollable Listbox - much simpler, handles scroll automatically
         scrollbar = tk.Scrollbar(self.frame, orient='vertical')
         scrollbar.pack(side='right', fill='y')
         
@@ -54,7 +50,7 @@ class Sidebar:
                 bg='#16213e', fg='#00ccff', selectbackground='#00ff88',
                 selectforeground='#000', relief='flat', borderwidth=0,
                 yscrollcommand=scrollbar.set, xscrollcommand=h_scrollbar.set,
-                activestyle='none', highlightthickness=0)
+                activestyle='none', highlightthickness=0, height=35)
         self.listbox.pack(fill='both', expand=True)
         
         scrollbar.config(command=self.listbox.yview)
@@ -66,12 +62,10 @@ class Sidebar:
         self.listbox.bind('<<ListboxSelect>>', self._on_select)
         self.listbox.selection_set(0)
         
-        # Version label
         tk.Label(self.frame, text="v1.0.0", font=('Courier', 7),
                 fg='#555', bg='#16213e').pack(side='bottom', pady=2)
     
     def set_active(self, command):
-        # Find index by command
         for name, cmd in self.cmd_map.items():
             if cmd == command:
                 idx = list(self.cmd_map.keys()).index(name)
