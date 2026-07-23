@@ -20,6 +20,7 @@ from gui.dashboard import Dashboard
 from gui.sidebar import Sidebar
 from gui.toolbar import ToolBar
 from gui.statusbar import StatusBar
+from gui.quick_access import QuickAccess
 from gui.settings import SettingsPanel
 from gui.notifications import NotificationManager
 from themes import ThemeLoader
@@ -95,6 +96,10 @@ class CyberLabApp:
         # Statusbar bottom
         self.statusbar = StatusBar(self.root); self.statusbar.build()
         self.statusbar.frame.pack(side='bottom', fill='x')
+        
+        # Quick Access Toolbar
+        self.quick_access = QuickAccess(self.root, self.on_navigate)
+        self.quick_access.build()
         
         # Toolbar top
         self.toolbar = ToolBar(self.root, {
@@ -203,6 +208,7 @@ class CyberLabApp:
                 ram = self.monitor.get_ram_usage(); cpu = self.monitor.get_cpu_usage()
                 storage = self.monitor.get_storage_info(); tools = self.detector.get_total_count()
                 self.statusbar.set_tool_info(f"CPU:{cpu}% | RAM:{ram['percent']}% | Free:{storage['free']}GB | Tools:{tools}")
+                self.quick_access.update_stats(cpu, ram["percent"], tools)
             except: pass
             self.root.after(3000, self._update_stats)
 
