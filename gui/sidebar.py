@@ -40,6 +40,7 @@ class Sidebar:
             ("Fuzzing", "fuzzing"),
             ("Malware", "malware"),
             ("Reverse Eng", "reverse"),
+            ("Social Eng", "social"),
             ("Subdomains", "subdomains"),
             ("Port Scan", "portscan"),
             ("Vuln Scan", "vulnscan"),

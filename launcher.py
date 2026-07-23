@@ -68,6 +68,7 @@ from modules.password_manager import PasswordManager
 from modules.fuzzing_toolkit import FuzzingToolkit
 from modules.malware_sandbox import MalwareSandbox
 from modules.reverse_engineering import ReverseEngineering
+from modules.social_engineering import SocialEngineering
 
 class CyberLabApp:
     def __init__(self):
@@ -183,6 +184,7 @@ class CyberLabApp:
             "fuzzing": lambda: FuzzingToolkit(self.content, self.db, self.logger).build(),
             "malware": lambda: MalwareSandbox(self.content, self.db, self.logger).build(),
             "reverse": lambda: ReverseEngineering(self.content, self.db, self.logger).build(),
+            "social": lambda: SocialEngineering(self.content, self.db, self.logger).build(),
             "settings": lambda: SettingsPanel(self.content, self.config, self.logger, self._apply_theme).build(),
         }
         if cmd in views: views[cmd](); self.db.log_activity('module_opened', cmd)
