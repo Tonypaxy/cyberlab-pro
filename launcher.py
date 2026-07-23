@@ -55,8 +55,6 @@ from modules.hash_cracker import HashCracker
 from modules.exploit_suggester import ExploitSuggester
 from modules.wifi_audit import WiFiAudit
 from modules.subdomain_finder import SubdomainFinder
-from modules.port_scanner import PortScanner
-from modules.forensic_toolkit import ForensicToolkit
 from modules.wireless_toolkit import WirelessToolkit
 from modules.cloud_toolkit import CloudToolkit
 from modules.stego_toolkit import StegoToolkit
@@ -171,9 +169,7 @@ class CyberLabApp:
             "hashcrack": lambda: HashCracker(self.content, self.db, self.logger).build(),
             "exploits": lambda: ExploitSuggester(self.content, self.db, self.logger).build(),
             "wifi": lambda: WiFiAudit(self.content, self.db, self.logger).build(),
-            "subdomains": lambda: SubdomainFinder(self.content, self.db, self.logger, self.detector).build(),
-            "portscan": lambda: PortScanner(self.content, self.db, self.logger).build(),            "forensics": lambda: ForensicToolkit(self.content, self.db, self.logger).build(),
-            "wireless2": lambda: WirelessToolkit(self.content, self.db, self.logger).build(),
+            "subdomains": lambda: SubdomainFinder(self.content, self.db, self.logger, self.detector).build(),            "wireless2": lambda: WirelessToolkit(self.content, self.db, self.logger).build(),
             "cloud": lambda: CloudToolkit(self.content, self.db, self.logger).build(),            "stego": lambda: StegoToolkit(self.content, self.db, self.logger).build(),
             "resources": lambda: ResourceMonitor(self.content, self.db, self.logger, self.resource_manager).build(),
             "autorecon": lambda: AutoRecon(self.content, self.db, self.logger, self.detector).build(),

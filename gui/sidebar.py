@@ -27,8 +27,8 @@ class Sidebar:
             "Session Log":"sessions","API Lookup":"api","Templates":"templates",
             "Vault":"vault","Net Map":"mapper","Wordlists":"wordlists",
             "Log Analyzer":"loganalyzer","Sanitizer":"sanitizer","Checksum":"checksum",
-            "Exploits":"exploits","Subdomains":"subdomains","Port Scan":"portscan",
-            "Forensics":"forensics","Wireless":"wireless2","Cloud":"cloud",
+            "Exploits":"exploits","Subdomains":"subdomains",
+            "Wireless":"wireless2","Cloud":"cloud",
             "Stego":"stego","Resources":"resources","Auto Recon":"autorecon",
             "OSINT":"osint","Passwords":"passwords","Fuzzing":"fuzzing","Malware":"malware",
             "Reverse Eng":"reverse","Social Eng":"social","Settings":"settings"
