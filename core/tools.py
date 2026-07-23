@@ -87,6 +87,41 @@ class ToolDetector:
             "rkhunter": ["rkhunter"], "testssl.sh": ["testssl.sh"], "sslscan": ["sslscan"],
             "sslyze": ["sslyze"]
         },
+        
+        "social_engineering": {
+            "setoolkit": ["setoolkit"], "zphisher": ["zphisher"], "blackeye": ["blackeye"],
+            "socialfish": ["socialfish"], "gophish": ["gophish"], "evilginx2": ["evilginx2"],
+            "modlishka": ["modlishka"], "muraena": ["muraena"], "king-phisher": ["king-phisher"],
+            "swaks": ["swaks"], "sendemail": ["sendEmail", "sendemail"], "mail": ["mail"]
+        },
+        "osint": {
+            "sherlock": ["sherlock"], "holehe": ["holehe"], "theHarvester": ["theHarvester"],
+            "recon-ng": ["recon-ng"], "spiderfoot": ["spiderfoot"], "twint": ["twint"],
+            "instaloader": ["instaloader"], "facebook-scraper": ["facebook-scraper"],
+            "tiktok-scraper": ["tiktok-scraper"], "subfinder": ["subfinder"],
+            "assetfinder": ["assetfinder"], "gau": ["gau"], "waybackurls": ["waybackurls"],
+            "amass": ["amass"], "dnsrecon": ["dnsrecon"], "whois": ["whois"]
+        },
+        "crypto_stego": {
+            "steghide": ["steghide"], "zsteg": ["zsteg"], "stegcracker": ["stegcracker"],
+            "outguess": ["outguess"], "openstego": ["openstego"], "stegsolve": ["stegsolve"],
+            "binwalk": ["binwalk"], "foremost": ["foremost"], "exiftool": ["exiftool"],
+            "strings": ["strings"], "qrencode": ["qrencode"], "gpg": ["gpg"],
+            "openssl": ["openssl"], "base64": ["base64"]
+        },
+        "reverse_engineering": {
+            "objdump": ["objdump"], "radare2": ["r2"], "rizin": ["rizin"],
+            "ghidra": ["ghidra"], "jadx": ["jadx"], "apktool": ["apktool"],
+            "dex2jar": ["dex2jar", "d2j-dex2jar"], "readelf": ["readelf"],
+            "strace": ["strace"], "ltrace": ["ltrace"], "nm": ["nm"],
+            "ldd": ["ldd"], "strings": ["strings"], "xxd": ["xxd"],
+            "hexdump": ["hexdump"], "file": ["file"]
+        },
+        "api_testing": {
+            "curl": ["curl"], "wget": ["wget"], "ffuf": ["ffuf"], "arjun": ["arjun"],
+            "kiterunner": ["kiterunner"], "nmap": ["nmap"], "sqlmap": ["sqlmap"]
+        },
+
         "programming": {
             "python": ["python3"], "go": ["go"], "git": ["git"], "ruby": ["ruby"],
             "perl": ["perl"], "php": ["php"], "node": ["node"], "gcc": ["gcc"], "make": ["make"]
