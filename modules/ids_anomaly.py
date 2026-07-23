@@ -102,14 +102,14 @@ class IDSAnomaly:
         self._log("Anomaly Detection Engine Initialized", "info")
         self._log("Monitoring: Port Scans | Beaconing | Data Exfil | Protocol Anomalies | Lateral Movement", "info")
 
-    def _log(self):
+    def _log(self, msg, level="info"):
         if not hasattr(self, "anomaly_out"): return
         ts = datetime.now().strftime("%H:%M:%S")
         self.anomaly_out.insert(tk.END, f"[{ts}] ", 'ts')
         self.anomaly_out.insert(tk.END, f"{msg}\n", level)
         self.anomaly_out.see(tk.END)
 
-    def _log_traffic(self):
+    def _log_traffic(self, msg):
         if not hasattr(self, "anomaly_out"): return
         ts = datetime.now().strftime("%H:%M:%S")
         self.traffic_out.insert(tk.END, f"[{ts}] {msg}\n")
