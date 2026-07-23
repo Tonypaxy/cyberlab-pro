@@ -32,6 +32,7 @@ class Sidebar:
             ("Subdomains", "subdomains"),
             ("Port Scan", "portscan"),
             ("Vuln Scan", "vulnscan"),
+            ("Forensics", "forensics"),
             ("Permissions", "permissions"), ("Settings", "settings")
         ]
     

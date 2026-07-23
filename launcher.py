@@ -55,6 +55,7 @@ from modules.wifi_audit import WiFiAudit
 from modules.subdomain_finder import SubdomainFinder
 from modules.port_scanner import PortScanner
 from modules.vuln_scanner import VulnScanner
+from modules.forensic_toolkit import ForensicToolkit
 
 class CyberLabApp:
     def __init__(self):
@@ -157,6 +158,7 @@ class CyberLabApp:
             "subdomains": lambda: SubdomainFinder(self.content, self.db, self.logger, self.detector).build(),
             "portscan": lambda: PortScanner(self.content, self.db, self.logger).build(),
             "vulnscan": lambda: VulnScanner(self.content, self.db, self.logger).build(),
+            "forensics": lambda: ForensicToolkit(self.content, self.db, self.logger).build(),
             "settings": lambda: SettingsPanel(self.content, self.config, self.logger, self._apply_theme).build(),
         }
         if cmd in views: views[cmd](); self.db.log_activity('module_opened', cmd)
