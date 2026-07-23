@@ -38,6 +38,7 @@ class Sidebar:
             ("OSINT", "osint"),
             ("Passwords", "passwords"),
             ("Fuzzing", "fuzzing"),
+            ("Malware", "malware"),
             ("Subdomains", "subdomains"),
             ("Port Scan", "portscan"),
             ("Vuln Scan", "vulnscan"),

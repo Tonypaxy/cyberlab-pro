@@ -66,6 +66,7 @@ from modules.auto_recon import AutoRecon
 from modules.osint_dashboard import OSINTDashboard
 from modules.password_manager import PasswordManager
 from modules.fuzzing_toolkit import FuzzingToolkit
+from modules.malware_sandbox import MalwareSandbox
 
 class CyberLabApp:
     def __init__(self):
@@ -179,6 +180,7 @@ class CyberLabApp:
             "osint": lambda: OSINTDashboard(self.content, self.db, self.logger).build(),
             "passwords": lambda: PasswordManager(self.content, self.db, self.logger).build(),
             "fuzzing": lambda: FuzzingToolkit(self.content, self.db, self.logger).build(),
+            "malware": lambda: MalwareSandbox(self.content, self.db, self.logger).build(),
             "settings": lambda: SettingsPanel(self.content, self.config, self.logger, self._apply_theme).build(),
         }
         if cmd in views: views[cmd](); self.db.log_activity('module_opened', cmd)
