@@ -129,7 +129,10 @@ class IDSAnomaly:
 
     def _loop(self):
         while self.monitoring:
-            self.frame.after(0, self._analyze)
+            try:
+                self.frame.after(0, self._analyze)
+            except:
+                break
             time.sleep(1)
 
     def _analyze(self):
@@ -139,7 +142,7 @@ class IDSAnomaly:
             self._detect_beaconing()
             self._detect_data_exfil()
             self._calc_score()
-        except Exception as e:
+        except:
             pass
 
     def _collect_stats(self):

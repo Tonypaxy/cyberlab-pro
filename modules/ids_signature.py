@@ -260,6 +260,7 @@ class IDSSignature:
         self._log("Monitoring stopped", "info")
 
     def _loop(self):
+        import tkinter as tk
         while self.sniffing:
             self.packets_scanned += 1
             if self.packets_scanned % 50 == 0:
@@ -287,14 +288,17 @@ class IDSSignature:
         return results
 
     def _show_results(self, results):
-        for r in results:
-            self._log(f"{r['description']} | {r['cwe']} | {r['source']}:{r['port']}", r['severity'], r['category'])
-            self.matches.insert(tk.END, f"[{r['timestamp'][:19]}] [{r['severity'].upper()}] {r['category']}\n")
-            self.matches.insert(tk.END, f"  Match: {r['match'][:100]}\n")
-            self.matches.insert(tk.END, f"  CWE: {r['cwe']} | Hash: {r['hash']}\n\n")
-            self.matches.see(tk.END)
-            self.hits_lbl.config(text=f"Hits: {self.signature_hits}")
-            self._update_gauge()
+        try:
+            for r in results:
+                self._log(f"{r['description']} | {r['cwe']} | {r['source']}:{r['port']}", r['severity'], r['category'])
+                self.matches.insert(tk.END, f"[{r['timestamp'][:19]}] [{r['severity'].upper()}] {r['category']}\n")
+                self.matches.insert(tk.END, f"  Match: {r['match'][:100]}\n")
+                self.matches.insert(tk.END, f"  CWE: {r['cwe']} | Hash: {r['hash']}\n\n")
+                self.matches.see(tk.END)
+                self.hits_lbl.config(text=f"Hits: {self.signature_hits}")
+                self._update_gauge()
+        except:
+            pass
 
     def _update_gauge(self):
         if self.signature_hits > 100: level, color, text = 90, '#ff0000', 'CRITICAL'
@@ -433,6 +437,7 @@ class IDSSignature:
         self._log("Monitoring stopped", "info")
 
     def _loop(self):
+        import tkinter as tk
         while self.sniffing:
             self.packets_scanned += 1
             if self.packets_scanned % 50 == 0:
@@ -459,14 +464,17 @@ class IDSSignature:
         return results
 
     def _show_results(self, results):
-        for r in results:
-            self._log(f"{r['description']} | {r['cwe']} | {r['source']}:{r['port']}", r['severity'], r['category'])
-            self.matches.insert(tk.END, f"[{r['timestamp'][:19]}] [{r['severity'].upper()}] {r['category']}\n")
-            self.matches.insert(tk.END, f"  Match: {r['match'][:100]}\n")
-            self.matches.insert(tk.END, f"  CWE: {r['cwe']} | Hash: {r['hash']}\n\n")
-            self.matches.see(tk.END)
-            self.hits_lbl.config(text=f"Hits: {self.signature_hits}")
-            self._update_gauge()
+        try:
+            for r in results:
+                self._log(f"{r['description']} | {r['cwe']} | {r['source']}:{r['port']}", r['severity'], r['category'])
+                self.matches.insert(tk.END, f"[{r['timestamp'][:19]}] [{r['severity'].upper()}] {r['category']}\n")
+                self.matches.insert(tk.END, f"  Match: {r['match'][:100]}\n")
+                self.matches.insert(tk.END, f"  CWE: {r['cwe']} | Hash: {r['hash']}\n\n")
+                self.matches.see(tk.END)
+                self.hits_lbl.config(text=f"Hits: {self.signature_hits}")
+                self._update_gauge()
+        except:
+            pass
 
     def _update_gauge(self):
         if self.signature_hits > 100: level, color, text = 90, '#ff0000', 'CRITICAL'
