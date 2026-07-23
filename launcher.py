@@ -13,6 +13,7 @@ from core.tools import ToolDetector
 from core.session import SessionManager
 from core.projects import ProjectCore
 from core.services import ServiceManager
+from core.resource_manager import ResourceManager
 from core.permissions import PermissionManager
 from gui.splash import SplashScreen
 from gui.dashboard import Dashboard
@@ -60,6 +61,7 @@ from modules.wireless_toolkit import WirelessToolkit
 from modules.cloud_toolkit import CloudToolkit
 from modules.database_toolkit import DatabaseToolkit
 from modules.stego_toolkit import StegoToolkit
+from modules.resource_monitor import ResourceMonitor
 
 class CyberLabApp:
     def __init__(self):
@@ -68,6 +70,7 @@ class CyberLabApp:
         self.session = SessionManager(self.config, self.db)
         self.project_core = ProjectCore(self.db, self.logger)
         self.services = ServiceManager(self.logger); self.permissions = PermissionManager(self.logger)
+        self.resource_manager = ResourceManager(self.logger)
         self.themes = ThemeLoader(); self.running = True; self.current_view = None; self._toolcenter = None
 
     def run(self):
@@ -167,6 +170,7 @@ class CyberLabApp:
             "cloud": lambda: CloudToolkit(self.content, self.db, self.logger).build(),
             "databases": lambda: DatabaseToolkit(self.content, self.db, self.logger).build(),
             "stego": lambda: StegoToolkit(self.content, self.db, self.logger).build(),
+            "resources": lambda: ResourceMonitor(self.content, self.db, self.logger, self.resource_manager).build(),
             "settings": lambda: SettingsPanel(self.content, self.config, self.logger, self._apply_theme).build(),
         }
         if cmd in views: views[cmd](); self.db.log_activity('module_opened', cmd)

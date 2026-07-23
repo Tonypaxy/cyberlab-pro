@@ -33,6 +33,7 @@ class Sidebar:
             ("Cloud", "cloud"),
             ("Databases", "databases"),
             ("Stego", "stego"),
+            ("Resources", "resources"),
             ("Subdomains", "subdomains"),
             ("Port Scan", "portscan"),
             ("Vuln Scan", "vulnscan"),
