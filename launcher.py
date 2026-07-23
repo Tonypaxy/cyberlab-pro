@@ -52,6 +52,7 @@ from modules.macro_recorder import MacroRecorder
 from modules.hash_cracker import HashCracker
 from modules.exploit_suggester import ExploitSuggester
 from modules.wifi_audit import WiFiAudit
+from modules.subdomain_finder import SubdomainFinder
 
 class CyberLabApp:
     def __init__(self):
@@ -151,6 +152,7 @@ class CyberLabApp:
             "hashcrack": lambda: HashCracker(self.content, self.db, self.logger).build(),
             "exploits": lambda: ExploitSuggester(self.content, self.db, self.logger).build(),
             "wifi": lambda: WiFiAudit(self.content, self.db, self.logger).build(),
+            "subdomains": lambda: SubdomainFinder(self.content, self.db, self.logger, self.detector).build(),
             "settings": lambda: SettingsPanel(self.content, self.config, self.logger, self._apply_theme).build(),
         }
         if cmd in views: views[cmd](); self.db.log_activity('module_opened', cmd)

@@ -29,6 +29,7 @@ class Sidebar:
             ("Hash Crack", "hashcrack"),
             ("Exploits", "exploits"),
             ("WiFi Audit", "wifi"),
+            ("Subdomains", "subdomains"),
             ("Permissions", "permissions"), ("Settings", "settings")
         ]
     
