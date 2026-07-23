@@ -239,11 +239,14 @@ class IDSSignature:
         self._log(f"Loaded {total} attack signatures across {len(self.signatures)} categories", "info")
 
     def _log(self, msg, level="info", category=None):
-        ts = datetime.now().strftime("%H:%M:%S")
-        self.alerts.insert(tk.END, f"[{ts}] ", 'ts')
-        if category: self.alerts.insert(tk.END, f"[{category}] ", 'cat')
-        self.alerts.insert(tk.END, f"{msg}\n", level)
-        self.alerts.see(tk.END)
+        try:
+            ts = datetime.now().strftime("%H:%M:%S")
+            self.alerts.insert(tk.END, f"[{ts}] ", 'ts')
+            if category: self.alerts.insert(tk.END, f"[{category}] ", 'cat')
+            self.alerts.insert(tk.END, f"{msg}\n", level)
+            self.alerts.see(tk.END)
+        except:
+            pass
 
     def start_ids(self):
         if self.sniffing: return
@@ -416,22 +419,28 @@ class IDSSignature:
         self._log(f"Loaded {total} signatures across {len(self.signatures)} categories", "info")
 
     def _log(self, msg, level="info", category=None):
-        ts = datetime.now().strftime("%H:%M:%S")
-        self.alerts.insert(tk.END, f"[{ts}] ", 'ts')
-        if category: self.alerts.insert(tk.END, f"[{category}] ", 'cat')
-        self.alerts.insert(tk.END, f"{msg}\n", level)
-        self.alerts.see(tk.END)
+        try:
+            ts = datetime.now().strftime("%H:%M:%S")
+            self.alerts.insert(tk.END, f"[{ts}] ", 'ts')
+            if category: self.alerts.insert(tk.END, f"[{category}] ", 'cat')
+            self.alerts.insert(tk.END, f"{msg}\n", level)
+            self.alerts.see(tk.END)
+        except:
+            pass
 
     def start_ids(self):
         if self.sniffing: return
-        self.sniffing = True
-        self.start_btn.config(state=tk.DISABLED); self.stop_btn.config(state=tk.NORMAL)
-        self.mode_lbl.config(text="ACTIVE", fg='#00ff00')
-        self._log("Monitoring started", "info")
-        threading.Thread(target=self._loop, daemon=True).start()
-
-    def stop_ids(self):
-        self.sniffing = False
+    def _loop(self):
+        while self.sniffing:
+            self.packets_scanned += 1
+            if self.packets_scanned % 50 == 0:
+                try:
+                    if self.frame.winfo_exists():
+                        self.frame.after(0, lambda: self.scanned_lbl.config(text=f"Scanned: {self.packets_scanned}"))
+                except:
+                    self.sniffing = False
+                    break
+            time.sleep(0.5)
         self.start_btn.config(state=tk.NORMAL); self.stop_btn.config(state=tk.DISABLED)
         self.mode_lbl.config(text="IDLE", fg='#888888')
         self._log("Monitoring stopped", "info")
