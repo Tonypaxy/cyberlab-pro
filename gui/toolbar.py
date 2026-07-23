@@ -9,18 +9,19 @@ class ToolBar:
     def build(self):
         self.frame.pack_propagate(False)
         
-        tk.Button(self.frame, text="=", font=('Courier', 12, 'bold'),
+        # Hamburger menu
+        tk.Button(self.frame, text="☰", font=('Courier', 12, 'bold'),
                 fg='#00ff88', bg='#0f3460', relief='flat', padx=10,
                 command=lambda: self.toggle_sidebar and self.toggle_sidebar()).pack(side='left', pady=3)
         
-        for icon, cmd in [("Home", "dashboard"), ("Proj", "projects"), ("Recon", "recon"), ("Term", "terminal"), ("Sett", "settings")]:
+        # Quick buttons - minimal horizontal
+        for icon, cmd in [("Home", "dashboard"), ("Scan", "recon"), ("Term", "terminal")]:
             btn = tk.Button(self.frame, text=icon, font=('Courier', 9),
                     fg='#aaa', bg='#0f3460', relief='flat', padx=8, pady=3,
                     command=lambda c=cmd: self._click(c))
             btn.pack(side='left', pady=3)
             self.buttons[cmd] = btn
         
-        tk.Label(self.frame, text="", font=('Courier', 8), fg='#888', bg='#0f3460').pack(side='right', padx=10)
         self.set_active("dashboard")
     
     def set_active(self, command):

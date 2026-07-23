@@ -44,7 +44,7 @@ class Dropdown:
             self._render_content()
     
     def _get_text(self):
-        arrow = '▼' if self.is_open else '▶'
+        arrow = 'v' if self.is_open else '>'
         return f"{arrow} {self.icon} {self.title}"
     
     def toggle(self):

@@ -39,6 +39,8 @@ class BaseModule:
         self._win_id = self.canvas.create_window((0,0), window=self.inner, anchor='nw')
         
         self.canvas.bind('<Configure>', self._on_resize)
+        self.canvas.update_idletasks()
+        self.canvas.itemconfig(self._win_id, width=self.canvas.winfo_width())
         self.canvas.configure(yscrollcommand=self.v_bar.set, xscrollcommand=self.h_bar.set)
         
         self.canvas.pack(side='left', fill='both', expand=True)
@@ -76,39 +78,14 @@ class BaseModule:
     def add_section(self, title, content_func, icon='', default_open=False):
         """Add a collapsible section."""
         section_id = title.lower().replace(' ', '_').replace('(', '').replace(')', '').replace('/', '_')
-        is_open = self.sections.get(section_id, {}).get('open', default_open)
         
-        # Header frame
-        header = tk.Frame(self.inner, bg='#16213e')
-        header.pack(fill='x', padx=10, pady=2)
-        
-        arrow = '▼' if is_open else '▶'
-        btn_text = f"{arrow} {icon} {title}"
-        
-        def toggle_handler():
-            # Get current state
-            current = self.sections.get(section_id, {}).get('open', False)
-            new_state = not current
-            self.sections[section_id] = {'open': new_state, 'frame': content_frame, 'func': content_func}
-            
-            if new_state:
-                # Show
-                content_frame.pack(fill='x', padx=20, pady=(0,5))
-                for w in content_frame.winfo_children():
-                    w.destroy()
-                content_func(content_frame)
-                btn.config(text=btn_text.replace('▶', '▼'))
-            else:
-                # Hide
-                content_frame.pack_forget()
-                for w in content_frame.winfo_children():
-                    w.destroy()
-                btn.config(text=btn_text.replace('▼', '▶'))
-        
-        btn = tk.Button(header, text=btn_text, font=('Courier', 10, 'bold'),
-                fg='#00ccff', bg='#16213e', relief='flat', anchor='w', padx=10, pady=6,
-                command=toggle_handler)
-        btn.pack(fill='x')
+        # Header button
+        is_open = default_open
+        arrow = 'v' if is_open else '>'
+        btn = tk.Button(self.inner, text=f"{arrow} {icon} {title}",
+                font=('Courier', 10, 'bold'), fg='#00ccff', bg='#16213e',
+                relief='flat', anchor='w', padx=10, pady=6)
+        btn.pack(fill='x', padx=10, pady=2)
         
         # Content frame
         content_frame = tk.Frame(self.inner, bg=self.bg)
@@ -116,7 +93,23 @@ class BaseModule:
             content_frame.pack(fill='x', padx=20, pady=(0,5))
             content_func(content_frame)
         
-        self.sections[section_id] = {'open': is_open, 'frame': content_frame, 'func': content_func, 'btn': btn}
+        # Toggle function
+        state = {'open': is_open}
+        def toggle():
+            if state['open']:
+                content_frame.pack_forget()
+                for w in content_frame.winfo_children():
+                    w.destroy()
+                state['open'] = False
+                btn.config(text=f"> {icon} {title}")
+            else:
+                content_frame.pack(fill='x', padx=20, pady=(0,5))
+                content_func(content_frame)
+                state['open'] = True
+                btn.config(text=f"v {icon} {title}")
+        
+        btn.config(command=toggle)
+        self.sections[section_id] = {'open': is_open, 'frame': content_frame}
     
     def _toggle_section(self, section_id, content_func, icon):
         """Toggle section open/close"""
