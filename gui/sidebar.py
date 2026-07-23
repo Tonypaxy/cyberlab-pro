@@ -29,6 +29,7 @@ class Sidebar:
             ("Hash Crack", "hashcrack"),
             ("Exploits", "exploits"),
             ("WiFi Audit", "wifi"),
+            ("Wireless", "wireless2"),
             ("Subdomains", "subdomains"),
             ("Port Scan", "portscan"),
             ("Vuln Scan", "vulnscan"),
