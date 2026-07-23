@@ -122,6 +122,145 @@ class ToolDetector:
             "kiterunner": ["kiterunner"], "nmap": ["nmap"], "sqlmap": ["sqlmap"]
         },
 
+        
+        "advanced_c2": {
+            "sliver": ["sliver-client", "sliver-server"], "havoc": ["havoc"], "mythic": ["mythic-cli"],
+            "cobalt_strike": ["teamserver"], "brute_ratel": ["badger"], "nimplant": ["nimplant"],
+            "ares": ["ares"], "shad0w": ["shad0w"], "villain": ["villain"],
+            "hoaxshell": ["hoaxshell"], "godoh": ["godoh"], "merlin": ["merlinServer"],
+            "covenant": ["covenant"], "apfell": ["apfell"], "poseidon": ["poseidon"],
+            "empire": ["empire"], "star_killer": ["star-killer"], "metasploit": ["msfconsole"]
+        },
+        "evasion_bypass": {
+            "scarecrow": ["scarecrow"], "freeze": ["freeze"], "shellcode_runner": ["shellcode_runner"],
+            "limelighter": ["limelighter"], "invisishell": ["invisishell"], "powershell_obfuscator": ["posh-obfuscate"],
+            "xencrypt": ["xencrypt"], "confuser_ex": ["confuser"], "enigma_protector": ["enigma"],
+            "vmprotect": ["vmprotect"], "the_fucking_bypasser": ["tfb"], "av_evasion_craft": ["av_evasion_craft"],
+            "phantom_evasion": ["phantom-evasion"], "hyperion": ["hyperion"], "pe_cloak": ["pecloak"],
+            "donut": ["donut"], "sgn": ["sgn"], "shikata_ga_nai": ["msfvenom"]
+        },
+        "red_team_infra": {
+            "red_elk": ["red_elk"], "c2_jwso": ["c2-jwso"], "malleable_c2": ["malleable-c2"],
+            "redirect_rules": ["redirect-rules"], "domain_fronting": ["domain-fronting"],
+            "azure_c2": ["azure-c2"], "gcp_c2": ["gcp-c2"], "aws_c2": ["aws-c2"],
+            "cloudfront_c2": ["cloudfront-c2"], "cdn_c2": ["cdn-c2"], "fastly_c2": ["fastly-c2"],
+            "terraform_red": ["terraform-red"], "ansible_red": ["ansible-red"],
+            "docker_red": ["docker-red"], "k8s_red": ["k8s-red"]
+        },
+        "initial_access": {
+            "phishing_framework": ["gophish", "evilginx2", "modlishka"], "spear_phish": ["spear-phish"],
+            "macro_pack": ["macro_pack"], "hack_browser_data": ["hack-browser-data"],
+            "lazagne": ["lazagne"], "mimikatz": ["mimikatz"], "sharp_hound": ["sharp-hound"],
+            "seatbelt": ["seatbelt"], "stand_in": ["stand-in"], "rubeus": ["rubeus"],
+            "certify": ["certify"], "certipy": ["certipy"], "impacket": ["impacket"],
+            "crackmapexec": ["crackmapexec"], "evil_winrm": ["evil-winrm"],
+            "chisel": ["chisel"], "ligolo_ng": ["ligolo-ng"], "ngrok": ["ngrok"]
+        },
+        "privilege_escalation": {
+            "linpeas": ["linpeas"], "winpeas": ["winpeas"], "peass_ng": ["peass-ng"],
+            "linux_exploit_suggester": ["linux-exploit-suggester", "les"], "windows_exploit_suggester": ["windows-exploit-suggester"],
+            "linenum": ["linenum"], "linux_priv_checker": ["linux-priv-checker"],
+            "powerup": ["powerup"], "jaws": ["jaws"], "sherlock": ["sherlock"],
+            "watson": ["watson"], "sweet_potato": ["sweet-potato"], "juicy_potato": ["juicy-potato"],
+            "rogue_potato": ["rogue-potato"], "print_spoofer": ["print-spoofer"],
+            "god_potato": ["god-potato"], "efs_potato": ["efs-potato"]
+        },
+        "lateral_movement": {
+            "psexec": ["psexec", "psexec.py"], "wmiexec": ["wmiexec", "wmiexec.py"],
+            "smbexec": ["smbexec", "smbexec.py"], "atexec": ["atexec", "atexec.py"],
+            "dcomexec": ["dcomexec", "dcomexec.py"], "winrm": ["evil-winrm"],
+            "rdp": ["xfreerdp"], "ssh": ["ssh"], "scp": ["scp"],
+            "rsync": ["rsync"], "netsh": ["netsh"], "proxychains": ["proxychains"]
+        },
+        "exfiltration": {
+            "dnscat2": ["dnscat2"], "iodine": ["iodine"], "dns_exfiltrator": ["dns-exfiltrator"],
+            "icmp_exfil": ["icmp-exfil"], "http_exfil": ["http-exfil"], "cloakify": ["cloakify"],
+            "steg_exfil": ["steg-exfil"], "dropbox_c2": ["dropbox-c2"], "gdrive_c2": ["gdrive-c2"],
+            "slack_c2": ["slack-c2"], "teams_c2": ["teams-c2"], "discord_c2": ["discord-c2"],
+            "twitter_c2": ["twitter-c2"], "github_c2": ["github-c2"], "pastebin_c2": ["pastebin-c2"]
+        },
+        "persistence": {
+            "sharpersist": ["sharppersist"], "persistence_sniper": ["persistence-sniper"],
+            "backdoor_factory": ["backdoor-factory"], "veil_evasion": ["veil-evasion"],
+            "rootkit": ["rootkit"], "kernel_module": ["kernel-module"], "ld_preload": ["ld-preload"],
+            "cron": ["crontab"], "systemd": ["systemctl"], "rc_local": ["rc-local"],
+            "bashrc": ["bashrc"], "ssh_key": ["ssh-keygen"], "wmi": ["wmic"],
+            "scheduled_tasks": ["schtasks"], "registry": ["reg"], "startup_folder": ["startup"]
+        },
+        "defense_evasion": {
+            "firewall_bypass": ["firewall-bypass"], "applocker_bypass": ["applocker-bypass"],
+            "amsi_bypass": ["amsi-bypass"], "etw_bypass": ["etw-bypass"],
+            "wdac_bypass": ["wdac-bypass"], "uac_bypass": ["uac-bypass"],
+            "dep_bypass": ["dep-bypass"], "aslr_bypass": ["aslr-bypass"],
+            "cf_bypass": ["cf-bypass"], "smep_bypass": ["smep-bypass"],
+            "disable_defender": ["disable-defender"], "disable_firewall": ["disable-firewall"],
+            "clear_logs": ["clear-logs"], "timestomp": ["timestomp"]
+        },
+        "credential_access": {
+            "mimikatz": ["mimikatz"], "lsassy": ["lsassy"], "nanodump": ["nanodump"],
+            "procdump": ["procdump"], "sqldumper": ["sqldumper"], "sam_dump": ["sam-dump"],
+            "ntds_dump": ["ntds-dump"], "kerberoast": ["kerberoast"], "asreproast": ["asreproast"],
+            "hashcat": ["hashcat"], "john": ["john"], "ophcrack": ["ophcrack"],
+            "rainbow_crack": ["rcrack"], "cain": ["cain"], "abel": ["abel"],
+            "fgdump": ["fgdump"], "pwdump": ["pwdump"], "gsecdump": ["gsecdump"]
+        },
+        "collection": {
+            "keylogger": ["keylogger"], "screen_capture": ["screen-capture"],
+            "clipboard_monitor": ["clipboard-monitor"], "audio_capture": ["audio-capture"],
+            "video_capture": ["video-capture"], "email_collector": ["email-collector"],
+            "file_finder": ["file-finder"], "data_miner": ["data-miner"],
+            "sensitive_file_scanner": ["sensitive-file-scanner"]
+        },
+        "impact_ransomware": {
+            "ransomware_sim": ["ransomware-sim"], "wipers": ["wipers"],
+            "disk_encryptor": ["disk-encryptor"], "mbr_wiper": ["mbr-wiper"],
+            "shadow_copy_delete": ["vssadmin"], "backup_delete": ["backup-delete"],
+            "service_stopper": ["service-stopper"], "process_killer": ["process-killer"]
+        },
+        "cloud_attacks": {
+            "pacu": ["pacu"], "cloudmapper": ["cloudmapper"], "cloudsplaining": ["cloudsplaining"],
+            "scoutsuite": ["scoutsuite"], "prowler": ["prowler"], "enumerate_iam": ["enumerate-iam"],
+            "weird_aal": ["weirdAAL"], "s3_scanner": ["s3scanner"], "bucket_finder": ["bucket-finder"],
+            "microburst": ["microburst"], "stormspotter": ["stormspotter"], "azucar": ["azucar"],
+            "gcp_scanner": ["gcp-scanner"], "trivy": ["trivy"], "kube_hunter": ["kube-hunter"],
+            "kube_bench": ["kube-bench"], "falco": ["falco"], "kyverno": ["kyverno"]
+        },
+        "ai_ml_tools": {
+            "deep_exploit": ["deep-exploit"], "gym_malware": ["gym-malware"],
+            "malware_rl": ["malware-rl"], "ai_fuzzer": ["ai-fuzzer"],
+            "neural_crypt": ["neural-crypt"], "llm_pentest": ["llm-pentest"],
+            "gpt_attack": ["gpt-attack"], "claude_exploit": ["claude-exploit"],
+            "deep_phish": ["deep-phish"], "ai_voice_clone": ["ai-voice-clone"],
+            "deepfake_gen": ["deepfake-gen"], "face_swap": ["face-swap"]
+        },
+        "quantum_crypto": {
+            "pqcrypto": ["pqcrypto"], "lattice_crypt": ["lattice-crypt"],
+            "hash_based_sig": ["hash-based-sig"], "code_based_crypt": ["code-based-crypt"],
+            "multivariate_crypt": ["multivariate-crypt"], "isogeny_crypt": ["isogeny-crypt"],
+            "quantum_key_dist": ["quantum-key-dist"], "qrng": ["qrng"]
+        },
+        "blockchain_web3": {
+            "mythril": ["mythril"], "slither": ["slither"], "manticore": ["manticore"],
+            "echidna": ["echidna"], "foundry": ["foundry"], "hardhat": ["hardhat"],
+            "truffle": ["truffle"], "ganache": ["ganache"], "web3_hack": ["web3-hack"],
+            "smart_contract_fuzzer": ["smart-contract-fuzzer"], "defi_exploit": ["defi-exploit"],
+            "nft_exploit": ["nft-exploit"], "bridge_exploit": ["bridge-exploit"],
+            "flash_loan": ["flash-loan"], "mev_bot": ["mev-bot"]
+        },
+        "satellite_space": {
+            "satellite_tracker": ["satellite-tracker"], "ground_station": ["ground-station"],
+            "sdr_receiver": ["sdr-receiver"], "signal_decoder": ["signal-decoder"],
+            "telemetry_parser": ["telemetry-parser"], "space_link": ["space-link"],
+            "sat_com": ["sat-com"], "orbital_hack": ["orbital-hack"],
+            "iss_tracker": ["iss-tracker"], "gps_spoof": ["gps-spoof"]
+        },
+        "biometric_hack": {
+            "fingerprint_spoof": ["fingerprint-spoof"], "face_recog_bypass": ["face-recog-bypass"],
+            "iris_spoof": ["iris-spoof"], "voice_spoof": ["voice-spoof"],
+            "gait_bypass": ["gait-bypass"], "vein_spoof": ["vein-spoof"],
+            "dna_spoof": ["dna-spoof"], "heartbeat_spoof": ["heartbeat-spoof"]
+        },
+
         "programming": {
             "python": ["python3"], "go": ["go"], "git": ["git"], "ruby": ["ruby"],
             "perl": ["perl"], "php": ["php"], "node": ["node"], "gcc": ["gcc"], "make": ["make"]
