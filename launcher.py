@@ -156,6 +156,7 @@ class CyberLabApp:
             "payloads": lambda: PayloadGenerator(self.content, self.db, self.logger).build(),
             "sessions": lambda: SessionLogger(self.content, self.db, self.logger).build(),
             "api": lambda: APIIntegrations(self.content, self.db, self.logger).build(),
+            "backup": lambda: BackupRestore(self.content, self.db, self.logger).build(),
             "templates": lambda: ReportTemplates(self.content, self.db, self.logger).build(),
             "vault": lambda: EncryptedVault(self.content, self.db, self.logger).build(),
             "mapper": lambda: NetworkMapper(self.content, self.db, self.logger).build(),
