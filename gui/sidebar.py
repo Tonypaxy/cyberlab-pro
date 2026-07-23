@@ -34,6 +34,7 @@ class Sidebar:
             ("Databases", "databases"),
             ("Stego", "stego"),
             ("Resources", "resources"),
+            ("Auto Recon", "autorecon"),
             ("Subdomains", "subdomains"),
             ("Port Scan", "portscan"),
             ("Vuln Scan", "vulnscan"),
