@@ -659,6 +659,248 @@ BUILTIN_ARGS = {
         ("-f urls.txt", "URL list file"),
     ],
 
+
+
+    # === EVEN MORE PRE-BUILT EXAMPLES ===
+    "burpsuite": [
+        ("--project=project.burp", "Open project"),
+        ("--config=config.json", "Load config"),
+        ("--collaborator-server", "Start collaborator"),
+        ("--unpause-spidering", "Resume spider"),
+    ],
+    "zaproxy": [
+        ("-cmd -quickurl http://target.com", "Quick scan"),
+        ("-daemon -port 8080", "Daemon mode"),
+        ("-cmd -quickurl http://target.com -quickout report.html", "Quick with report"),
+    ],
+    "commix": [
+        ("-u http://target.com/page.php?id=1", "Basic test"),
+        ("-u http://target.com/page.php?id=1 --os=unix", "Unix target"),
+        ("-u http://target.com/page.php?id=1 --technique=t", "Time-based"),
+    ],
+    "xsser": [
+        ("-u http://target.com/page.php?q=test", "Basic XSS"),
+        ("--auto -u http://target.com/page.php?q=test", "Auto mode"),
+        ("-u http://target.com/page.php?q=test --Fp", "Final payload"),
+    ],
+    "xsstrike": [
+        ("-u http://target.com/page.php?q=test", "Basic scan"),
+        ("-u http://target.com/page.php?q=test --crawl", "Crawl mode"),
+        ("-u http://target.com/page.php?q=test --fuzzer", "Fuzzer mode"),
+        ("-u http://target.com/page.php?q=test --blind", "Blind XSS"),
+    ],
+    "dalfox": [
+        ("url http://target.com/page.php?q=test", "Basic scan"),
+        ("url http://target.com/page.php?q=test --cookie 'session=xxx'", "With cookie"),
+        ("file urls.txt", "Bulk URLs"),
+    ],
+    "nosqlmap": [
+        ("-u http://target.com/api", "Basic scan"),
+        ("-u http://target.com/api --mongodb", "MongoDB target"),
+        ("-u http://target.com/api --dump", "Dump data"),
+    ],
+    "arjun": [
+        ("-u http://target.com/page.php", "Find params"),
+        ("-u http://target.com/page.php -t 20", "20 threads"),
+        ("-u http://target.com/api --json", "JSON output"),
+    ],
+    "paramspider": [
+        ("-d target.com", "Domain scan"),
+        ("-d target.com -o output.txt", "Save output"),
+    ],
+    "kiterunner": [
+        ("scan http://target.com -w routes.kite", "API scan"),
+        ("discover http://target.com -w routes.kite", "Discover mode"),
+    ],
+    "feroxbuster": [
+        ("-u http://target.com -w wordlist.txt", "Directory brute"),
+        ("-u http://target.com -w wordlist.txt -t 100", "100 threads"),
+        ("-u http://target.com -w wordlist.txt -x php,html,txt", "Extensions"),
+    ],
+    "dirsearch": [
+        ("-u http://target.com -w wordlist.txt", "Directory scan"),
+        ("-u http://target.com -e php,html,txt -t 50", "Extensions"),
+        ("-u http://target.com --json-report report.json", "JSON report"),
+    ],
+    "trivy": [
+        ("image nginx:latest", "Scan image"),
+        ("fs /", "Filesystem scan"),
+        ("repo https://github.com/user/repo", "Repo scan"),
+        ("--severity CRITICAL,HIGH image nginx:latest", "Critical only"),
+    ],
+    "grype": [
+        ("nginx:latest", "Scan image"),
+        ("dir:/app", "Directory scan"),
+        ("-o json nginx:latest", "JSON output"),
+    ],
+    "dockle": [
+        ("nginx:latest", "Check image"),
+        ("--ignore CIS-DI-0001 nginx:latest", "Ignore check"),
+    ],
+    "hadolint": [
+        ("Dockerfile", "Lint Dockerfile"),
+        ("--ignore DL3008 Dockerfile", "Ignore rule"),
+    ],
+    "clair": [
+        ("--config config.yaml", "With config"),
+        ("--ip 0.0.0.0 --port 6060", "Custom port"),
+    ],
+    "kube-hunter": [
+        ("--remote target.com", "Remote scan"),
+        ("--active", "Active hunting"),
+        ("--pod", "Inside pod"),
+        ("--cidr 192.168.1.0/24", "Network range"),
+    ],
+    "kube-bench": [
+        ("--config-dir /etc/kubernetes", "Config dir"),
+        ("--version 1.20", "K8s version"),
+        ("--check 1.1.1", "Single check"),
+    ],
+    "kubescape": [
+        ("scan", "Full scan"),
+        ("scan --include-namespaces dev,prod", "Specific namespaces"),
+        ("scan framework nsa", "NSA framework"),
+    ],
+    "popeye": [
+        ("-n dev", "Dev namespace"),
+        ("--all-namespaces", "All namespaces"),
+        ("-o json", "JSON output"),
+    ],
+    "checkov": [
+        ("-d /terraform", "Terraform scan"),
+        ("-d /kubernetes", "K8s scan"),
+        ("-d / --framework all", "All frameworks"),
+    ],
+    "tfsec": [
+        (".", "Current directory"),
+        ("--format json .", "JSON output"),
+        ("--exclude-downloaded-modules .", "Exclude modules"),
+    ],
+    "terrascan": [
+        ("scan -d /terraform", "Scan directory"),
+        ("scan -i terraform", "Terraform only"),
+        ("scan -f output.json", "Output file"),
+    ],
+    "prowler": [
+        ("-p custom-profile -r us-east-1", "AWS region"),
+        ("-g securitygroup -n", "Security groups"),
+        ("-M json -o output", "JSON output"),
+    ],
+    "scoutsuite": [
+        ("aws --profile default", "AWS scan"),
+        ("azure --cli", "Azure scan"),
+        ("gcp --project-id my-project", "GCP scan"),
+    ],
+    "pacu": [
+        ("--session mytest", "Create session"),
+        ("--list-modules", "List modules"),
+        ("--module-name iam__enum_users", "Run module"),
+    ],
+    "cloudmapper": [
+        ("collect --account target", "Collect data"),
+        ("report --account target", "Generate report"),
+        ("webserver --account target", "Start web UI"),
+    ],
+    "lynis": [
+        ("audit system", "System audit"),
+        ("audit system --quick", "Quick scan"),
+        ("audit system --pentest", "Pentest mode"),
+    ],
+    "chkrootkit": [
+        ("-q", "Quiet mode"),
+        ("-x", "Expert mode"),
+    ],
+    "rkhunter": [
+        ("--check", "Full check"),
+        ("--update", "Update database"),
+        ("--sk", "Skip keypress"),
+    ],
+    "clamscan": [
+        ("-r /", "Scan root"),
+        ("-r --bell /home", "Alert on find"),
+        ("-r --remove /tmp", "Auto remove"),
+    ],
+    "testdisk": [
+        ("/dev/sda", "Analyze disk"),
+        ("/dev/sda /log", "With log"),
+    ],
+    "photorec": [
+        ("/dev/sda", "Recover from disk"),
+        ("/d /recovery /dev/sda", "Output directory"),
+    ],
+    "foremost": [
+        ("-i image.dd -o output/", "Carve files"),
+        ("-t all -i image.dd -o output/", "All types"),
+    ],
+    "scalpel": [
+        ("-c scalpel.conf image.dd -o output/", "With config"),
+        ("image.dd -o output/", "Quick carve"),
+    ],
+    "bulk_extractor": [
+        ("-o output/ image.dd", "Extract all"),
+        ("-e email -o output/ image.dd", "Emails only"),
+    ],
+    "volatility3": [
+        ("-f memory.dump windows.info", "System info"),
+        ("-f memory.dump windows.pslist", "Process list"),
+        ("-f memory.dump windows.netscan", "Network scan"),
+        ("-f memory.dump windows.cmdline", "Command line"),
+        ("-f memory.dump windows.malfind", "Malware find"),
+    ],
+    "apktool": [
+        ("d app.apk", "Decompile"),
+        ("b app/ -o new.apk", "Build"),
+        ("d -f app.apk", "Force decompile"),
+    ],
+    "jadx": [
+        ("app.apk", "Decompile"),
+        ("-d output/ app.apk", "Output directory"),
+        ("--deobf app.apk", "Deobfuscate"),
+    ],
+    "dex2jar": [
+        ("classes.dex -o output.jar", "Convert DEX"),
+        ("app.apk -o output.jar", "APK to JAR"),
+    ],
+    "androguard": [
+        ("analyze app.apk", "Analyze"),
+        ("-o output/ app.apk", "Output directory"),
+    ],
+    "ghidra": [
+        ("-import binary.exe -postscript AnalyzeHeadless", "Import analyze"),
+        ("-process binary.exe -scriptPath /scripts", "Custom scripts"),
+    ],
+    "radare2": [
+        ("-A binary", "Auto analyze"),
+        ("-d binary", "Debug mode"),
+        ("-A -c 'afl' binary", "List functions"),
+        ("-w binary", "Write mode"),
+    ],
+    "rizin": [
+        ("-A binary", "Auto analyze"),
+        ("-d binary", "Debug mode"),
+    ],
+    "objdump": [
+        ("-d binary", "Disassemble"),
+        ("-x binary", "All headers"),
+        ("-t binary", "Symbol table"),
+    ],
+    "strace": [
+        ("-f command", "Follow forks"),
+        ("-c command", "Summary count"),
+        ("-e trace=file command", "File operations"),
+        ("-o output.log command", "Save to file"),
+    ],
+    "ltrace": [
+        ("command", "Library calls"),
+        ("-f command", "Follow forks"),
+        ("-o output.log command", "Save to file"),
+    ],
+    "gdb": [
+        ("-q binary", "Quiet start"),
+        ("-ex 'run' -ex 'bt' binary", "Run and backtrace"),
+        ("-p PID", "Attach to process"),
+    ],
+
 }' https://target.com/api", "JSON API"),
         ("-x http://proxy:8080 https://target.com", "Via proxy"),
         ("-k https://target.com", "Ignore SSL errors"),
@@ -904,6 +1146,248 @@ BUILTIN_ARGS = {
         ("-c 100 -t 30s http://target.com", "100 users 30s"),
         ("-c 200 -r 50 http://target.com", "200 users 50 reps"),
         ("-f urls.txt", "URL list file"),
+    ],
+
+
+
+    # === EVEN MORE PRE-BUILT EXAMPLES ===
+    "burpsuite": [
+        ("--project=project.burp", "Open project"),
+        ("--config=config.json", "Load config"),
+        ("--collaborator-server", "Start collaborator"),
+        ("--unpause-spidering", "Resume spider"),
+    ],
+    "zaproxy": [
+        ("-cmd -quickurl http://target.com", "Quick scan"),
+        ("-daemon -port 8080", "Daemon mode"),
+        ("-cmd -quickurl http://target.com -quickout report.html", "Quick with report"),
+    ],
+    "commix": [
+        ("-u http://target.com/page.php?id=1", "Basic test"),
+        ("-u http://target.com/page.php?id=1 --os=unix", "Unix target"),
+        ("-u http://target.com/page.php?id=1 --technique=t", "Time-based"),
+    ],
+    "xsser": [
+        ("-u http://target.com/page.php?q=test", "Basic XSS"),
+        ("--auto -u http://target.com/page.php?q=test", "Auto mode"),
+        ("-u http://target.com/page.php?q=test --Fp", "Final payload"),
+    ],
+    "xsstrike": [
+        ("-u http://target.com/page.php?q=test", "Basic scan"),
+        ("-u http://target.com/page.php?q=test --crawl", "Crawl mode"),
+        ("-u http://target.com/page.php?q=test --fuzzer", "Fuzzer mode"),
+        ("-u http://target.com/page.php?q=test --blind", "Blind XSS"),
+    ],
+    "dalfox": [
+        ("url http://target.com/page.php?q=test", "Basic scan"),
+        ("url http://target.com/page.php?q=test --cookie 'session=xxx'", "With cookie"),
+        ("file urls.txt", "Bulk URLs"),
+    ],
+    "nosqlmap": [
+        ("-u http://target.com/api", "Basic scan"),
+        ("-u http://target.com/api --mongodb", "MongoDB target"),
+        ("-u http://target.com/api --dump", "Dump data"),
+    ],
+    "arjun": [
+        ("-u http://target.com/page.php", "Find params"),
+        ("-u http://target.com/page.php -t 20", "20 threads"),
+        ("-u http://target.com/api --json", "JSON output"),
+    ],
+    "paramspider": [
+        ("-d target.com", "Domain scan"),
+        ("-d target.com -o output.txt", "Save output"),
+    ],
+    "kiterunner": [
+        ("scan http://target.com -w routes.kite", "API scan"),
+        ("discover http://target.com -w routes.kite", "Discover mode"),
+    ],
+    "feroxbuster": [
+        ("-u http://target.com -w wordlist.txt", "Directory brute"),
+        ("-u http://target.com -w wordlist.txt -t 100", "100 threads"),
+        ("-u http://target.com -w wordlist.txt -x php,html,txt", "Extensions"),
+    ],
+    "dirsearch": [
+        ("-u http://target.com -w wordlist.txt", "Directory scan"),
+        ("-u http://target.com -e php,html,txt -t 50", "Extensions"),
+        ("-u http://target.com --json-report report.json", "JSON report"),
+    ],
+    "trivy": [
+        ("image nginx:latest", "Scan image"),
+        ("fs /", "Filesystem scan"),
+        ("repo https://github.com/user/repo", "Repo scan"),
+        ("--severity CRITICAL,HIGH image nginx:latest", "Critical only"),
+    ],
+    "grype": [
+        ("nginx:latest", "Scan image"),
+        ("dir:/app", "Directory scan"),
+        ("-o json nginx:latest", "JSON output"),
+    ],
+    "dockle": [
+        ("nginx:latest", "Check image"),
+        ("--ignore CIS-DI-0001 nginx:latest", "Ignore check"),
+    ],
+    "hadolint": [
+        ("Dockerfile", "Lint Dockerfile"),
+        ("--ignore DL3008 Dockerfile", "Ignore rule"),
+    ],
+    "clair": [
+        ("--config config.yaml", "With config"),
+        ("--ip 0.0.0.0 --port 6060", "Custom port"),
+    ],
+    "kube-hunter": [
+        ("--remote target.com", "Remote scan"),
+        ("--active", "Active hunting"),
+        ("--pod", "Inside pod"),
+        ("--cidr 192.168.1.0/24", "Network range"),
+    ],
+    "kube-bench": [
+        ("--config-dir /etc/kubernetes", "Config dir"),
+        ("--version 1.20", "K8s version"),
+        ("--check 1.1.1", "Single check"),
+    ],
+    "kubescape": [
+        ("scan", "Full scan"),
+        ("scan --include-namespaces dev,prod", "Specific namespaces"),
+        ("scan framework nsa", "NSA framework"),
+    ],
+    "popeye": [
+        ("-n dev", "Dev namespace"),
+        ("--all-namespaces", "All namespaces"),
+        ("-o json", "JSON output"),
+    ],
+    "checkov": [
+        ("-d /terraform", "Terraform scan"),
+        ("-d /kubernetes", "K8s scan"),
+        ("-d / --framework all", "All frameworks"),
+    ],
+    "tfsec": [
+        (".", "Current directory"),
+        ("--format json .", "JSON output"),
+        ("--exclude-downloaded-modules .", "Exclude modules"),
+    ],
+    "terrascan": [
+        ("scan -d /terraform", "Scan directory"),
+        ("scan -i terraform", "Terraform only"),
+        ("scan -f output.json", "Output file"),
+    ],
+    "prowler": [
+        ("-p custom-profile -r us-east-1", "AWS region"),
+        ("-g securitygroup -n", "Security groups"),
+        ("-M json -o output", "JSON output"),
+    ],
+    "scoutsuite": [
+        ("aws --profile default", "AWS scan"),
+        ("azure --cli", "Azure scan"),
+        ("gcp --project-id my-project", "GCP scan"),
+    ],
+    "pacu": [
+        ("--session mytest", "Create session"),
+        ("--list-modules", "List modules"),
+        ("--module-name iam__enum_users", "Run module"),
+    ],
+    "cloudmapper": [
+        ("collect --account target", "Collect data"),
+        ("report --account target", "Generate report"),
+        ("webserver --account target", "Start web UI"),
+    ],
+    "lynis": [
+        ("audit system", "System audit"),
+        ("audit system --quick", "Quick scan"),
+        ("audit system --pentest", "Pentest mode"),
+    ],
+    "chkrootkit": [
+        ("-q", "Quiet mode"),
+        ("-x", "Expert mode"),
+    ],
+    "rkhunter": [
+        ("--check", "Full check"),
+        ("--update", "Update database"),
+        ("--sk", "Skip keypress"),
+    ],
+    "clamscan": [
+        ("-r /", "Scan root"),
+        ("-r --bell /home", "Alert on find"),
+        ("-r --remove /tmp", "Auto remove"),
+    ],
+    "testdisk": [
+        ("/dev/sda", "Analyze disk"),
+        ("/dev/sda /log", "With log"),
+    ],
+    "photorec": [
+        ("/dev/sda", "Recover from disk"),
+        ("/d /recovery /dev/sda", "Output directory"),
+    ],
+    "foremost": [
+        ("-i image.dd -o output/", "Carve files"),
+        ("-t all -i image.dd -o output/", "All types"),
+    ],
+    "scalpel": [
+        ("-c scalpel.conf image.dd -o output/", "With config"),
+        ("image.dd -o output/", "Quick carve"),
+    ],
+    "bulk_extractor": [
+        ("-o output/ image.dd", "Extract all"),
+        ("-e email -o output/ image.dd", "Emails only"),
+    ],
+    "volatility3": [
+        ("-f memory.dump windows.info", "System info"),
+        ("-f memory.dump windows.pslist", "Process list"),
+        ("-f memory.dump windows.netscan", "Network scan"),
+        ("-f memory.dump windows.cmdline", "Command line"),
+        ("-f memory.dump windows.malfind", "Malware find"),
+    ],
+    "apktool": [
+        ("d app.apk", "Decompile"),
+        ("b app/ -o new.apk", "Build"),
+        ("d -f app.apk", "Force decompile"),
+    ],
+    "jadx": [
+        ("app.apk", "Decompile"),
+        ("-d output/ app.apk", "Output directory"),
+        ("--deobf app.apk", "Deobfuscate"),
+    ],
+    "dex2jar": [
+        ("classes.dex -o output.jar", "Convert DEX"),
+        ("app.apk -o output.jar", "APK to JAR"),
+    ],
+    "androguard": [
+        ("analyze app.apk", "Analyze"),
+        ("-o output/ app.apk", "Output directory"),
+    ],
+    "ghidra": [
+        ("-import binary.exe -postscript AnalyzeHeadless", "Import analyze"),
+        ("-process binary.exe -scriptPath /scripts", "Custom scripts"),
+    ],
+    "radare2": [
+        ("-A binary", "Auto analyze"),
+        ("-d binary", "Debug mode"),
+        ("-A -c 'afl' binary", "List functions"),
+        ("-w binary", "Write mode"),
+    ],
+    "rizin": [
+        ("-A binary", "Auto analyze"),
+        ("-d binary", "Debug mode"),
+    ],
+    "objdump": [
+        ("-d binary", "Disassemble"),
+        ("-x binary", "All headers"),
+        ("-t binary", "Symbol table"),
+    ],
+    "strace": [
+        ("-f command", "Follow forks"),
+        ("-c command", "Summary count"),
+        ("-e trace=file command", "File operations"),
+        ("-o output.log command", "Save to file"),
+    ],
+    "ltrace": [
+        ("command", "Library calls"),
+        ("-f command", "Follow forks"),
+        ("-o output.log command", "Save to file"),
+    ],
+    "gdb": [
+        ("-q binary", "Quiet start"),
+        ("-ex 'run' -ex 'bt' binary", "Run and backtrace"),
+        ("-p PID", "Attach to process"),
     ],
 
 }
@@ -1552,6 +2036,248 @@ BUILTIN_ARGS = {
         ("-f urls.txt", "URL list file"),
     ],
 
+
+
+    # === EVEN MORE PRE-BUILT EXAMPLES ===
+    "burpsuite": [
+        ("--project=project.burp", "Open project"),
+        ("--config=config.json", "Load config"),
+        ("--collaborator-server", "Start collaborator"),
+        ("--unpause-spidering", "Resume spider"),
+    ],
+    "zaproxy": [
+        ("-cmd -quickurl http://target.com", "Quick scan"),
+        ("-daemon -port 8080", "Daemon mode"),
+        ("-cmd -quickurl http://target.com -quickout report.html", "Quick with report"),
+    ],
+    "commix": [
+        ("-u http://target.com/page.php?id=1", "Basic test"),
+        ("-u http://target.com/page.php?id=1 --os=unix", "Unix target"),
+        ("-u http://target.com/page.php?id=1 --technique=t", "Time-based"),
+    ],
+    "xsser": [
+        ("-u http://target.com/page.php?q=test", "Basic XSS"),
+        ("--auto -u http://target.com/page.php?q=test", "Auto mode"),
+        ("-u http://target.com/page.php?q=test --Fp", "Final payload"),
+    ],
+    "xsstrike": [
+        ("-u http://target.com/page.php?q=test", "Basic scan"),
+        ("-u http://target.com/page.php?q=test --crawl", "Crawl mode"),
+        ("-u http://target.com/page.php?q=test --fuzzer", "Fuzzer mode"),
+        ("-u http://target.com/page.php?q=test --blind", "Blind XSS"),
+    ],
+    "dalfox": [
+        ("url http://target.com/page.php?q=test", "Basic scan"),
+        ("url http://target.com/page.php?q=test --cookie 'session=xxx'", "With cookie"),
+        ("file urls.txt", "Bulk URLs"),
+    ],
+    "nosqlmap": [
+        ("-u http://target.com/api", "Basic scan"),
+        ("-u http://target.com/api --mongodb", "MongoDB target"),
+        ("-u http://target.com/api --dump", "Dump data"),
+    ],
+    "arjun": [
+        ("-u http://target.com/page.php", "Find params"),
+        ("-u http://target.com/page.php -t 20", "20 threads"),
+        ("-u http://target.com/api --json", "JSON output"),
+    ],
+    "paramspider": [
+        ("-d target.com", "Domain scan"),
+        ("-d target.com -o output.txt", "Save output"),
+    ],
+    "kiterunner": [
+        ("scan http://target.com -w routes.kite", "API scan"),
+        ("discover http://target.com -w routes.kite", "Discover mode"),
+    ],
+    "feroxbuster": [
+        ("-u http://target.com -w wordlist.txt", "Directory brute"),
+        ("-u http://target.com -w wordlist.txt -t 100", "100 threads"),
+        ("-u http://target.com -w wordlist.txt -x php,html,txt", "Extensions"),
+    ],
+    "dirsearch": [
+        ("-u http://target.com -w wordlist.txt", "Directory scan"),
+        ("-u http://target.com -e php,html,txt -t 50", "Extensions"),
+        ("-u http://target.com --json-report report.json", "JSON report"),
+    ],
+    "trivy": [
+        ("image nginx:latest", "Scan image"),
+        ("fs /", "Filesystem scan"),
+        ("repo https://github.com/user/repo", "Repo scan"),
+        ("--severity CRITICAL,HIGH image nginx:latest", "Critical only"),
+    ],
+    "grype": [
+        ("nginx:latest", "Scan image"),
+        ("dir:/app", "Directory scan"),
+        ("-o json nginx:latest", "JSON output"),
+    ],
+    "dockle": [
+        ("nginx:latest", "Check image"),
+        ("--ignore CIS-DI-0001 nginx:latest", "Ignore check"),
+    ],
+    "hadolint": [
+        ("Dockerfile", "Lint Dockerfile"),
+        ("--ignore DL3008 Dockerfile", "Ignore rule"),
+    ],
+    "clair": [
+        ("--config config.yaml", "With config"),
+        ("--ip 0.0.0.0 --port 6060", "Custom port"),
+    ],
+    "kube-hunter": [
+        ("--remote target.com", "Remote scan"),
+        ("--active", "Active hunting"),
+        ("--pod", "Inside pod"),
+        ("--cidr 192.168.1.0/24", "Network range"),
+    ],
+    "kube-bench": [
+        ("--config-dir /etc/kubernetes", "Config dir"),
+        ("--version 1.20", "K8s version"),
+        ("--check 1.1.1", "Single check"),
+    ],
+    "kubescape": [
+        ("scan", "Full scan"),
+        ("scan --include-namespaces dev,prod", "Specific namespaces"),
+        ("scan framework nsa", "NSA framework"),
+    ],
+    "popeye": [
+        ("-n dev", "Dev namespace"),
+        ("--all-namespaces", "All namespaces"),
+        ("-o json", "JSON output"),
+    ],
+    "checkov": [
+        ("-d /terraform", "Terraform scan"),
+        ("-d /kubernetes", "K8s scan"),
+        ("-d / --framework all", "All frameworks"),
+    ],
+    "tfsec": [
+        (".", "Current directory"),
+        ("--format json .", "JSON output"),
+        ("--exclude-downloaded-modules .", "Exclude modules"),
+    ],
+    "terrascan": [
+        ("scan -d /terraform", "Scan directory"),
+        ("scan -i terraform", "Terraform only"),
+        ("scan -f output.json", "Output file"),
+    ],
+    "prowler": [
+        ("-p custom-profile -r us-east-1", "AWS region"),
+        ("-g securitygroup -n", "Security groups"),
+        ("-M json -o output", "JSON output"),
+    ],
+    "scoutsuite": [
+        ("aws --profile default", "AWS scan"),
+        ("azure --cli", "Azure scan"),
+        ("gcp --project-id my-project", "GCP scan"),
+    ],
+    "pacu": [
+        ("--session mytest", "Create session"),
+        ("--list-modules", "List modules"),
+        ("--module-name iam__enum_users", "Run module"),
+    ],
+    "cloudmapper": [
+        ("collect --account target", "Collect data"),
+        ("report --account target", "Generate report"),
+        ("webserver --account target", "Start web UI"),
+    ],
+    "lynis": [
+        ("audit system", "System audit"),
+        ("audit system --quick", "Quick scan"),
+        ("audit system --pentest", "Pentest mode"),
+    ],
+    "chkrootkit": [
+        ("-q", "Quiet mode"),
+        ("-x", "Expert mode"),
+    ],
+    "rkhunter": [
+        ("--check", "Full check"),
+        ("--update", "Update database"),
+        ("--sk", "Skip keypress"),
+    ],
+    "clamscan": [
+        ("-r /", "Scan root"),
+        ("-r --bell /home", "Alert on find"),
+        ("-r --remove /tmp", "Auto remove"),
+    ],
+    "testdisk": [
+        ("/dev/sda", "Analyze disk"),
+        ("/dev/sda /log", "With log"),
+    ],
+    "photorec": [
+        ("/dev/sda", "Recover from disk"),
+        ("/d /recovery /dev/sda", "Output directory"),
+    ],
+    "foremost": [
+        ("-i image.dd -o output/", "Carve files"),
+        ("-t all -i image.dd -o output/", "All types"),
+    ],
+    "scalpel": [
+        ("-c scalpel.conf image.dd -o output/", "With config"),
+        ("image.dd -o output/", "Quick carve"),
+    ],
+    "bulk_extractor": [
+        ("-o output/ image.dd", "Extract all"),
+        ("-e email -o output/ image.dd", "Emails only"),
+    ],
+    "volatility3": [
+        ("-f memory.dump windows.info", "System info"),
+        ("-f memory.dump windows.pslist", "Process list"),
+        ("-f memory.dump windows.netscan", "Network scan"),
+        ("-f memory.dump windows.cmdline", "Command line"),
+        ("-f memory.dump windows.malfind", "Malware find"),
+    ],
+    "apktool": [
+        ("d app.apk", "Decompile"),
+        ("b app/ -o new.apk", "Build"),
+        ("d -f app.apk", "Force decompile"),
+    ],
+    "jadx": [
+        ("app.apk", "Decompile"),
+        ("-d output/ app.apk", "Output directory"),
+        ("--deobf app.apk", "Deobfuscate"),
+    ],
+    "dex2jar": [
+        ("classes.dex -o output.jar", "Convert DEX"),
+        ("app.apk -o output.jar", "APK to JAR"),
+    ],
+    "androguard": [
+        ("analyze app.apk", "Analyze"),
+        ("-o output/ app.apk", "Output directory"),
+    ],
+    "ghidra": [
+        ("-import binary.exe -postscript AnalyzeHeadless", "Import analyze"),
+        ("-process binary.exe -scriptPath /scripts", "Custom scripts"),
+    ],
+    "radare2": [
+        ("-A binary", "Auto analyze"),
+        ("-d binary", "Debug mode"),
+        ("-A -c 'afl' binary", "List functions"),
+        ("-w binary", "Write mode"),
+    ],
+    "rizin": [
+        ("-A binary", "Auto analyze"),
+        ("-d binary", "Debug mode"),
+    ],
+    "objdump": [
+        ("-d binary", "Disassemble"),
+        ("-x binary", "All headers"),
+        ("-t binary", "Symbol table"),
+    ],
+    "strace": [
+        ("-f command", "Follow forks"),
+        ("-c command", "Summary count"),
+        ("-e trace=file command", "File operations"),
+        ("-o output.log command", "Save to file"),
+    ],
+    "ltrace": [
+        ("command", "Library calls"),
+        ("-f command", "Follow forks"),
+        ("-o output.log command", "Save to file"),
+    ],
+    "gdb": [
+        ("-q binary", "Quiet start"),
+        ("-ex 'run' -ex 'bt' binary", "Run and backtrace"),
+        ("-p PID", "Attach to process"),
+    ],
+
 }' https://target.com/api", "JSON API"),
         ("-x http://proxy:8080 https://target.com", "Via proxy"),
         ("-k https://target.com", "Ignore SSL errors"),
@@ -1797,6 +2523,248 @@ BUILTIN_ARGS = {
         ("-c 100 -t 30s http://target.com", "100 users 30s"),
         ("-c 200 -r 50 http://target.com", "200 users 50 reps"),
         ("-f urls.txt", "URL list file"),
+    ],
+
+
+
+    # === EVEN MORE PRE-BUILT EXAMPLES ===
+    "burpsuite": [
+        ("--project=project.burp", "Open project"),
+        ("--config=config.json", "Load config"),
+        ("--collaborator-server", "Start collaborator"),
+        ("--unpause-spidering", "Resume spider"),
+    ],
+    "zaproxy": [
+        ("-cmd -quickurl http://target.com", "Quick scan"),
+        ("-daemon -port 8080", "Daemon mode"),
+        ("-cmd -quickurl http://target.com -quickout report.html", "Quick with report"),
+    ],
+    "commix": [
+        ("-u http://target.com/page.php?id=1", "Basic test"),
+        ("-u http://target.com/page.php?id=1 --os=unix", "Unix target"),
+        ("-u http://target.com/page.php?id=1 --technique=t", "Time-based"),
+    ],
+    "xsser": [
+        ("-u http://target.com/page.php?q=test", "Basic XSS"),
+        ("--auto -u http://target.com/page.php?q=test", "Auto mode"),
+        ("-u http://target.com/page.php?q=test --Fp", "Final payload"),
+    ],
+    "xsstrike": [
+        ("-u http://target.com/page.php?q=test", "Basic scan"),
+        ("-u http://target.com/page.php?q=test --crawl", "Crawl mode"),
+        ("-u http://target.com/page.php?q=test --fuzzer", "Fuzzer mode"),
+        ("-u http://target.com/page.php?q=test --blind", "Blind XSS"),
+    ],
+    "dalfox": [
+        ("url http://target.com/page.php?q=test", "Basic scan"),
+        ("url http://target.com/page.php?q=test --cookie 'session=xxx'", "With cookie"),
+        ("file urls.txt", "Bulk URLs"),
+    ],
+    "nosqlmap": [
+        ("-u http://target.com/api", "Basic scan"),
+        ("-u http://target.com/api --mongodb", "MongoDB target"),
+        ("-u http://target.com/api --dump", "Dump data"),
+    ],
+    "arjun": [
+        ("-u http://target.com/page.php", "Find params"),
+        ("-u http://target.com/page.php -t 20", "20 threads"),
+        ("-u http://target.com/api --json", "JSON output"),
+    ],
+    "paramspider": [
+        ("-d target.com", "Domain scan"),
+        ("-d target.com -o output.txt", "Save output"),
+    ],
+    "kiterunner": [
+        ("scan http://target.com -w routes.kite", "API scan"),
+        ("discover http://target.com -w routes.kite", "Discover mode"),
+    ],
+    "feroxbuster": [
+        ("-u http://target.com -w wordlist.txt", "Directory brute"),
+        ("-u http://target.com -w wordlist.txt -t 100", "100 threads"),
+        ("-u http://target.com -w wordlist.txt -x php,html,txt", "Extensions"),
+    ],
+    "dirsearch": [
+        ("-u http://target.com -w wordlist.txt", "Directory scan"),
+        ("-u http://target.com -e php,html,txt -t 50", "Extensions"),
+        ("-u http://target.com --json-report report.json", "JSON report"),
+    ],
+    "trivy": [
+        ("image nginx:latest", "Scan image"),
+        ("fs /", "Filesystem scan"),
+        ("repo https://github.com/user/repo", "Repo scan"),
+        ("--severity CRITICAL,HIGH image nginx:latest", "Critical only"),
+    ],
+    "grype": [
+        ("nginx:latest", "Scan image"),
+        ("dir:/app", "Directory scan"),
+        ("-o json nginx:latest", "JSON output"),
+    ],
+    "dockle": [
+        ("nginx:latest", "Check image"),
+        ("--ignore CIS-DI-0001 nginx:latest", "Ignore check"),
+    ],
+    "hadolint": [
+        ("Dockerfile", "Lint Dockerfile"),
+        ("--ignore DL3008 Dockerfile", "Ignore rule"),
+    ],
+    "clair": [
+        ("--config config.yaml", "With config"),
+        ("--ip 0.0.0.0 --port 6060", "Custom port"),
+    ],
+    "kube-hunter": [
+        ("--remote target.com", "Remote scan"),
+        ("--active", "Active hunting"),
+        ("--pod", "Inside pod"),
+        ("--cidr 192.168.1.0/24", "Network range"),
+    ],
+    "kube-bench": [
+        ("--config-dir /etc/kubernetes", "Config dir"),
+        ("--version 1.20", "K8s version"),
+        ("--check 1.1.1", "Single check"),
+    ],
+    "kubescape": [
+        ("scan", "Full scan"),
+        ("scan --include-namespaces dev,prod", "Specific namespaces"),
+        ("scan framework nsa", "NSA framework"),
+    ],
+    "popeye": [
+        ("-n dev", "Dev namespace"),
+        ("--all-namespaces", "All namespaces"),
+        ("-o json", "JSON output"),
+    ],
+    "checkov": [
+        ("-d /terraform", "Terraform scan"),
+        ("-d /kubernetes", "K8s scan"),
+        ("-d / --framework all", "All frameworks"),
+    ],
+    "tfsec": [
+        (".", "Current directory"),
+        ("--format json .", "JSON output"),
+        ("--exclude-downloaded-modules .", "Exclude modules"),
+    ],
+    "terrascan": [
+        ("scan -d /terraform", "Scan directory"),
+        ("scan -i terraform", "Terraform only"),
+        ("scan -f output.json", "Output file"),
+    ],
+    "prowler": [
+        ("-p custom-profile -r us-east-1", "AWS region"),
+        ("-g securitygroup -n", "Security groups"),
+        ("-M json -o output", "JSON output"),
+    ],
+    "scoutsuite": [
+        ("aws --profile default", "AWS scan"),
+        ("azure --cli", "Azure scan"),
+        ("gcp --project-id my-project", "GCP scan"),
+    ],
+    "pacu": [
+        ("--session mytest", "Create session"),
+        ("--list-modules", "List modules"),
+        ("--module-name iam__enum_users", "Run module"),
+    ],
+    "cloudmapper": [
+        ("collect --account target", "Collect data"),
+        ("report --account target", "Generate report"),
+        ("webserver --account target", "Start web UI"),
+    ],
+    "lynis": [
+        ("audit system", "System audit"),
+        ("audit system --quick", "Quick scan"),
+        ("audit system --pentest", "Pentest mode"),
+    ],
+    "chkrootkit": [
+        ("-q", "Quiet mode"),
+        ("-x", "Expert mode"),
+    ],
+    "rkhunter": [
+        ("--check", "Full check"),
+        ("--update", "Update database"),
+        ("--sk", "Skip keypress"),
+    ],
+    "clamscan": [
+        ("-r /", "Scan root"),
+        ("-r --bell /home", "Alert on find"),
+        ("-r --remove /tmp", "Auto remove"),
+    ],
+    "testdisk": [
+        ("/dev/sda", "Analyze disk"),
+        ("/dev/sda /log", "With log"),
+    ],
+    "photorec": [
+        ("/dev/sda", "Recover from disk"),
+        ("/d /recovery /dev/sda", "Output directory"),
+    ],
+    "foremost": [
+        ("-i image.dd -o output/", "Carve files"),
+        ("-t all -i image.dd -o output/", "All types"),
+    ],
+    "scalpel": [
+        ("-c scalpel.conf image.dd -o output/", "With config"),
+        ("image.dd -o output/", "Quick carve"),
+    ],
+    "bulk_extractor": [
+        ("-o output/ image.dd", "Extract all"),
+        ("-e email -o output/ image.dd", "Emails only"),
+    ],
+    "volatility3": [
+        ("-f memory.dump windows.info", "System info"),
+        ("-f memory.dump windows.pslist", "Process list"),
+        ("-f memory.dump windows.netscan", "Network scan"),
+        ("-f memory.dump windows.cmdline", "Command line"),
+        ("-f memory.dump windows.malfind", "Malware find"),
+    ],
+    "apktool": [
+        ("d app.apk", "Decompile"),
+        ("b app/ -o new.apk", "Build"),
+        ("d -f app.apk", "Force decompile"),
+    ],
+    "jadx": [
+        ("app.apk", "Decompile"),
+        ("-d output/ app.apk", "Output directory"),
+        ("--deobf app.apk", "Deobfuscate"),
+    ],
+    "dex2jar": [
+        ("classes.dex -o output.jar", "Convert DEX"),
+        ("app.apk -o output.jar", "APK to JAR"),
+    ],
+    "androguard": [
+        ("analyze app.apk", "Analyze"),
+        ("-o output/ app.apk", "Output directory"),
+    ],
+    "ghidra": [
+        ("-import binary.exe -postscript AnalyzeHeadless", "Import analyze"),
+        ("-process binary.exe -scriptPath /scripts", "Custom scripts"),
+    ],
+    "radare2": [
+        ("-A binary", "Auto analyze"),
+        ("-d binary", "Debug mode"),
+        ("-A -c 'afl' binary", "List functions"),
+        ("-w binary", "Write mode"),
+    ],
+    "rizin": [
+        ("-A binary", "Auto analyze"),
+        ("-d binary", "Debug mode"),
+    ],
+    "objdump": [
+        ("-d binary", "Disassemble"),
+        ("-x binary", "All headers"),
+        ("-t binary", "Symbol table"),
+    ],
+    "strace": [
+        ("-f command", "Follow forks"),
+        ("-c command", "Summary count"),
+        ("-e trace=file command", "File operations"),
+        ("-o output.log command", "Save to file"),
+    ],
+    "ltrace": [
+        ("command", "Library calls"),
+        ("-f command", "Follow forks"),
+        ("-o output.log command", "Save to file"),
+    ],
+    "gdb": [
+        ("-q binary", "Quiet start"),
+        ("-ex 'run' -ex 'bt' binary", "Run and backtrace"),
+        ("-p PID", "Attach to process"),
     ],
 
 }
