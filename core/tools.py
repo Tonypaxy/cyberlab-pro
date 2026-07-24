@@ -255,6 +255,16 @@ class ToolDetector:
             "iss_tracker": ["iss-tracker"], "gps_spoof": ["gps-spoof"]
         },
         
+        
+        "phishing_toolkits": {
+            "evilginx2": ["evilginx2"], "gophish": ["gophish"], "modlishka": ["modlishka"],
+            "muraena": ["muraena"], "zphisher": ["zphisher"], "blackeye": ["blackeye"],
+            "socialfish": ["socialfish"], "setoolkit": ["setoolkit"], "credphisher": ["credphisher"],
+            "phishim": ["phishim"], "king-phisher": ["king-phisher"], "sneakemail": ["sneakemail"],
+            "swaks": ["swaks"], "hiddeneye": ["hiddeneye"], "shellphish": ["shellphish"],
+            "advphishing": ["advphishing"], "mrphish": ["mrphish"],
+        },
+
         "social_brute": {
             "sherlock": ["sherlock"], "holehe": ["holehe"], "instashell": ["instashell"],
             "instagram-brute": ["instagram-brute"], "facebook-brute": ["facebook-brute"],

@@ -348,6 +348,95 @@ BUILTIN_ARGS = {
         ("-P pass.txt", "Passwords"), ("-t 10", "Threads"),
     ],
 
+
+
+    # === POWERFUL PHISHING TOOLKITS ===
+    "evilginx2": [
+        ("-p phishlet", "Phishlet name"), ("-t target.com", "Target domain"),
+        ("-g group", "Phishlet group"), ("--debug", "Debug mode"),
+        ("--developer", "Developer mode"), ("-c config.json", "Config file"),
+        ("-w watch_dir", "Watch directory"), ("--no-database", "No DB"),
+        ("--https-port 443", "HTTPS port"), ("--dns-port 53", "DNS port"),
+    ],
+    "gophish": [
+        ("--port 3333", "Admin port"), ("--config config.json", "Config"),
+        ("-v", "Verbose"), ("--no-console", "No console"),
+        ("--reset-db", "Reset database"), ("--import-csv targets.csv", "Import targets"),
+    ],
+    "modlishka": [
+        ("-config config.json", "Config file"), ("-proxy target.com", "Proxy target"),
+        ("-listeningAddress 0.0.0.0", "Listen"), ("-port 443", "Port"),
+        ("-plugins all", "All plugins"), ("-trackingParam id", "Tracking param"),
+        ("-jsRules 'replace'", "JS rules"), ("-cert email@test.com", "Auto cert"),
+    ],
+    "muraena": [
+        ("-config config.toml", "Config"), ("-phish phish.toml", "Phish config"),
+        ("-t target.com", "Target"), ("-v", "Verbose"),
+        ("-debug", "Debug"), ("-no-browser", "No browser"),
+        ("-workers 10", "10 workers"), ("-timeout 30", "30s timeout"),
+    ],
+    "zphisher": [
+        ("-p", "Pick page"), ("-t", "Tunnel option"), ("-o", "Open port"),
+        ("-l", "Localhost"), ("--ngrok", "Ngrok tunnel"),
+        ("--cloudflared", "Cloudflare tunnel"), ("--localXpose", "LocalXpose"),
+    ],
+    "blackeye": [
+        ("-p", "Pick page"), ("-t", "Tunnel"), ("-s", "Server"),
+        ("-i", "Install"), ("-u", "Update"), ("-c", "Check"),
+    ],
+    "socialfish": [
+        ("-u", "Update"), ("-c", "Check creds"), ("-r", "Run server"),
+        ("-p 8080", "Port"), ("--ssl", "Enable SSL"),
+        ("--tunnel ngrok", "Ngrok tunnel"), ("--tunnel localhost", "Local only"),
+    ],
+    "setoolkit": [
+        ("-s", "Social engineering"), ("-p", "Phishing vectors"),
+        ("-w", "Website vectors"), ("-q", "Quick track"),
+        ("-m", "Mass mailer"), ("-c", "Credential harvester"),
+        ("-t", "Tabnabbing"), ("-j", "Java applet"),
+        ("-k", "Ettercap"), ("-a", "Arduino attack"),
+    ],
+    "credphisher": [
+        ("-u", "Update"), ("-s", "Start server"), ("-p 8080", "Port"),
+        ("--ssl", "SSL"), ("--tunnel", "Tunnel mode"),
+    ],
+    "phishim": [
+        ("-t office365", "Office365"), ("-t gmail", "Gmail"),
+        ("-t outlook", "Outlook"), ("-t yahoo", "Yahoo"),
+        ("-p 8080", "Port"), ("--ssl", "SSL"),
+    ],
+    "king-phisher": [
+        ("--server", "Start server"), ("--config config.yml", "Config"),
+        ("--debug", "Debug"), ("--restore", "Restore session"),
+    ],
+    "sneakemail": [
+        ("-f spoof@test.com", "From"), ("-t target@test.com", "To"),
+        ("-s 'Subject'", "Subject"), ("-b 'Body'", "Body"),
+        ("-a attachment.pdf", "Attachment"), ("-h smtp.server.com", "SMTP"),
+    ],
+    "swaks": [
+        ("--to target@test.com", "To"), ("--from spoof@test.com", "From"),
+        ("--server smtp.gmail.com", "SMTP"), ("--header 'Subject: Test'", "Subject"),
+        ("--body 'Test body'", "Body"), ("--attach file.pdf", "Attachment"),
+        ("--tls", "Use TLS"), ("--auth LOGIN", "Auth type"),
+    ],
+    "hiddeneye": [
+        ("-p", "Pick page"), ("-t", "Tunnel"), ("-s", "Server"),
+        ("-i", "Install"), ("-u", "Update"),
+    ],
+    "shellphish": [
+        ("-p", "Pick page"), ("-t", "Tunnel"), ("-o", "Port"),
+        ("-l", "Localhost"), ("--ngrok", "Ngrok"),
+    ],
+    "advphishing": [
+        ("-p", "Pick page"), ("-t", "Tunnel"), ("-s", "Server"),
+        ("-i", "Install"), ("--ngrok", "Ngrok tunnel"),
+    ],
+    "mrphish": [
+        ("-p", "Pick page"), ("-t", "Tunnel"), ("-o", "Port"),
+        ("--ngrok", "Ngrok"), ("--cloudflared", "Cloudflare"),
+    ],
+
 }
     # === SOCIAL MEDIA & PHISHING TOOLS ===
     "setoolkit": [
@@ -681,6 +770,95 @@ BUILTIN_ARGS = {
     "prestashop-brute": [
         ("-u http://target.com", "Target"), ("-U users.txt", "Users"),
         ("-P pass.txt", "Passwords"), ("-t 10", "Threads"),
+    ],
+
+
+
+    # === POWERFUL PHISHING TOOLKITS ===
+    "evilginx2": [
+        ("-p phishlet", "Phishlet name"), ("-t target.com", "Target domain"),
+        ("-g group", "Phishlet group"), ("--debug", "Debug mode"),
+        ("--developer", "Developer mode"), ("-c config.json", "Config file"),
+        ("-w watch_dir", "Watch directory"), ("--no-database", "No DB"),
+        ("--https-port 443", "HTTPS port"), ("--dns-port 53", "DNS port"),
+    ],
+    "gophish": [
+        ("--port 3333", "Admin port"), ("--config config.json", "Config"),
+        ("-v", "Verbose"), ("--no-console", "No console"),
+        ("--reset-db", "Reset database"), ("--import-csv targets.csv", "Import targets"),
+    ],
+    "modlishka": [
+        ("-config config.json", "Config file"), ("-proxy target.com", "Proxy target"),
+        ("-listeningAddress 0.0.0.0", "Listen"), ("-port 443", "Port"),
+        ("-plugins all", "All plugins"), ("-trackingParam id", "Tracking param"),
+        ("-jsRules 'replace'", "JS rules"), ("-cert email@test.com", "Auto cert"),
+    ],
+    "muraena": [
+        ("-config config.toml", "Config"), ("-phish phish.toml", "Phish config"),
+        ("-t target.com", "Target"), ("-v", "Verbose"),
+        ("-debug", "Debug"), ("-no-browser", "No browser"),
+        ("-workers 10", "10 workers"), ("-timeout 30", "30s timeout"),
+    ],
+    "zphisher": [
+        ("-p", "Pick page"), ("-t", "Tunnel option"), ("-o", "Open port"),
+        ("-l", "Localhost"), ("--ngrok", "Ngrok tunnel"),
+        ("--cloudflared", "Cloudflare tunnel"), ("--localXpose", "LocalXpose"),
+    ],
+    "blackeye": [
+        ("-p", "Pick page"), ("-t", "Tunnel"), ("-s", "Server"),
+        ("-i", "Install"), ("-u", "Update"), ("-c", "Check"),
+    ],
+    "socialfish": [
+        ("-u", "Update"), ("-c", "Check creds"), ("-r", "Run server"),
+        ("-p 8080", "Port"), ("--ssl", "Enable SSL"),
+        ("--tunnel ngrok", "Ngrok tunnel"), ("--tunnel localhost", "Local only"),
+    ],
+    "setoolkit": [
+        ("-s", "Social engineering"), ("-p", "Phishing vectors"),
+        ("-w", "Website vectors"), ("-q", "Quick track"),
+        ("-m", "Mass mailer"), ("-c", "Credential harvester"),
+        ("-t", "Tabnabbing"), ("-j", "Java applet"),
+        ("-k", "Ettercap"), ("-a", "Arduino attack"),
+    ],
+    "credphisher": [
+        ("-u", "Update"), ("-s", "Start server"), ("-p 8080", "Port"),
+        ("--ssl", "SSL"), ("--tunnel", "Tunnel mode"),
+    ],
+    "phishim": [
+        ("-t office365", "Office365"), ("-t gmail", "Gmail"),
+        ("-t outlook", "Outlook"), ("-t yahoo", "Yahoo"),
+        ("-p 8080", "Port"), ("--ssl", "SSL"),
+    ],
+    "king-phisher": [
+        ("--server", "Start server"), ("--config config.yml", "Config"),
+        ("--debug", "Debug"), ("--restore", "Restore session"),
+    ],
+    "sneakemail": [
+        ("-f spoof@test.com", "From"), ("-t target@test.com", "To"),
+        ("-s 'Subject'", "Subject"), ("-b 'Body'", "Body"),
+        ("-a attachment.pdf", "Attachment"), ("-h smtp.server.com", "SMTP"),
+    ],
+    "swaks": [
+        ("--to target@test.com", "To"), ("--from spoof@test.com", "From"),
+        ("--server smtp.gmail.com", "SMTP"), ("--header 'Subject: Test'", "Subject"),
+        ("--body 'Test body'", "Body"), ("--attach file.pdf", "Attachment"),
+        ("--tls", "Use TLS"), ("--auth LOGIN", "Auth type"),
+    ],
+    "hiddeneye": [
+        ("-p", "Pick page"), ("-t", "Tunnel"), ("-s", "Server"),
+        ("-i", "Install"), ("-u", "Update"),
+    ],
+    "shellphish": [
+        ("-p", "Pick page"), ("-t", "Tunnel"), ("-o", "Port"),
+        ("-l", "Localhost"), ("--ngrok", "Ngrok"),
+    ],
+    "advphishing": [
+        ("-p", "Pick page"), ("-t", "Tunnel"), ("-s", "Server"),
+        ("-i", "Install"), ("--ngrok", "Ngrok tunnel"),
+    ],
+    "mrphish": [
+        ("-p", "Pick page"), ("-t", "Tunnel"), ("-o", "Port"),
+        ("--ngrok", "Ngrok"), ("--cloudflared", "Cloudflare"),
     ],
 
 }
