@@ -901,6 +901,217 @@ BUILTIN_ARGS = {
         ("-p PID", "Attach to process"),
     ],
 
+
+
+    # === FINAL PRE-BUILT EXAMPLES ===
+    "netstat": [
+        ("-tunap", "All connections"),
+        ("-tlnp", "Listening ports"),
+        ("-c", "Continuous mode"),
+    ],
+    "ss": [
+        ("-tunap", "All connections"),
+        ("-tlnp", "Listening ports"),
+    ],
+    "arp": [
+        ("-a", "ARP table"),
+        ("-d 192.168.1.1", "Delete entry"),
+    ],
+    "route": [
+        ("-n", "Routing table"),
+        ("add default gw 192.168.1.1", "Add gateway"),
+    ],
+    "iptables": [
+        ("-L -n -v", "List rules"),
+        ("-A INPUT -s IP -j DROP", "Block IP"),
+        ("-A INPUT -p tcp --dport 80 -j ACCEPT", "Allow port 80"),
+        ("-F", "Flush rules"),
+    ],
+    "ufw": [
+        ("status", "Check status"),
+        ("enable", "Enable firewall"),
+        ("allow 80/tcp", "Allow port 80"),
+        ("deny from IP", "Block IP"),
+    ],
+    "sysctl": [
+        ("-a", "All settings"),
+        ("net.ipv4.ip_forward=1", "Enable forwarding"),
+    ],
+    "mount": [
+        ("-o ro,noexec /dev/sdb1 /mnt", "Read-only mount"),
+        ("", "List mounts"),
+    ],
+    "dd": [
+        ("if=/dev/sda of=image.dd bs=4M status=progress", "Disk image"),
+        ("if=/dev/urandom of=file bs=1M count=100", "Random file"),
+        ("if=/dev/zero of=/dev/sdb bs=1M", "Wipe disk"),
+    ],
+    "shred": [
+        ("-n 7 -z file.txt", "7 pass shred"),
+        ("-u file.txt", "Remove after"),
+        ("-v file.txt", "Verbose"),
+    ],
+    "wipe": [
+        ("-f file.txt", "Force wipe"),
+        ("-r dir/", "Recursive wipe"),
+    ],
+    "srm": [
+        ("-v file.txt", "Verbose secure delete"),
+        ("-r dir/", "Recursive"),
+    ],
+    "openssl": [
+        ("genrsa -out key.pem 2048", "Generate RSA key"),
+        ("req -new -key key.pem -out csr.pem", "Generate CSR"),
+        ("x509 -req -days 365 -in csr.pem -signkey key.pem -out cert.pem", "Self-sign cert"),
+        ("s_client -connect target.com:443", "SSL connect"),
+        ("enc -aes-256-cbc -in file.txt -out file.enc -pass pass:password", "Encrypt file"),
+        ("enc -d -aes-256-cbc -in file.enc -out file.txt -pass pass:password", "Decrypt file"),
+    ],
+    "gpg": [
+        ("--full-generate-key", "Generate key"),
+        ("-c file.txt", "Symmetric encrypt"),
+        ("-d file.gpg", "Decrypt"),
+        ("--list-keys", "List keys"),
+        ("--export -a user@email.com > public.key", "Export public key"),
+    ],
+    "base64": [
+        ("file.txt", "Encode file"),
+        ("-d file.b64", "Decode file"),
+        ("-w 0 file.txt", "No line wrap"),
+    ],
+    "md5sum": [
+        ("file.txt", "MD5 hash"),
+        ("-c checksum.md5", "Check hashes"),
+    ],
+    "sha256sum": [
+        ("file.txt", "SHA256 hash"),
+        ("-c checksum.sha256", "Check hashes"),
+    ],
+    "zip": [
+        ("archive.zip file1 file2", "Create archive"),
+        ("-r archive.zip dir/", "Recursive"),
+        ("-P password archive.zip file", "With password"),
+        ("-e archive.zip file", "Encrypt"),
+    ],
+    "unzip": [
+        ("archive.zip", "Extract"),
+        ("-P password archive.zip", "Password extract"),
+        ("archive.zip -d /output/", "Output directory"),
+    ],
+    "tar": [
+        ("-czf archive.tar.gz dir/", "Create gzip"),
+        ("-xzf archive.tar.gz", "Extract gzip"),
+        ("-cjf archive.tar.bz2 dir/", "Create bzip2"),
+    ],
+    "wget": [
+        ("https://target.com/file.txt", "Download"),
+        ("-r -np -k https://target.com", "Mirror site"),
+        ("-O output.txt https://target.com", "Save as"),
+        ("--user-agent='Mozilla/5.0' https://target.com", "Custom UA"),
+    ],
+    "git": [
+        ("clone https://github.com/user/repo.git", "Clone repo"),
+        ("clone --depth 1 https://github.com/user/repo.git", "Shallow clone"),
+        ("log --oneline", "Commit history"),
+        ("diff", "Show changes"),
+    ],
+    "python3": [
+        ("-m http.server 8080", "HTTP server"),
+        ("-c 'print("hello")'", "One-liner"),
+        ("script.py", "Run script"),
+    ],
+    "pip": [
+        ("install package", "Install package"),
+        ("install -r requirements.txt", "Install from file"),
+        ("list", "List installed"),
+        ("freeze > requirements.txt", "Export list"),
+    ],
+    "go": [
+        ("build main.go", "Build binary"),
+        ("run main.go", "Run without build"),
+        ("install github.com/tool/cmd@latest", "Install tool"),
+    ],
+    "gem": [
+        ("install package", "Install gem"),
+        ("list", "List gems"),
+    ],
+    "npm": [
+        ("install package", "Install package"),
+        ("install -g package", "Global install"),
+        ("start", "Start project"),
+    ],
+    "docker": [
+        ("ps -a", "List containers"),
+        ("images", "List images"),
+        ("run -it ubuntu bash", "Run interactive"),
+        ("build -t name .", "Build image"),
+        ("exec -it container bash", "Exec into container"),
+    ],
+    "kubectl": [
+        ("get pods", "List pods"),
+        ("get pods --all-namespaces", "All namespaces"),
+        ("get nodes", "List nodes"),
+        ("exec -it pod -- bash", "Exec into pod"),
+        ("apply -f deployment.yaml", "Apply config"),
+        ("delete pod name", "Delete pod"),
+    ],
+    "terraform": [
+        ("init", "Initialize"),
+        ("plan", "Plan changes"),
+        ("apply -auto-approve", "Apply changes"),
+        ("destroy -auto-approve", "Destroy resources"),
+    ],
+    "ansible": [
+        ("all -m ping", "Ping all hosts"),
+        ("webservers -m command -a 'uptime'", "Run command"),
+        ("-i inventory playbook.yml", "Run playbook"),
+    ],
+    "ssh": [
+        ("user@host", "Basic connect"),
+        ("-p 2222 user@host", "Custom port"),
+        ("-i key.pem user@host", "Key auth"),
+        ("-L 8080:localhost:80 user@host", "Local forward"),
+        ("-R 8080:localhost:80 user@host", "Remote forward"),
+        ("-D 1080 user@host", "SOCKS proxy"),
+    ],
+    "scp": [
+        ("file.txt user@host:/path/", "Copy to remote"),
+        ("user@host:/path/file.txt .", "Copy from remote"),
+        ("-r dir/ user@host:/path/", "Recursive"),
+    ],
+    "rsync": [
+        ("-av dir/ user@host:/path/", "Sync to remote"),
+        ("-av user@host:/path/ dir/", "Sync from remote"),
+        ("-av --delete dir/ /backup/", "Mirror sync"),
+    ],
+    "screen": [
+        ("-S session_name", "Named session"),
+        ("-r session_name", "Reattach"),
+        ("-ls", "List sessions"),
+    ],
+    "tmux": [
+        ("new -s session_name", "New session"),
+        ("attach -t session_name", "Attach"),
+        ("ls", "List sessions"),
+    ],
+    "htop": [
+        ("", "Interactive process viewer"),
+        ("-u username", "Filter user"),
+    ],
+    "iftop": [
+        ("-i wlan0", "Interface traffic"),
+        ("-P", "Show ports"),
+    ],
+    "nethogs": [
+        ("wlan0", "Interface bandwidth"),
+        ("-d 5 wlan0", "5s refresh"),
+    ],
+    "vnstat": [
+        ("-i wlan0", "Interface stats"),
+        ("-d", "Daily stats"),
+        ("-m", "Monthly stats"),
+    ],
+
 }' https://target.com/api", "JSON API"),
         ("-x http://proxy:8080 https://target.com", "Via proxy"),
         ("-k https://target.com", "Ignore SSL errors"),
@@ -1388,6 +1599,217 @@ BUILTIN_ARGS = {
         ("-q binary", "Quiet start"),
         ("-ex 'run' -ex 'bt' binary", "Run and backtrace"),
         ("-p PID", "Attach to process"),
+    ],
+
+
+
+    # === FINAL PRE-BUILT EXAMPLES ===
+    "netstat": [
+        ("-tunap", "All connections"),
+        ("-tlnp", "Listening ports"),
+        ("-c", "Continuous mode"),
+    ],
+    "ss": [
+        ("-tunap", "All connections"),
+        ("-tlnp", "Listening ports"),
+    ],
+    "arp": [
+        ("-a", "ARP table"),
+        ("-d 192.168.1.1", "Delete entry"),
+    ],
+    "route": [
+        ("-n", "Routing table"),
+        ("add default gw 192.168.1.1", "Add gateway"),
+    ],
+    "iptables": [
+        ("-L -n -v", "List rules"),
+        ("-A INPUT -s IP -j DROP", "Block IP"),
+        ("-A INPUT -p tcp --dport 80 -j ACCEPT", "Allow port 80"),
+        ("-F", "Flush rules"),
+    ],
+    "ufw": [
+        ("status", "Check status"),
+        ("enable", "Enable firewall"),
+        ("allow 80/tcp", "Allow port 80"),
+        ("deny from IP", "Block IP"),
+    ],
+    "sysctl": [
+        ("-a", "All settings"),
+        ("net.ipv4.ip_forward=1", "Enable forwarding"),
+    ],
+    "mount": [
+        ("-o ro,noexec /dev/sdb1 /mnt", "Read-only mount"),
+        ("", "List mounts"),
+    ],
+    "dd": [
+        ("if=/dev/sda of=image.dd bs=4M status=progress", "Disk image"),
+        ("if=/dev/urandom of=file bs=1M count=100", "Random file"),
+        ("if=/dev/zero of=/dev/sdb bs=1M", "Wipe disk"),
+    ],
+    "shred": [
+        ("-n 7 -z file.txt", "7 pass shred"),
+        ("-u file.txt", "Remove after"),
+        ("-v file.txt", "Verbose"),
+    ],
+    "wipe": [
+        ("-f file.txt", "Force wipe"),
+        ("-r dir/", "Recursive wipe"),
+    ],
+    "srm": [
+        ("-v file.txt", "Verbose secure delete"),
+        ("-r dir/", "Recursive"),
+    ],
+    "openssl": [
+        ("genrsa -out key.pem 2048", "Generate RSA key"),
+        ("req -new -key key.pem -out csr.pem", "Generate CSR"),
+        ("x509 -req -days 365 -in csr.pem -signkey key.pem -out cert.pem", "Self-sign cert"),
+        ("s_client -connect target.com:443", "SSL connect"),
+        ("enc -aes-256-cbc -in file.txt -out file.enc -pass pass:password", "Encrypt file"),
+        ("enc -d -aes-256-cbc -in file.enc -out file.txt -pass pass:password", "Decrypt file"),
+    ],
+    "gpg": [
+        ("--full-generate-key", "Generate key"),
+        ("-c file.txt", "Symmetric encrypt"),
+        ("-d file.gpg", "Decrypt"),
+        ("--list-keys", "List keys"),
+        ("--export -a user@email.com > public.key", "Export public key"),
+    ],
+    "base64": [
+        ("file.txt", "Encode file"),
+        ("-d file.b64", "Decode file"),
+        ("-w 0 file.txt", "No line wrap"),
+    ],
+    "md5sum": [
+        ("file.txt", "MD5 hash"),
+        ("-c checksum.md5", "Check hashes"),
+    ],
+    "sha256sum": [
+        ("file.txt", "SHA256 hash"),
+        ("-c checksum.sha256", "Check hashes"),
+    ],
+    "zip": [
+        ("archive.zip file1 file2", "Create archive"),
+        ("-r archive.zip dir/", "Recursive"),
+        ("-P password archive.zip file", "With password"),
+        ("-e archive.zip file", "Encrypt"),
+    ],
+    "unzip": [
+        ("archive.zip", "Extract"),
+        ("-P password archive.zip", "Password extract"),
+        ("archive.zip -d /output/", "Output directory"),
+    ],
+    "tar": [
+        ("-czf archive.tar.gz dir/", "Create gzip"),
+        ("-xzf archive.tar.gz", "Extract gzip"),
+        ("-cjf archive.tar.bz2 dir/", "Create bzip2"),
+    ],
+    "wget": [
+        ("https://target.com/file.txt", "Download"),
+        ("-r -np -k https://target.com", "Mirror site"),
+        ("-O output.txt https://target.com", "Save as"),
+        ("--user-agent='Mozilla/5.0' https://target.com", "Custom UA"),
+    ],
+    "git": [
+        ("clone https://github.com/user/repo.git", "Clone repo"),
+        ("clone --depth 1 https://github.com/user/repo.git", "Shallow clone"),
+        ("log --oneline", "Commit history"),
+        ("diff", "Show changes"),
+    ],
+    "python3": [
+        ("-m http.server 8080", "HTTP server"),
+        ("-c 'print("hello")'", "One-liner"),
+        ("script.py", "Run script"),
+    ],
+    "pip": [
+        ("install package", "Install package"),
+        ("install -r requirements.txt", "Install from file"),
+        ("list", "List installed"),
+        ("freeze > requirements.txt", "Export list"),
+    ],
+    "go": [
+        ("build main.go", "Build binary"),
+        ("run main.go", "Run without build"),
+        ("install github.com/tool/cmd@latest", "Install tool"),
+    ],
+    "gem": [
+        ("install package", "Install gem"),
+        ("list", "List gems"),
+    ],
+    "npm": [
+        ("install package", "Install package"),
+        ("install -g package", "Global install"),
+        ("start", "Start project"),
+    ],
+    "docker": [
+        ("ps -a", "List containers"),
+        ("images", "List images"),
+        ("run -it ubuntu bash", "Run interactive"),
+        ("build -t name .", "Build image"),
+        ("exec -it container bash", "Exec into container"),
+    ],
+    "kubectl": [
+        ("get pods", "List pods"),
+        ("get pods --all-namespaces", "All namespaces"),
+        ("get nodes", "List nodes"),
+        ("exec -it pod -- bash", "Exec into pod"),
+        ("apply -f deployment.yaml", "Apply config"),
+        ("delete pod name", "Delete pod"),
+    ],
+    "terraform": [
+        ("init", "Initialize"),
+        ("plan", "Plan changes"),
+        ("apply -auto-approve", "Apply changes"),
+        ("destroy -auto-approve", "Destroy resources"),
+    ],
+    "ansible": [
+        ("all -m ping", "Ping all hosts"),
+        ("webservers -m command -a 'uptime'", "Run command"),
+        ("-i inventory playbook.yml", "Run playbook"),
+    ],
+    "ssh": [
+        ("user@host", "Basic connect"),
+        ("-p 2222 user@host", "Custom port"),
+        ("-i key.pem user@host", "Key auth"),
+        ("-L 8080:localhost:80 user@host", "Local forward"),
+        ("-R 8080:localhost:80 user@host", "Remote forward"),
+        ("-D 1080 user@host", "SOCKS proxy"),
+    ],
+    "scp": [
+        ("file.txt user@host:/path/", "Copy to remote"),
+        ("user@host:/path/file.txt .", "Copy from remote"),
+        ("-r dir/ user@host:/path/", "Recursive"),
+    ],
+    "rsync": [
+        ("-av dir/ user@host:/path/", "Sync to remote"),
+        ("-av user@host:/path/ dir/", "Sync from remote"),
+        ("-av --delete dir/ /backup/", "Mirror sync"),
+    ],
+    "screen": [
+        ("-S session_name", "Named session"),
+        ("-r session_name", "Reattach"),
+        ("-ls", "List sessions"),
+    ],
+    "tmux": [
+        ("new -s session_name", "New session"),
+        ("attach -t session_name", "Attach"),
+        ("ls", "List sessions"),
+    ],
+    "htop": [
+        ("", "Interactive process viewer"),
+        ("-u username", "Filter user"),
+    ],
+    "iftop": [
+        ("-i wlan0", "Interface traffic"),
+        ("-P", "Show ports"),
+    ],
+    "nethogs": [
+        ("wlan0", "Interface bandwidth"),
+        ("-d 5 wlan0", "5s refresh"),
+    ],
+    "vnstat": [
+        ("-i wlan0", "Interface stats"),
+        ("-d", "Daily stats"),
+        ("-m", "Monthly stats"),
     ],
 
 }
@@ -2278,6 +2700,217 @@ BUILTIN_ARGS = {
         ("-p PID", "Attach to process"),
     ],
 
+
+
+    # === FINAL PRE-BUILT EXAMPLES ===
+    "netstat": [
+        ("-tunap", "All connections"),
+        ("-tlnp", "Listening ports"),
+        ("-c", "Continuous mode"),
+    ],
+    "ss": [
+        ("-tunap", "All connections"),
+        ("-tlnp", "Listening ports"),
+    ],
+    "arp": [
+        ("-a", "ARP table"),
+        ("-d 192.168.1.1", "Delete entry"),
+    ],
+    "route": [
+        ("-n", "Routing table"),
+        ("add default gw 192.168.1.1", "Add gateway"),
+    ],
+    "iptables": [
+        ("-L -n -v", "List rules"),
+        ("-A INPUT -s IP -j DROP", "Block IP"),
+        ("-A INPUT -p tcp --dport 80 -j ACCEPT", "Allow port 80"),
+        ("-F", "Flush rules"),
+    ],
+    "ufw": [
+        ("status", "Check status"),
+        ("enable", "Enable firewall"),
+        ("allow 80/tcp", "Allow port 80"),
+        ("deny from IP", "Block IP"),
+    ],
+    "sysctl": [
+        ("-a", "All settings"),
+        ("net.ipv4.ip_forward=1", "Enable forwarding"),
+    ],
+    "mount": [
+        ("-o ro,noexec /dev/sdb1 /mnt", "Read-only mount"),
+        ("", "List mounts"),
+    ],
+    "dd": [
+        ("if=/dev/sda of=image.dd bs=4M status=progress", "Disk image"),
+        ("if=/dev/urandom of=file bs=1M count=100", "Random file"),
+        ("if=/dev/zero of=/dev/sdb bs=1M", "Wipe disk"),
+    ],
+    "shred": [
+        ("-n 7 -z file.txt", "7 pass shred"),
+        ("-u file.txt", "Remove after"),
+        ("-v file.txt", "Verbose"),
+    ],
+    "wipe": [
+        ("-f file.txt", "Force wipe"),
+        ("-r dir/", "Recursive wipe"),
+    ],
+    "srm": [
+        ("-v file.txt", "Verbose secure delete"),
+        ("-r dir/", "Recursive"),
+    ],
+    "openssl": [
+        ("genrsa -out key.pem 2048", "Generate RSA key"),
+        ("req -new -key key.pem -out csr.pem", "Generate CSR"),
+        ("x509 -req -days 365 -in csr.pem -signkey key.pem -out cert.pem", "Self-sign cert"),
+        ("s_client -connect target.com:443", "SSL connect"),
+        ("enc -aes-256-cbc -in file.txt -out file.enc -pass pass:password", "Encrypt file"),
+        ("enc -d -aes-256-cbc -in file.enc -out file.txt -pass pass:password", "Decrypt file"),
+    ],
+    "gpg": [
+        ("--full-generate-key", "Generate key"),
+        ("-c file.txt", "Symmetric encrypt"),
+        ("-d file.gpg", "Decrypt"),
+        ("--list-keys", "List keys"),
+        ("--export -a user@email.com > public.key", "Export public key"),
+    ],
+    "base64": [
+        ("file.txt", "Encode file"),
+        ("-d file.b64", "Decode file"),
+        ("-w 0 file.txt", "No line wrap"),
+    ],
+    "md5sum": [
+        ("file.txt", "MD5 hash"),
+        ("-c checksum.md5", "Check hashes"),
+    ],
+    "sha256sum": [
+        ("file.txt", "SHA256 hash"),
+        ("-c checksum.sha256", "Check hashes"),
+    ],
+    "zip": [
+        ("archive.zip file1 file2", "Create archive"),
+        ("-r archive.zip dir/", "Recursive"),
+        ("-P password archive.zip file", "With password"),
+        ("-e archive.zip file", "Encrypt"),
+    ],
+    "unzip": [
+        ("archive.zip", "Extract"),
+        ("-P password archive.zip", "Password extract"),
+        ("archive.zip -d /output/", "Output directory"),
+    ],
+    "tar": [
+        ("-czf archive.tar.gz dir/", "Create gzip"),
+        ("-xzf archive.tar.gz", "Extract gzip"),
+        ("-cjf archive.tar.bz2 dir/", "Create bzip2"),
+    ],
+    "wget": [
+        ("https://target.com/file.txt", "Download"),
+        ("-r -np -k https://target.com", "Mirror site"),
+        ("-O output.txt https://target.com", "Save as"),
+        ("--user-agent='Mozilla/5.0' https://target.com", "Custom UA"),
+    ],
+    "git": [
+        ("clone https://github.com/user/repo.git", "Clone repo"),
+        ("clone --depth 1 https://github.com/user/repo.git", "Shallow clone"),
+        ("log --oneline", "Commit history"),
+        ("diff", "Show changes"),
+    ],
+    "python3": [
+        ("-m http.server 8080", "HTTP server"),
+        ("-c 'print("hello")'", "One-liner"),
+        ("script.py", "Run script"),
+    ],
+    "pip": [
+        ("install package", "Install package"),
+        ("install -r requirements.txt", "Install from file"),
+        ("list", "List installed"),
+        ("freeze > requirements.txt", "Export list"),
+    ],
+    "go": [
+        ("build main.go", "Build binary"),
+        ("run main.go", "Run without build"),
+        ("install github.com/tool/cmd@latest", "Install tool"),
+    ],
+    "gem": [
+        ("install package", "Install gem"),
+        ("list", "List gems"),
+    ],
+    "npm": [
+        ("install package", "Install package"),
+        ("install -g package", "Global install"),
+        ("start", "Start project"),
+    ],
+    "docker": [
+        ("ps -a", "List containers"),
+        ("images", "List images"),
+        ("run -it ubuntu bash", "Run interactive"),
+        ("build -t name .", "Build image"),
+        ("exec -it container bash", "Exec into container"),
+    ],
+    "kubectl": [
+        ("get pods", "List pods"),
+        ("get pods --all-namespaces", "All namespaces"),
+        ("get nodes", "List nodes"),
+        ("exec -it pod -- bash", "Exec into pod"),
+        ("apply -f deployment.yaml", "Apply config"),
+        ("delete pod name", "Delete pod"),
+    ],
+    "terraform": [
+        ("init", "Initialize"),
+        ("plan", "Plan changes"),
+        ("apply -auto-approve", "Apply changes"),
+        ("destroy -auto-approve", "Destroy resources"),
+    ],
+    "ansible": [
+        ("all -m ping", "Ping all hosts"),
+        ("webservers -m command -a 'uptime'", "Run command"),
+        ("-i inventory playbook.yml", "Run playbook"),
+    ],
+    "ssh": [
+        ("user@host", "Basic connect"),
+        ("-p 2222 user@host", "Custom port"),
+        ("-i key.pem user@host", "Key auth"),
+        ("-L 8080:localhost:80 user@host", "Local forward"),
+        ("-R 8080:localhost:80 user@host", "Remote forward"),
+        ("-D 1080 user@host", "SOCKS proxy"),
+    ],
+    "scp": [
+        ("file.txt user@host:/path/", "Copy to remote"),
+        ("user@host:/path/file.txt .", "Copy from remote"),
+        ("-r dir/ user@host:/path/", "Recursive"),
+    ],
+    "rsync": [
+        ("-av dir/ user@host:/path/", "Sync to remote"),
+        ("-av user@host:/path/ dir/", "Sync from remote"),
+        ("-av --delete dir/ /backup/", "Mirror sync"),
+    ],
+    "screen": [
+        ("-S session_name", "Named session"),
+        ("-r session_name", "Reattach"),
+        ("-ls", "List sessions"),
+    ],
+    "tmux": [
+        ("new -s session_name", "New session"),
+        ("attach -t session_name", "Attach"),
+        ("ls", "List sessions"),
+    ],
+    "htop": [
+        ("", "Interactive process viewer"),
+        ("-u username", "Filter user"),
+    ],
+    "iftop": [
+        ("-i wlan0", "Interface traffic"),
+        ("-P", "Show ports"),
+    ],
+    "nethogs": [
+        ("wlan0", "Interface bandwidth"),
+        ("-d 5 wlan0", "5s refresh"),
+    ],
+    "vnstat": [
+        ("-i wlan0", "Interface stats"),
+        ("-d", "Daily stats"),
+        ("-m", "Monthly stats"),
+    ],
+
 }' https://target.com/api", "JSON API"),
         ("-x http://proxy:8080 https://target.com", "Via proxy"),
         ("-k https://target.com", "Ignore SSL errors"),
@@ -2765,6 +3398,217 @@ BUILTIN_ARGS = {
         ("-q binary", "Quiet start"),
         ("-ex 'run' -ex 'bt' binary", "Run and backtrace"),
         ("-p PID", "Attach to process"),
+    ],
+
+
+
+    # === FINAL PRE-BUILT EXAMPLES ===
+    "netstat": [
+        ("-tunap", "All connections"),
+        ("-tlnp", "Listening ports"),
+        ("-c", "Continuous mode"),
+    ],
+    "ss": [
+        ("-tunap", "All connections"),
+        ("-tlnp", "Listening ports"),
+    ],
+    "arp": [
+        ("-a", "ARP table"),
+        ("-d 192.168.1.1", "Delete entry"),
+    ],
+    "route": [
+        ("-n", "Routing table"),
+        ("add default gw 192.168.1.1", "Add gateway"),
+    ],
+    "iptables": [
+        ("-L -n -v", "List rules"),
+        ("-A INPUT -s IP -j DROP", "Block IP"),
+        ("-A INPUT -p tcp --dport 80 -j ACCEPT", "Allow port 80"),
+        ("-F", "Flush rules"),
+    ],
+    "ufw": [
+        ("status", "Check status"),
+        ("enable", "Enable firewall"),
+        ("allow 80/tcp", "Allow port 80"),
+        ("deny from IP", "Block IP"),
+    ],
+    "sysctl": [
+        ("-a", "All settings"),
+        ("net.ipv4.ip_forward=1", "Enable forwarding"),
+    ],
+    "mount": [
+        ("-o ro,noexec /dev/sdb1 /mnt", "Read-only mount"),
+        ("", "List mounts"),
+    ],
+    "dd": [
+        ("if=/dev/sda of=image.dd bs=4M status=progress", "Disk image"),
+        ("if=/dev/urandom of=file bs=1M count=100", "Random file"),
+        ("if=/dev/zero of=/dev/sdb bs=1M", "Wipe disk"),
+    ],
+    "shred": [
+        ("-n 7 -z file.txt", "7 pass shred"),
+        ("-u file.txt", "Remove after"),
+        ("-v file.txt", "Verbose"),
+    ],
+    "wipe": [
+        ("-f file.txt", "Force wipe"),
+        ("-r dir/", "Recursive wipe"),
+    ],
+    "srm": [
+        ("-v file.txt", "Verbose secure delete"),
+        ("-r dir/", "Recursive"),
+    ],
+    "openssl": [
+        ("genrsa -out key.pem 2048", "Generate RSA key"),
+        ("req -new -key key.pem -out csr.pem", "Generate CSR"),
+        ("x509 -req -days 365 -in csr.pem -signkey key.pem -out cert.pem", "Self-sign cert"),
+        ("s_client -connect target.com:443", "SSL connect"),
+        ("enc -aes-256-cbc -in file.txt -out file.enc -pass pass:password", "Encrypt file"),
+        ("enc -d -aes-256-cbc -in file.enc -out file.txt -pass pass:password", "Decrypt file"),
+    ],
+    "gpg": [
+        ("--full-generate-key", "Generate key"),
+        ("-c file.txt", "Symmetric encrypt"),
+        ("-d file.gpg", "Decrypt"),
+        ("--list-keys", "List keys"),
+        ("--export -a user@email.com > public.key", "Export public key"),
+    ],
+    "base64": [
+        ("file.txt", "Encode file"),
+        ("-d file.b64", "Decode file"),
+        ("-w 0 file.txt", "No line wrap"),
+    ],
+    "md5sum": [
+        ("file.txt", "MD5 hash"),
+        ("-c checksum.md5", "Check hashes"),
+    ],
+    "sha256sum": [
+        ("file.txt", "SHA256 hash"),
+        ("-c checksum.sha256", "Check hashes"),
+    ],
+    "zip": [
+        ("archive.zip file1 file2", "Create archive"),
+        ("-r archive.zip dir/", "Recursive"),
+        ("-P password archive.zip file", "With password"),
+        ("-e archive.zip file", "Encrypt"),
+    ],
+    "unzip": [
+        ("archive.zip", "Extract"),
+        ("-P password archive.zip", "Password extract"),
+        ("archive.zip -d /output/", "Output directory"),
+    ],
+    "tar": [
+        ("-czf archive.tar.gz dir/", "Create gzip"),
+        ("-xzf archive.tar.gz", "Extract gzip"),
+        ("-cjf archive.tar.bz2 dir/", "Create bzip2"),
+    ],
+    "wget": [
+        ("https://target.com/file.txt", "Download"),
+        ("-r -np -k https://target.com", "Mirror site"),
+        ("-O output.txt https://target.com", "Save as"),
+        ("--user-agent='Mozilla/5.0' https://target.com", "Custom UA"),
+    ],
+    "git": [
+        ("clone https://github.com/user/repo.git", "Clone repo"),
+        ("clone --depth 1 https://github.com/user/repo.git", "Shallow clone"),
+        ("log --oneline", "Commit history"),
+        ("diff", "Show changes"),
+    ],
+    "python3": [
+        ("-m http.server 8080", "HTTP server"),
+        ("-c 'print("hello")'", "One-liner"),
+        ("script.py", "Run script"),
+    ],
+    "pip": [
+        ("install package", "Install package"),
+        ("install -r requirements.txt", "Install from file"),
+        ("list", "List installed"),
+        ("freeze > requirements.txt", "Export list"),
+    ],
+    "go": [
+        ("build main.go", "Build binary"),
+        ("run main.go", "Run without build"),
+        ("install github.com/tool/cmd@latest", "Install tool"),
+    ],
+    "gem": [
+        ("install package", "Install gem"),
+        ("list", "List gems"),
+    ],
+    "npm": [
+        ("install package", "Install package"),
+        ("install -g package", "Global install"),
+        ("start", "Start project"),
+    ],
+    "docker": [
+        ("ps -a", "List containers"),
+        ("images", "List images"),
+        ("run -it ubuntu bash", "Run interactive"),
+        ("build -t name .", "Build image"),
+        ("exec -it container bash", "Exec into container"),
+    ],
+    "kubectl": [
+        ("get pods", "List pods"),
+        ("get pods --all-namespaces", "All namespaces"),
+        ("get nodes", "List nodes"),
+        ("exec -it pod -- bash", "Exec into pod"),
+        ("apply -f deployment.yaml", "Apply config"),
+        ("delete pod name", "Delete pod"),
+    ],
+    "terraform": [
+        ("init", "Initialize"),
+        ("plan", "Plan changes"),
+        ("apply -auto-approve", "Apply changes"),
+        ("destroy -auto-approve", "Destroy resources"),
+    ],
+    "ansible": [
+        ("all -m ping", "Ping all hosts"),
+        ("webservers -m command -a 'uptime'", "Run command"),
+        ("-i inventory playbook.yml", "Run playbook"),
+    ],
+    "ssh": [
+        ("user@host", "Basic connect"),
+        ("-p 2222 user@host", "Custom port"),
+        ("-i key.pem user@host", "Key auth"),
+        ("-L 8080:localhost:80 user@host", "Local forward"),
+        ("-R 8080:localhost:80 user@host", "Remote forward"),
+        ("-D 1080 user@host", "SOCKS proxy"),
+    ],
+    "scp": [
+        ("file.txt user@host:/path/", "Copy to remote"),
+        ("user@host:/path/file.txt .", "Copy from remote"),
+        ("-r dir/ user@host:/path/", "Recursive"),
+    ],
+    "rsync": [
+        ("-av dir/ user@host:/path/", "Sync to remote"),
+        ("-av user@host:/path/ dir/", "Sync from remote"),
+        ("-av --delete dir/ /backup/", "Mirror sync"),
+    ],
+    "screen": [
+        ("-S session_name", "Named session"),
+        ("-r session_name", "Reattach"),
+        ("-ls", "List sessions"),
+    ],
+    "tmux": [
+        ("new -s session_name", "New session"),
+        ("attach -t session_name", "Attach"),
+        ("ls", "List sessions"),
+    ],
+    "htop": [
+        ("", "Interactive process viewer"),
+        ("-u username", "Filter user"),
+    ],
+    "iftop": [
+        ("-i wlan0", "Interface traffic"),
+        ("-P", "Show ports"),
+    ],
+    "nethogs": [
+        ("wlan0", "Interface bandwidth"),
+        ("-d 5 wlan0", "5s refresh"),
+    ],
+    "vnstat": [
+        ("-i wlan0", "Interface stats"),
+        ("-d", "Daily stats"),
+        ("-m", "Monthly stats"),
     ],
 
 }
