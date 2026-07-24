@@ -71,6 +71,7 @@ from modules.backup_manager import BackupManager
 from modules.dos_toolkit import DoSToolkit
 from modules.cyber_phisher import CyberPhisher
 from modules.smart_osint import SmartOSINT
+from modules.recovery_manager import RecoveryManager
 
 from modules.ids_signature import IDSSignature
 from modules.ids_anomaly import IDSAnomaly
@@ -178,9 +179,11 @@ class CyberLabApp:
             "dos": lambda: DoSToolkit(self.content, self.db, self.logger).build(),
             "cyberphish": lambda: CyberPhisher(self.content, self.db, self.logger).build(),
             "smartosint": lambda: SmartOSINT(self.content, self.db, self.logger).build(),
+            "recovery": lambda: RecoveryManager(self.content, self.db, self.logger, self.session, self.navigate).build(),
             "dos": lambda: DoSModule(self.content, self.db, self.logger, self.detector).build(),
             "cyberphish": lambda: CyberPhisher(self.content, self.db, self.logger).build(),
             "smartosint": lambda: SmartOSINT(self.content, self.db, self.logger).build(),
+            "recovery": lambda: RecoveryManager(self.content, self.db, self.logger, self.session, self.navigate).build(),
             "macro": lambda: MacroRecorder(self.content, self.db, self.logger).build(),
             "hashcrack": lambda: HashCracker(self.content, self.db, self.logger).build(),
             "exploits": lambda: ExploitSuggester(self.content, self.db, self.logger).build(),
@@ -200,6 +203,7 @@ class CyberLabApp:
             "dos": lambda: DoSToolkit(self.content, self.db, self.logger).build(),
             "cyberphish": lambda: CyberPhisher(self.content, self.db, self.logger).build(),
             "smartosint": lambda: SmartOSINT(self.content, self.db, self.logger).build(),
+            "recovery": lambda: RecoveryManager(self.content, self.db, self.logger, self.session, self.navigate).build(),
             "ids_signature": lambda: IDSSignature(self.content, self.db, self.logger).build(),
             "ids_anomaly": lambda: IDSAnomaly(self.content, self.db, self.logger).build(),
             "threat_intel": lambda: ThreatIntel(self.content, self.db, self.logger).build(),

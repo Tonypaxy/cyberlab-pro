@@ -33,7 +33,8 @@ class Sidebar:
             "Backup":"backup",
             "DoS Toolkit":"dos",
             "CyberPhisher":"cyberphish",
-            "Smart OSINT":"smartosint","IDS Signatures":"ids_signature","IDS Anomaly":"ids_anomaly","Threat Intel":"threat_intel","Sec Hardener":"security_hardener","Settings":"settings"
+            "Smart OSINT":"smartosint",
+            "Recovery":"recovery","IDS Signatures":"ids_signature","IDS Anomaly":"ids_anomaly","Threat Intel":"threat_intel","Sec Hardener":"security_hardener","Settings":"settings"
         }
     
     def build(self):
