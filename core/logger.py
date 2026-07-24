@@ -31,6 +31,9 @@ class CyberLogger:
         self.error_logger.addHandler(self._create_handler("errors.log"))
     
     def log_startup(self):
+        self.app_logger.info("CyberLab Pro Shutting Down")
+        self.app_logger.info("CyberLab Pro Shutting Down")
+        self.app_logger.info("="*50)
         self.app_logger.info("CyberLab Pro Started")
     
     def log_error(self, module, error):
