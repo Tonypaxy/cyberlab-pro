@@ -13,7 +13,7 @@ class Sidebar:
             "Wordlists", "Log Analyzer", "Sanitizer", "Checksum",
             "Exploits", "Subdomains", "Wireless", "Cloud", "Stego",
             "Resources", "Auto Recon", "OSINT", "Passwords", "Fuzzing",
-            "Malware", "Reverse Eng", "Social Eng", "Phishing Toolkit", "Backup", "IDS Signatures", "IDS Anomaly", "Threat Intel", "Sec Hardener", "Settings"
+            "Malware", "Reverse Eng", "Social Eng", "Phishing Toolkit", "Backup", "DoS Toolkit", "IDS Signatures", "IDS Anomaly", "Threat Intel", "Sec Hardener", "Settings"
         ]
         self.cmd_map = {
             "Dashboard":"dashboard","Projects":"projects","Tool Center":"tools",
@@ -30,7 +30,8 @@ class Sidebar:
             "Fuzzing":"fuzzing","Malware":"malware","Reverse Eng":"reverse",
             "Social Eng":"social",
             "Phishing Toolkit":"phishing",
-            "Backup":"backup","IDS Signatures":"ids_signature","IDS Anomaly":"ids_anomaly","Threat Intel":"threat_intel","Sec Hardener":"security_hardener","Settings":"settings"
+            "Backup":"backup",
+            "DoS Toolkit":"dos","IDS Signatures":"ids_signature","IDS Anomaly":"ids_anomaly","Threat Intel":"threat_intel","Sec Hardener":"security_hardener","Settings":"settings"
         }
     
     def build(self):

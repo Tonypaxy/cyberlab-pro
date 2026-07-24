@@ -121,13 +121,13 @@ def get_install_methods_ranked(tool_name):
         # Generate default methods
         methods = {}
         if ENV == 'termux':
-            methods = {'pkg': f"pkg install {tool_name} -y", 'pip': f"pip install {tool_name}", 'git': f"git clone 'https://github.com/search?q={tool_name}"}
+            methods = {'pkg': f"pkg install {tool_name} -y", 'pip': f"pip install {tool_name}", 'git': f"git clone https://github.com/user/{tool_name}"}
         elif ENV == 'debian':
-            methods = {'apt': f"sudo apt install {tool_name} -y", 'pip': f"pip install {tool_name}", 'git': f"git clone 'https://github.com/search?q={tool_name}"}
+            methods = {'apt': f"sudo apt install {tool_name} -y", 'pip': f"pip install {tool_name}", 'git': f"git clone https://github.com/user/{tool_name}"}
         elif ENV == 'arch':
-            methods = {'pacman': f"sudo pacman -S {tool_name} --noconfirm", 'pip': f"pip install {tool_name}", 'git': f"git clone 'https://github.com/search?q={tool_name}"}
+            methods = {'pacman': f"sudo pacman -S {tool_name} --noconfirm", 'pip': f"pip install {tool_name}", 'git': f"git clone https://github.com/user/{tool_name}"}
         elif ENV == 'fedora':
-            methods = {'dnf': f"sudo dnf install {tool_name} -y", 'pip': f"pip install {tool_name}", 'git': f"git clone 'https://github.com/search?q={tool_name}"}
+            methods = {'dnf': f"sudo dnf install {tool_name} -y", 'pip': f"pip install {tool_name}", 'git': f"git clone https://github.com/user/{tool_name}"}
         return methods
     
     tool_methods = env_cmds[tool_name]
