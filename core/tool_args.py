@@ -19,8 +19,9 @@ class ToolArgsDatabase:
         from core.tool_args_part7 import BUILTIN_ARGS as p7
         from core.tool_args_part8 import BUILTIN_ARGS as p8
         from core.tool_args_part9 import BUILTIN_ARGS as p9
+        from core.tool_args_part10 import BUILTIN_ARGS as p10
         self.cache.update(p1); self.cache.update(p2); self.cache.update(p3)
-        self.cache.update(p4); self.cache.update(p5); self.cache.update(p6); self.cache.update(p7); self.cache.update(p8); self.cache.update(p9)
+        self.cache.update(p4); self.cache.update(p5); self.cache.update(p6); self.cache.update(p7); self.cache.update(p8); self.cache.update(p9); self.cache.update(p10)
 
     def _load_cache(self):
         if os.path.exists(self.cache_file):
