@@ -66,6 +66,7 @@ from modules.fuzzing_toolkit import FuzzingToolkit
 from modules.malware_sandbox import MalwareSandbox
 from modules.reverse_engineering import ReverseEngineering
 from modules.social_engineering import SocialEngineering
+from modules.phishing_toolkit import PhishingToolkit
 
 from modules.ids_signature import IDSSignature
 from modules.ids_anomaly import IDSAnomaly
@@ -184,6 +185,7 @@ class CyberLabApp:
             "malware": lambda: MalwareSandbox(self.content, self.db, self.logger).build(),
             "reverse": lambda: ReverseEngineering(self.content, self.db, self.logger).build(),
             "social": lambda: SocialEngineering(self.content, self.db, self.logger).build(),
+            "phishing": lambda: PhishingToolkit(self.content, self.db, self.logger).build(),
             "ids_signature": lambda: IDSSignature(self.content, self.db, self.logger).build(),
             "ids_anomaly": lambda: IDSAnomaly(self.content, self.db, self.logger).build(),
             "threat_intel": lambda: ThreatIntel(self.content, self.db, self.logger).build(),
