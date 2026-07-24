@@ -69,7 +69,7 @@ from modules.social_engineering import SocialEngineering
 from modules.phishing_toolkit import PhishingToolkit
 from modules.backup_manager import BackupManager
 from modules.dos_toolkit import DoSToolkit
-from modules.cyber_phisher import CyberPhisherr
+from modules.cyber_phisher import CyberPhisher
 
 from modules.ids_signature import IDSSignature
 from modules.ids_anomaly import IDSAnomaly
@@ -175,9 +175,9 @@ class CyberLabApp:
             "phishing": lambda: PhishingModule(self.content, self.db, self.logger, self.detector).build(),
             "backup": lambda: BackupManager(self.content, self.db, self.logger).build(),
             "dos": lambda: DoSToolkit(self.content, self.db, self.logger).build(),
-            "cyberphish": lambda: CyberPhisherr(self.content, self.db, self.logger).build(),
+            "cyberphish": lambda: CyberPhisher(self.content, self.db, self.logger).build(),
             "dos": lambda: DoSModule(self.content, self.db, self.logger, self.detector).build(),
-            "cyberphish": lambda: CyberPhisherr(self.content, self.db, self.logger).build(),
+            "cyberphish": lambda: CyberPhisher(self.content, self.db, self.logger).build(),
             "macro": lambda: MacroRecorder(self.content, self.db, self.logger).build(),
             "hashcrack": lambda: HashCracker(self.content, self.db, self.logger).build(),
             "exploits": lambda: ExploitSuggester(self.content, self.db, self.logger).build(),
@@ -195,7 +195,7 @@ class CyberLabApp:
             "phishing": lambda: PhishingToolkit(self.content, self.db, self.logger).build(),
             "backup": lambda: BackupManager(self.content, self.db, self.logger).build(),
             "dos": lambda: DoSToolkit(self.content, self.db, self.logger).build(),
-            "cyberphish": lambda: CyberPhisherr(self.content, self.db, self.logger).build(),
+            "cyberphish": lambda: CyberPhisher(self.content, self.db, self.logger).build(),
             "ids_signature": lambda: IDSSignature(self.content, self.db, self.logger).build(),
             "ids_anomaly": lambda: IDSAnomaly(self.content, self.db, self.logger).build(),
             "threat_intel": lambda: ThreatIntel(self.content, self.db, self.logger).build(),
