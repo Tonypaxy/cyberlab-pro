@@ -32,7 +32,8 @@ class Sidebar:
             "Phishing Toolkit":"phishing",
             "Backup":"backup",
             "DoS Toolkit":"dos",
-            "CyberPhisher":"cyberphish","IDS Signatures":"ids_signature","IDS Anomaly":"ids_anomaly","Threat Intel":"threat_intel","Sec Hardener":"security_hardener","Settings":"settings"
+            "CyberPhisher":"cyberphish",
+            "Smart OSINT":"smartosint","IDS Signatures":"ids_signature","IDS Anomaly":"ids_anomaly","Threat Intel":"threat_intel","Sec Hardener":"security_hardener","Settings":"settings"
         }
     
     def build(self):

