@@ -39,8 +39,6 @@ class ToolDetector:
         
         
         "phishing_social": {
-            "setoolkit": ["setoolkit"], "socialfish": ["socialfish"], "zphisher": ["zphisher"],
-            "blackeye": ["blackeye"], "gophish": ["gophish"], "evilginx2": ["evilginx2"],
             "modlishka": ["modlishka"], "muraena": ["muraena"], "king-phisher": ["king-phisher"]
         },
         "osint": {
@@ -89,8 +87,6 @@ class ToolDetector:
         },
         
         "social_engineering": {
-            "setoolkit": ["setoolkit"], "zphisher": ["zphisher"], "blackeye": ["blackeye"],
-            "socialfish": ["socialfish"], "gophish": ["gophish"], "evilginx2": ["evilginx2"],
             "modlishka": ["modlishka"], "muraena": ["muraena"], "king-phisher": ["king-phisher"],
             "swaks": ["swaks"], "sendemail": ["sendEmail", "sendemail"], "mail": ["mail"]
         },
@@ -258,11 +254,7 @@ class ToolDetector:
         
         "phishing_toolkits": {
             "evilginx2": ["evilginx2"], "gophish": ["gophish"], "modlishka": ["modlishka"],
-            "muraena": ["muraena"], "zphisher": ["zphisher"], "blackeye": ["blackeye"],
-            "socialfish": ["socialfish"], "setoolkit": ["setoolkit"], "credphisher": ["credphisher"],
             "phishim": ["phishim"], "king-phisher": ["king-phisher"], "sneakemail": ["sneakemail"],
-            "swaks": ["swaks"], "hiddeneye": ["hiddeneye"], "shellphish": ["shellphish"],
-            "advphishing": ["advphishing"], "mrphish": ["mrphish"],
         },
 
         "social_brute": {
