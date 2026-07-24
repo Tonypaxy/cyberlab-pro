@@ -181,14 +181,27 @@ httpd.serve_forever()'''
         
         elif tunnel_type == 'cloudflared' and shutil.which("cloudflared"):
             try:
-                self.tunnel_process = subprocess.Popen(["cloudflared", "tunnel", "--url", f"http://localhost:{port}"],
-                        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
-                for _ in range(10):
+                self.tunnel_process = subprocess.Popen(
+                    ["cloudflared", "tunnel", "--url", f"http://localhost:{port}", "--no-autoupdate"],
+                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
+                # Read output for up to 15 seconds to find the URL
+                start = time.time()
+                output_lines = []
+                while time.time() - start < 15:
                     line = self.tunnel_process.stdout.readline()
+                    if not line: break
+                    output_lines.append(line)
+                    # Cloudflared URL format: https://xxx.trycloudflare.com
                     if "trycloudflare.com" in line:
-                        public_url = line.strip().split()[-1]
-                        break
-            except: pass
+                        import re
+                        match = re.search(r'https://[a-zA-Z0-9.-]+\.trycloudflare\.com', line)
+                        if match:
+                            public_url = match.group(0)
+                            self.output.insert('end', f"  Cloudflared: {public_url}\n")
+                            break
+                self.output.insert('end', ''.join(output_lines[-3:]))
+            except Exception as e:
+                self.output.insert('end', f"  Cloudflared error: {e}\n")
         
         elif tunnel_type == 'serveo':
             public_url = f"https://{slug}.serveo.net"
