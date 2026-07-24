@@ -13,7 +13,9 @@ class Sidebar:
             "Wordlists", "Log Analyzer", "Sanitizer", "Checksum",
             "Exploits", "Subdomains", "Wireless", "Cloud", "Stego",
             "Resources", "Auto Recon", "OSINT", "Passwords", "Fuzzing",
-            "Malware", "Reverse Eng", "Social Eng", "Phishing Toolkit", "Backup", "CyberPhisher", "Smart OSINT", "Recovery", "DoS Toolkit", "IDS Signatures", "IDS Anomaly", "Threat Intel", "Sec Hardener", "Settings"
+            "Malware", "Reverse Eng", "Social Eng", "Phishing Toolkit",
+            "Backup", "CyberPhisher", "Smart OSINT", "Recovery", "DoS Toolkit",
+            "Settings"
         ]
         self.cmd_map = {
             "Dashboard":"dashboard","Projects":"projects","Tool Center":"tools",
@@ -28,13 +30,9 @@ class Sidebar:
             "Cloud":"cloud","Stego":"stego","Resources":"resources",
             "Auto Recon":"autorecon","OSINT":"osint","Passwords":"passwords",
             "Fuzzing":"fuzzing","Malware":"malware","Reverse Eng":"reverse",
-            "Social Eng":"social",
-            "Phishing Toolkit":"phishing",
-            "Backup":"backup",
-            "DoS Toolkit":"dos",
-            "CyberPhisher":"cyberphish",
-            "Smart OSINT":"smartosint",
-            "Recovery":"recovery","IDS Signatures":"ids_signature","IDS Anomaly":"ids_anomaly","Threat Intel":"threat_intel","Sec Hardener":"security_hardener","Settings":"settings"
+            "Social Eng":"social","Phishing Toolkit":"phishing","Backup":"backup",
+            "CyberPhisher":"cyberphish","Smart OSINT":"smartosint","Recovery":"recovery",
+            "DoS Toolkit":"dos","Settings":"settings"
         }
     
     def build(self):
