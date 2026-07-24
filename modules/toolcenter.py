@@ -16,7 +16,8 @@ class ToolCenter:
         try:
             from core.tool_args import ToolArgsDatabase
             self.args_db = ToolArgsDatabase()
-        except: self.args_db = None
+        except:
+            self.args_db = None
     
     def build(self):
         for w in self.frame.winfo_children(): w.destroy()
@@ -27,6 +28,8 @@ class ToolCenter:
         installed = self.detector.get_total_count()
         missing = len(self.detector.get_missing_tools())
         tk.Label(h, text=f"{installed} installed | {missing} available", font=('Courier',9), fg='#888', bg='#1a1a2e').pack(side='right')
+        tk.Button(h, text="Refresh", font=('Courier',8), fg='#000', bg='#ffaa00', relief='flat', padx=10,
+                command=self._refresh_tools).pack(side='right', padx=5)
         
         from gui.scrollable import make_scrollable
         canvas, inner, v_bar, h_bar = make_scrollable(self.frame, '#1a1a2e')
@@ -112,6 +115,11 @@ class ToolCenter:
         self.pending_install = tool['command']
         if self.navigate: self.navigate("terminal")
     
+    def _refresh_tools(self):
+        self.detector.detect_all()
+        for w in self.frame.winfo_children(): w.destroy()
+        self.build()
+
     def get_pending_install(self):
         cmd = self.pending_install; self.pending_install = None; return cmd
     

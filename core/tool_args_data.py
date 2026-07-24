@@ -26,10 +26,16 @@ BUILTIN_ARGS = {
         ("-m 0", "MD5"), ("-m 1000", "NTLM"), ("-m 2500", "WPA"),
         ("-a 0", "Dictionary"), ("-a 3", "Brute force"), ("-O", "Optimized")
     ],
-    "curl": [
-        ("-I", "Headers"), ("-v", "Verbose"), ("-L", "Follow redirects"),
-        ("-X POST", "POST"), ("-d 'data'", "Send data"), ("-k", "Insecure SSL")
-    ],
+#     "curl": [
+#         ("-I https://target.com", "Headers only"),
+#         ("-v https://target.com", "Verbose"),
+#         ("-L https://target.com", "Follow redirects"),
+#         ("-X POST -d user=admin https://target.com/login", "POST data"),
+#         ("-H 'Content-Type: application/json' https://target.com/api", "JSON API"),
+#         ("-x http://proxy:8080 https://target.com", "Via proxy"),
+#         ("-k https://target.com", "Ignore SSL errors"),
+#         ("-u admin:password https://target.com", "Basic auth"),
+#     ],
     "gobuster": [
         ("dir -u", "Directory mode"), ("dns -d", "DNS mode"),
         ("-w /usr/share/wordlists/dirb/common.txt", "Common list"),
@@ -518,7 +524,7 @@ BUILTIN_ARGS = {
         ("-v https://target.com", "Verbose"),
         ("-L https://target.com", "Follow redirects"),
         ("-X POST -d 'user=admin&pass=test' https://target.com/login", "POST data"),
-        ("-H 'Content-Type: application/json' -d '{"key":"value"
+#         ("-H 'Content-Type: application/json' -d '{key:value}' https://target.com/api", "JSON API"),
 
     # === MORE PRE-BUILT EXAMPLES ===
     "masscan": [
@@ -1112,7 +1118,7 @@ BUILTIN_ARGS = {
         ("-m", "Monthly stats"),
     ],
 
-}' https://target.com/api", "JSON API"),
+        ("-H Content-Type: application/json https://target.com/api", "JSON API"),
         ("-x http://proxy:8080 https://target.com", "Via proxy"),
         ("-k https://target.com", "Ignore SSL errors"),
         ("-u admin:password https://target.com", "Basic auth"),
@@ -2317,7 +2323,7 @@ BUILTIN_ARGS = {
         ("-v https://target.com", "Verbose"),
         ("-L https://target.com", "Follow redirects"),
         ("-X POST -d 'user=admin&pass=test' https://target.com/login", "POST data"),
-        ("-H 'Content-Type: application/json' -d '{"key":"value"
+        ("-H Content-Type: application/json -d data https://target.com/api", "JSON API"),
 
     # === MORE PRE-BUILT EXAMPLES ===
     "masscan": [
@@ -2911,7 +2917,7 @@ BUILTIN_ARGS = {
         ("-m", "Monthly stats"),
     ],
 
-}' https://target.com/api", "JSON API"),
+# }' https://target.com/api", "JSON API"),
         ("-x http://proxy:8080 https://target.com", "Via proxy"),
         ("-k https://target.com", "Ignore SSL errors"),
         ("-u admin:password https://target.com", "Basic auth"),
