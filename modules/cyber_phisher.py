@@ -202,11 +202,17 @@ httpd.serve_forever()'''
             except: pass
         if public_url:
             self.url_label.config(text=public_url, fg='#00ff88')
-            self.url_detail.config(text=f"Page: {name} | Tunnel: {tunnel_type} | LIVE", fg='#3fb950')
+            self.url_detail.config(text=f"Page: {name} | {tunnel_type} | LIVE", fg='#3fb950')
             self.output.insert('end', f"  Public URL: {public_url}\n")
         else:
-            self.url_label.config(text=f"http://{ip}:{port}", fg='#00ff88')
-            self.url_detail.config(text=f"Page: {name} | Local only | LIVE", fg='#ffaa00')
+            # Generate professional-looking local URL with path
+            display_url = f"http://{slug}-verify-{hashlib.md5(domain.encode()).hexdigest()[:8]}.local:{port}"
+            actual_url = f"http://{ip}:{port}"
+            self.url_label.config(text=actual_url, fg='#00ff88')
+            self.url_detail.config(text=f"Page: {name} | Local | {display_url}", fg='#ffaa00')
+            self.output.insert('end', f"  Local URL: {actual_url}\n")
+            self.output.insert('end', f"  Display as: {display_url}\n")
+            self.output.insert('end', f"  Tip: Use ngrok/cloudflared for public URL\n")
         
         self.live_dot.config(text="● LIVE", fg='#00ff88')
         self.copy_btn.config(state='normal')
