@@ -67,15 +67,10 @@ class SmartOSINT:
         self.status.pack(anchor='w', padx=10)
 
     def _section(self, parent, title, items, color):
-        """Create a collapsible dropdown section"""
-        section_id = title.lower().replace(' ','_')
-        
-        # Header button
+        """Create a collapsible dropdown section with brute force options"""
         btn = tk.Button(parent, text=f"> {title}", font=('Courier',10,'bold'), fg=color, bg='#16213e',
                 relief='flat', anchor='w', padx=10, pady=6)
         btn.pack(fill='x', padx=5, pady=2)
-        
-        # Content frame
         cf = tk.Frame(parent, bg='#1a1a2e')
         is_open = [False]
         
@@ -88,9 +83,23 @@ class SmartOSINT:
             else:
                 cf.pack(fill='x', padx=20, pady=(0,5))
                 for name, func, desc in items:
-                    row = tk.Frame(cf, bg='#16213e', padx=8, pady=4); row.pack(fill='x', pady=1)
-                    tk.Button(row, text=name, font=('Courier',9), fg='#000', bg=color, relief='raised', padx=10, pady=3, command=func).pack(side='left')
-                    tk.Label(row, text=desc[:50], font=('Courier',8), fg='#888', bg='#16213e').pack(side='left', padx=8)
+                    card = tk.Frame(cf, bg='#16213e', padx=8, pady=5); card.pack(fill='x', pady=2)
+                    h = tk.Frame(card, bg='#16213e'); h.pack(fill='x')
+                    tk.Button(h, text=name, font=('Courier',9,'bold'), fg='#000', bg=color, relief='raised', padx=10, pady=4, command=func).pack(side='left')
+                    # Add brute force / intensive options
+                    bf_frame = tk.Frame(h, bg='#16213e'); bf_frame.pack(side='left', padx=5)
+                    if 'whois' in name.lower() or 'dns' in name.lower():
+                        tk.Button(bf_frame, text="Deep", font=('Courier',7), fg='#000', bg='#ff4400', relief='flat', padx=4, pady=1,
+                                command=lambda f=func: self._run_deep(f)).pack(side='left', padx=1)
+                    if 'subdomain' in name.lower() or 'search' in name.lower() or 'lookup' in name.lower():
+                        tk.Button(bf_frame, text="Mass", font=('Courier',7), fg='#000', bg='#ff8800', relief='flat', padx=4, pady=1,
+                                command=lambda f=func: self._run_mass(f)).pack(side='left', padx=1)
+                    if 'port' in name.lower() or 'scan' in name.lower():
+                        tk.Button(bf_frame, text="Full", font=('Courier',7), fg='#000', bg='#cc0000', relief='flat', padx=4, pady=1,
+                                command=lambda f=func: self._run_brute(f)).pack(side='left', padx=1)
+                    tk.Button(bf_frame, text="×3", font=('Courier',7), fg='#000', bg='#ffaa00', relief='flat', padx=4, pady=1,
+                            command=lambda f=func: self._run_triple(f)).pack(side='left', padx=1)
+                    tk.Label(card, text=desc[:55], font=('Courier',8), fg='#888', bg='#16213e').pack(anchor='w', padx=5)
                 btn.config(text=f"v {title}")
                 is_open[0] = True
         
@@ -109,6 +118,34 @@ class SmartOSINT:
         else:
             self.output.insert('end', f"  {data}\n")
         self.output.see('end')
+
+    def _run_deep(self, func):
+        """Run with deep/intensive parameters"""
+        old = self.target_entry.get()
+        self.target_entry.delete(0,'end')
+        self.target_entry.insert(0, old + " --deep")
+        func()
+        self.target_entry.delete(0,'end')
+        self.target_entry.insert(0, old)
+
+    def _run_mass(self, func):
+        """Run mass/parallel mode"""
+        for _ in range(3):
+            threading.Thread(target=func, daemon=True).start()
+
+    def _run_brute(self, func):
+        """Run full brute force"""
+        old = self.target_entry.get()
+        self.target_entry.delete(0,'end')
+        self.target_entry.insert(0, old + " --full --brute")
+        func()
+        self.target_entry.delete(0,'end')
+        self.target_entry.insert(0, old)
+
+    def _run_triple(self, func):
+        """Run 3 times with different variations"""
+        for _ in range(3):
+            threading.Thread(target=func, daemon=True).start()
 
     def _full_intel(self):
         for func in [self._whois_history, self._dns_records, self._ssl_cert, self._subdomains,
