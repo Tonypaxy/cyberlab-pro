@@ -254,6 +254,22 @@ class ToolDetector:
             "sat_com": ["sat-com"], "orbital_hack": ["orbital-hack"],
             "iss_tracker": ["iss-tracker"], "gps_spoof": ["gps-spoof"]
         },
+        
+        "social_brute": {
+            "sherlock": ["sherlock"], "holehe": ["holehe"], "instashell": ["instashell"],
+            "instagram-brute": ["instagram-brute"], "facebook-brute": ["facebook-brute"],
+            "twitter-brute": ["twitter-brute"], "tiktok-brute": ["tiktok-brute"],
+            "snapchat-brute": ["snapchat-brute"], "linkedin-brute": ["linkedin-brute"],
+            "github-brute": ["github-brute"], "reddit-brute": ["reddit-brute"],
+            "pinterest-brute": ["pinterest-brute"], "tumblr-brute": ["tumblr-brute"],
+            "spotify-brute": ["spotify-brute"], "netflix-brute": ["netflix-brute"],
+            "hulu-brute": ["hulu-brute"], "amazon-brute": ["amazon-brute"],
+            "paypal-brute": ["paypal-brute"], "ebay-brute": ["ebay-brute"],
+            "wordpress-brute": ["wordpress-brute"], "joomla-brute": ["joomla-brute"],
+            "drupal-brute": ["drupal-brute"], "magento-brute": ["magento-brute"],
+            "prestashop-brute": ["prestashop-brute"],
+        },
+
         "biometric_hack": {
             "fingerprint_spoof": ["fingerprint-spoof"], "face_recog_bypass": ["face-recog-bypass"],
             "iris_spoof": ["iris-spoof"], "voice_spoof": ["voice-spoof"],

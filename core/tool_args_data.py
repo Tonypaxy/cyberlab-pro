@@ -242,6 +242,112 @@ BUILTIN_ARGS = {
     "sslyze": [
         ("--regular target.com", "Regular scan"), ("--json_out out.json", "JSON")
     ],
+
+
+    # === SOCIAL MEDIA BRUTE FORCE ===
+    "sherlock": [
+        ("username", "Search username"), ("--output results/", "Output folder"),
+        ("--csv", "CSV output"), ("--xlsx", "XLSX output"),
+        ("--site twitter", "Twitter only"), ("--site instagram", "Instagram only"),
+        ("--site facebook", "Facebook only"), ("--site all", "All 300+ sites"),
+        ("--timeout 5", "5s timeout"), ("-t 20", "20 threads"),
+        ("--print-found", "Print found only"), ("--nsfw", "Include NSFW"),
+    ],
+    "holehe": [
+        ("email@test.com", "Check email"), ("--only-used", "Only registered"),
+        ("-o output.csv", "CSV output"), ("-p", "Print results"),
+    ],
+    "instashell": [
+        ("-u username", "Target user"), ("-p password", "Single password"),
+        ("-f list.txt", "Password list"), ("-t 10", "10 threads"),
+        ("--proxy 127.0.0.1:8080", "Use proxy"),
+    ],
+    "instagram-brute": [
+        ("-u username", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 10", "Threads"), ("--proxy proxy:port", "Proxy"),
+    ],
+    "facebook-brute": [
+        ("-u user@email.com", "Email/ID"), ("-p pass.txt", "Password list"),
+        ("-t 10", "Threads"), ("--proxy proxy:port", "Proxy"),
+    ],
+    "twitter-brute": [
+        ("-u username", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 5", "Threads"), ("--proxy proxy:port", "Proxy"),
+    ],
+    "tiktok-brute": [
+        ("-u username", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 10", "Threads"),
+    ],
+    "snapchat-brute": [
+        ("-u username", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 5", "Threads"),
+    ],
+    "linkedin-brute": [
+        ("-u email@test.com", "Target email"), ("-p pass.txt", "Password list"),
+        ("-t 5", "Threads"), ("--proxy proxy:port", "Proxy"),
+    ],
+    "github-brute": [
+        ("-u username", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 5", "Threads"),
+    ],
+    "reddit-brute": [
+        ("-u username", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 5", "Threads"),
+    ],
+    "pinterest-brute": [
+        ("-u email@test.com", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 10", "Threads"),
+    ],
+    "tumblr-brute": [
+        ("-u email@test.com", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 10", "Threads"),
+    ],
+    "spotify-brute": [
+        ("-u email@test.com", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 10", "Threads"),
+    ],
+    "netflix-brute": [
+        ("-u email@test.com", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 5", "Threads"),
+    ],
+    "hulu-brute": [
+        ("-u email@test.com", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 5", "Threads"),
+    ],
+    "amazon-brute": [
+        ("-u email@test.com", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 5", "Threads"), ("--proxy proxy:port", "Proxy"),
+    ],
+    "paypal-brute": [
+        ("-u email@test.com", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 3", "Threads"), ("--proxy proxy:port", "Proxy"),
+    ],
+    "ebay-brute": [
+        ("-u username", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 5", "Threads"),
+    ],
+    "wordpress-brute": [
+        ("--url http://target.com", "Target URL"), ("--usernames admin", "Single user"),
+        ("-U users.txt", "User list"), ("-P pass.txt", "Password list"),
+        ("-t 10", "Threads"), ("--proxy proxy:port", "Proxy"),
+    ],
+    "joomla-brute": [
+        ("-u http://target.com", "Target URL"), ("-w admin", "Username"),
+        ("-p pass.txt", "Password list"), ("-t 10", "Threads"),
+    ],
+    "drupal-brute": [
+        ("-u http://target.com", "Target URL"), ("-U users.txt", "User list"),
+        ("-P pass.txt", "Password list"), ("-t 10", "Threads"),
+    ],
+    "magento-brute": [
+        ("-u http://target.com", "Target"), ("-U users.txt", "Users"),
+        ("-P pass.txt", "Passwords"), ("-t 10", "Threads"),
+    ],
+    "prestashop-brute": [
+        ("-u http://target.com", "Target"), ("-U users.txt", "Users"),
+        ("-P pass.txt", "Passwords"), ("-t 10", "Threads"),
+    ],
+
 }
     # === SOCIAL MEDIA & PHISHING TOOLS ===
     "setoolkit": [
@@ -471,4 +577,110 @@ BUILTIN_ARGS = {
     "voiphopper": [
         ("-i eth0", "Interface"), ("-c 1", "VLAN 1"), ("-m", "MAC spoof")
     ],
+
+
+    # === SOCIAL MEDIA BRUTE FORCE ===
+    "sherlock": [
+        ("username", "Search username"), ("--output results/", "Output folder"),
+        ("--csv", "CSV output"), ("--xlsx", "XLSX output"),
+        ("--site twitter", "Twitter only"), ("--site instagram", "Instagram only"),
+        ("--site facebook", "Facebook only"), ("--site all", "All 300+ sites"),
+        ("--timeout 5", "5s timeout"), ("-t 20", "20 threads"),
+        ("--print-found", "Print found only"), ("--nsfw", "Include NSFW"),
+    ],
+    "holehe": [
+        ("email@test.com", "Check email"), ("--only-used", "Only registered"),
+        ("-o output.csv", "CSV output"), ("-p", "Print results"),
+    ],
+    "instashell": [
+        ("-u username", "Target user"), ("-p password", "Single password"),
+        ("-f list.txt", "Password list"), ("-t 10", "10 threads"),
+        ("--proxy 127.0.0.1:8080", "Use proxy"),
+    ],
+    "instagram-brute": [
+        ("-u username", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 10", "Threads"), ("--proxy proxy:port", "Proxy"),
+    ],
+    "facebook-brute": [
+        ("-u user@email.com", "Email/ID"), ("-p pass.txt", "Password list"),
+        ("-t 10", "Threads"), ("--proxy proxy:port", "Proxy"),
+    ],
+    "twitter-brute": [
+        ("-u username", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 5", "Threads"), ("--proxy proxy:port", "Proxy"),
+    ],
+    "tiktok-brute": [
+        ("-u username", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 10", "Threads"),
+    ],
+    "snapchat-brute": [
+        ("-u username", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 5", "Threads"),
+    ],
+    "linkedin-brute": [
+        ("-u email@test.com", "Target email"), ("-p pass.txt", "Password list"),
+        ("-t 5", "Threads"), ("--proxy proxy:port", "Proxy"),
+    ],
+    "github-brute": [
+        ("-u username", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 5", "Threads"),
+    ],
+    "reddit-brute": [
+        ("-u username", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 5", "Threads"),
+    ],
+    "pinterest-brute": [
+        ("-u email@test.com", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 10", "Threads"),
+    ],
+    "tumblr-brute": [
+        ("-u email@test.com", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 10", "Threads"),
+    ],
+    "spotify-brute": [
+        ("-u email@test.com", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 10", "Threads"),
+    ],
+    "netflix-brute": [
+        ("-u email@test.com", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 5", "Threads"),
+    ],
+    "hulu-brute": [
+        ("-u email@test.com", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 5", "Threads"),
+    ],
+    "amazon-brute": [
+        ("-u email@test.com", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 5", "Threads"), ("--proxy proxy:port", "Proxy"),
+    ],
+    "paypal-brute": [
+        ("-u email@test.com", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 3", "Threads"), ("--proxy proxy:port", "Proxy"),
+    ],
+    "ebay-brute": [
+        ("-u username", "Target"), ("-p pass.txt", "Password list"),
+        ("-t 5", "Threads"),
+    ],
+    "wordpress-brute": [
+        ("--url http://target.com", "Target URL"), ("--usernames admin", "Single user"),
+        ("-U users.txt", "User list"), ("-P pass.txt", "Password list"),
+        ("-t 10", "Threads"), ("--proxy proxy:port", "Proxy"),
+    ],
+    "joomla-brute": [
+        ("-u http://target.com", "Target URL"), ("-w admin", "Username"),
+        ("-p pass.txt", "Password list"), ("-t 10", "Threads"),
+    ],
+    "drupal-brute": [
+        ("-u http://target.com", "Target URL"), ("-U users.txt", "User list"),
+        ("-P pass.txt", "Password list"), ("-t 10", "Threads"),
+    ],
+    "magento-brute": [
+        ("-u http://target.com", "Target"), ("-U users.txt", "Users"),
+        ("-P pass.txt", "Passwords"), ("-t 10", "Threads"),
+    ],
+    "prestashop-brute": [
+        ("-u http://target.com", "Target"), ("-U users.txt", "Users"),
+        ("-P pass.txt", "Passwords"), ("-t 10", "Threads"),
+    ],
+
 }
