@@ -52,20 +52,20 @@ METHOD_COLORS = {
 INSTALL_COMMANDS = {
     'termux': {
         "nmap": {"pkg": "pkg install nmap -y", "pip": "pip install python-nmap", "git": "N/A"},
-        "hydra": {"pkg": "pkg install hydra -y", "pip": "N/A", "git": "git clone --depth 1 https://github.com/vanhauser-thc/thc-hydra.git ~/hydra"},
-        "sqlmap": {"pkg": "pkg install sqlmap -y 2>/dev/null || echo 'Use pip'", "pip": "pip install sqlmap", "git": "git clone --depth 1 https://github.com/sqlmapproject/sqlmap.git ~/sqlmap"},
-        "nikto": {"pkg": "pkg install nikto -y 2>/dev/null || echo 'Use git'", "pip": "N/A", "git": "git clone --depth 1 https://github.com/sullo/nikto.git ~/nikto"},
+        "hydra": {"pkg": "pkg install hydra -y", "pip": "N/A", "git": "git clone --depth 1 'https://github.com/vanhauser-thc/thc-hydra.git ~/hydra"},
+        "sqlmap": {"pkg": "pkg install sqlmap -y 2>/dev/null || echo 'Use pip'", "pip": "pip install sqlmap", "git": "git clone --depth 1 'https://github.com/sqlmapproject/sqlmap.git ~/sqlmap"},
+        "nikto": {"pkg": "pkg install nikto -y 2>/dev/null || echo 'Use git'", "pip": "N/A", "git": "git clone --depth 1 'https://github.com/sullo/nikto.git ~/nikto"},
         "gobuster": {"pkg": "pkg install go -y && go install github.com/OJ/gobuster/v3@latest", "pip": "N/A", "git": "N/A", "go": "go install github.com/OJ/gobuster/v3@latest"},
-        "john": {"pkg": "pkg install john -y", "pip": "N/A", "git": "git clone --depth 1 https://github.com/openwall/john.git ~/john"},
-        "hashcat": {"pkg": "pkg install hashcat -y", "pip": "N/A", "git": "git clone --depth 1 https://github.com/hashcat/hashcat.git ~/hashcat"},
-        "wpscan": {"pkg": "pkg install ruby -y && gem install wpscan", "pip": "N/A", "git": "git clone --depth 1 https://github.com/wpscanteam/wpscan.git ~/wpscan", "gem": "gem install wpscan"},
-        "dirb": {"pkg": "pkg install dirb -y", "pip": "N/A", "git": "git clone --depth 1 https://github.com/v0re/dirb.git ~/dirb"},
-        "whatweb": {"pkg": "pkg install whatweb -y", "pip": "N/A", "git": "git clone --depth 1 https://github.com/urbanadventurer/WhatWeb.git ~/whatweb"},
-        "aircrack-ng": {"pkg": "pkg install aircrack-ng -y", "pip": "N/A", "git": "git clone --depth 1 https://github.com/aircrack-ng/aircrack-ng.git ~/aircrack-ng"},
+        "john": {"pkg": "pkg install john -y", "pip": "N/A", "git": "git clone --depth 1 'https://github.com/openwall/john.git ~/john"},
+        "hashcat": {"pkg": "pkg install hashcat -y", "pip": "N/A", "git": "git clone --depth 1 'https://github.com/hashcat/hashcat.git ~/hashcat"},
+        "wpscan": {"pkg": "pkg install ruby -y && gem install wpscan", "pip": "N/A", "git": "git clone --depth 1 'https://github.com/wpscanteam/wpscan.git ~/wpscan", "gem": "gem install wpscan"},
+        "dirb": {"pkg": "pkg install dirb -y", "pip": "N/A", "git": "git clone --depth 1 'https://github.com/v0re/dirb.git ~/dirb"},
+        "whatweb": {"pkg": "pkg install whatweb -y", "pip": "N/A", "git": "git clone --depth 1 'https://github.com/urbanadventurer/WhatWeb.git ~/whatweb"},
+        "aircrack-ng": {"pkg": "pkg install aircrack-ng -y", "pip": "N/A", "git": "git clone --depth 1 'https://github.com/aircrack-ng/aircrack-ng.git ~/aircrack-ng"},
         "tcpdump": {"pkg": "pkg install tcpdump -y", "pip": "N/A", "git": "N/A"},
         "exiftool": {"pkg": "pkg install exiftool -y", "pip": "pip install exiftool", "git": "N/A"},
-        "binwalk": {"pkg": "pkg install binwalk -y 2>/dev/null || pip install binwalk", "pip": "pip install binwalk", "git": "git clone --depth 1 https://github.com/ReFirmLabs/binwalk.git ~/binwalk"},
-        "steghide": {"pkg": "pkg install steghide -y", "pip": "N/A", "git": "git clone --depth 1 https://github.com/StefanoDeVuono/steghide.git ~/steghide"},
+        "binwalk": {"pkg": "pkg install binwalk -y 2>/dev/null || pip install binwalk", "pip": "pip install binwalk", "git": "git clone --depth 1 'https://github.com/ReFirmLabs/binwalk.git ~/binwalk"},
+        "steghide": {"pkg": "pkg install steghide -y", "pip": "N/A", "git": "git clone --depth 1 'https://github.com/StefanoDeVuono/steghide.git ~/steghide"},
         "foremost": {"pkg": "pkg install foremost -y", "pip": "N/A", "git": "N/A"},
         "strings": {"pkg": "pkg install binutils -y", "pip": "N/A", "git": "N/A"},
         "metasploit": {"pkg": "pkg install unstable-repo -y && pkg install metasploit -y", "pip": "N/A", "git": "N/A"},
@@ -88,21 +88,21 @@ INSTALL_COMMANDS = {
         "waybackurls": {"pkg": "N/A", "pip": "N/A", "git": "N/A", "go": "go install github.com/tomnomnom/waybackurls@latest"},
         "ffuf": {"pkg": "N/A", "pip": "N/A", "git": "N/A", "go": "go install github.com/ffuf/ffuf/v2@latest"},
         "amass": {"pkg": "pkg install amass -y 2>/dev/null || echo 'Use go'", "pip": "N/A", "git": "N/A", "go": "go install -v github.com/owasp-amass/amass/v4/...@master"},
-        "massdns": {"pkg": "N/A", "pip": "N/A", "git": "git clone --depth 1 https://github.com/blechschmidt/massdns.git ~/massdns && cd ~/massdns && make"},
-        "sublist3r": {"pkg": "N/A", "pip": "N/A", "git": "git clone --depth 1 https://github.com/aboul3la/Sublist3r.git ~/Sublist3r && cd ~/Sublist3r && pip install -r requirements.txt"},
-        "dirsearch": {"pkg": "N/A", "pip": "N/A", "git": "git clone --depth 1 https://github.com/maurosoria/dirsearch.git ~/dirsearch"},
-        "wfuzz": {"pkg": "N/A", "pip": "pip install wfuzz", "git": "git clone --depth 1 https://github.com/xmendez/wfuzz.git ~/wfuzz"},
-        "fierce": {"pkg": "N/A", "pip": "pip install fierce", "git": "git clone --depth 1 https://github.com/mschwager/fierce.git ~/fierce"},
-        "searchsploit": {"pkg": "pkg install exploitdb -y", "pip": "N/A", "git": "git clone --depth 1 https://github.com/offensive-security/exploitdb.git ~/exploitdb"},
+        "massdns": {"pkg": "N/A", "pip": "N/A", "git": "git clone --depth 1 'https://github.com/blechschmidt/massdns.git ~/massdns && cd ~/massdns && make"},
+        "sublist3r": {"pkg": "N/A", "pip": "N/A", "git": "git clone --depth 1 'https://github.com/aboul3la/Sublist3r.git ~/Sublist3r && cd ~/Sublist3r && pip install -r requirements.txt"},
+        "dirsearch": {"pkg": "N/A", "pip": "N/A", "git": "git clone --depth 1 'https://github.com/maurosoria/dirsearch.git ~/dirsearch"},
+        "wfuzz": {"pkg": "N/A", "pip": "pip install wfuzz", "git": "git clone --depth 1 'https://github.com/xmendez/wfuzz.git ~/wfuzz"},
+        "fierce": {"pkg": "N/A", "pip": "pip install fierce", "git": "git clone --depth 1 'https://github.com/mschwager/fierce.git ~/fierce"},
+        "searchsploit": {"pkg": "pkg install exploitdb -y", "pip": "N/A", "git": "git clone --depth 1 'https://github.com/offensive-security/exploitdb.git ~/exploitdb"},
         "cewl": {"pkg": "N/A", "pip": "N/A", "git": "N/A", "gem": "gem install cewl"},
         "zsteg": {"pkg": "N/A", "pip": "N/A", "git": "N/A", "gem": "gem install zsteg"},
         "bettercap": {"pkg": "pkg install bettercap -y", "pip": "N/A", "git": "N/A"},
-        "commix": {"pkg": "N/A", "pip": "N/A", "git": "git clone --depth 1 https://github.com/commixproject/commix.git ~/commix"},
-        "xsser": {"pkg": "N/A", "pip": "N/A", "git": "git clone --depth 1 https://github.com/epsylon/xsser.git ~/xsser"},
+        "commix": {"pkg": "N/A", "pip": "N/A", "git": "git clone --depth 1 'https://github.com/commixproject/commix.git ~/commix"},
+        "xsser": {"pkg": "N/A", "pip": "N/A", "git": "git clone --depth 1 'https://github.com/epsylon/xsser.git ~/xsser"},
         "beef": {"pkg": "N/A", "pip": "N/A", "git": "N/A", "gem": "gem install beef-xss"},
-        "setoolkit": {"pkg": "N/A", "pip": "N/A", "git": "git clone --depth 1 https://github.com/trustedsec/social-engineer-toolkit.git ~/setoolkit"},
+        "setoolkit": {"pkg": "N/A", "pip": "N/A", "git": "git clone --depth 1 'https://github.com/trustedsec/social-engineer-toolkit.git ~/setoolkit"},
         "medusa": {"pkg": "pkg install medusa -y", "pip": "N/A", "git": "N/A"},
-        "dnsenum": {"pkg": "N/A", "pip": "N/A", "git": "git clone --depth 1 https://github.com/fwaeytens/dnsenum.git ~/dnsenum"},
+        "dnsenum": {"pkg": "N/A", "pip": "N/A", "git": "git clone --depth 1 'https://github.com/fwaeytens/dnsenum.git ~/dnsenum"},
         "crunch": {"pkg": "pkg install crunch -y", "pip": "N/A", "git": "N/A"},
         "reaver": {"pkg": "pkg install reaver -y", "pip": "N/A", "git": "N/A"},
         "pixiewps": {"pkg": "pkg install pixiewps -y", "pip": "N/A", "git": "N/A"},
@@ -121,13 +121,13 @@ def get_install_methods_ranked(tool_name):
         # Generate default methods
         methods = {}
         if ENV == 'termux':
-            methods = {'pkg': f"pkg install {tool_name} -y", 'pip': f"pip install {tool_name}", 'git': f"git clone https://github.com/search?q={tool_name}"}
+            methods = {'pkg': f"pkg install {tool_name} -y", 'pip': f"pip install {tool_name}", 'git': f"git clone 'https://github.com/search?q={tool_name}"}
         elif ENV == 'debian':
-            methods = {'apt': f"sudo apt install {tool_name} -y", 'pip': f"pip install {tool_name}", 'git': f"git clone https://github.com/search?q={tool_name}"}
+            methods = {'apt': f"sudo apt install {tool_name} -y", 'pip': f"pip install {tool_name}", 'git': f"git clone 'https://github.com/search?q={tool_name}"}
         elif ENV == 'arch':
-            methods = {'pacman': f"sudo pacman -S {tool_name} --noconfirm", 'pip': f"pip install {tool_name}", 'git': f"git clone https://github.com/search?q={tool_name}"}
+            methods = {'pacman': f"sudo pacman -S {tool_name} --noconfirm", 'pip': f"pip install {tool_name}", 'git': f"git clone 'https://github.com/search?q={tool_name}"}
         elif ENV == 'fedora':
-            methods = {'dnf': f"sudo dnf install {tool_name} -y", 'pip': f"pip install {tool_name}", 'git': f"git clone https://github.com/search?q={tool_name}"}
+            methods = {'dnf': f"sudo dnf install {tool_name} -y", 'pip': f"pip install {tool_name}", 'git': f"git clone 'https://github.com/search?q={tool_name}"}
         return methods
     
     tool_methods = env_cmds[tool_name]
