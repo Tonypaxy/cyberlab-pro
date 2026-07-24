@@ -518,7 +518,148 @@ BUILTIN_ARGS = {
         ("-v https://target.com", "Verbose"),
         ("-L https://target.com", "Follow redirects"),
         ("-X POST -d 'user=admin&pass=test' https://target.com/login", "POST data"),
-        ("-H 'Content-Type: application/json' -d '{"key":"value"}' https://target.com/api", "JSON API"),
+        ("-H 'Content-Type: application/json' -d '{"key":"value"
+
+    # === MORE PRE-BUILT EXAMPLES ===
+    "masscan": [
+        ("-p80,443 192.168.1.0/24 --rate=1000", "Web ports fast"),
+        ("-p1-65535 target.com --rate=5000", "All ports fast"),
+        ("-p22,80,443,8080,8443 target.com", "Common ports"),
+        ("-p- target.com --rate=10000", "Full port max speed"),
+        ("-p80,443 192.168.1.0/24 -oJ scan.json", "JSON output"),
+    ],
+    "rustscan": [
+        ("-a target.com", "Fast scan"),
+        ("-a target.com -p 1-1000", "Port range"),
+        ("-a target.com --ulimit 5000 -t 2000", "Max speed"),
+        ("-a 192.168.1.0/24 -p 22,80,443", "Network scan"),
+    ],
+    "amass": [
+        ("enum -d target.com", "Basic enum"),
+        ("enum -passive -d target.com", "Passive only"),
+        ("enum -active -d target.com", "Active enum"),
+        ("enum -d target.com -o output.txt", "Save output"),
+        ("intel -d target.com", "Intelligence gather"),
+    ],
+    "subfinder": [
+        ("-d target.com", "Basic subdomain"),
+        ("-d target.com -silent", "Silent mode"),
+        ("-d target.com -o subs.txt", "Save to file"),
+        ("-dL domains.txt -o all_subs.txt", "Bulk domains"),
+    ],
+    "httpx": [
+        ("-l subs.txt -o live.txt", "Check live hosts"),
+        ("-l subs.txt -status-code -title", "Status and title"),
+        ("-l subs.txt -tech-detect", "Tech detection"),
+        ("-l subs.txt -silent -o live.txt", "Silent output"),
+    ],
+    "nuclei": [
+        ("-u http://target.com", "Basic scan"),
+        ("-u http://target.com -severity critical,high", "Critical/High only"),
+        ("-l targets.txt -t cves/", "CVE templates"),
+        ("-u http://target.com -t exposures/", "Exposure scan"),
+        ("-u http://target.com -o report.txt", "Save report"),
+    ],
+    "wapiti": [
+        ("-u http://target.com", "Basic scan"),
+        ("-u http://target.com --scope page", "Page scope"),
+        ("-u http://target.com -f txt -o report", "TXT report"),
+    ],
+    "skipfish": [
+        ("-o /tmp/output http://target.com", "Basic scan"),
+        ("-o /tmp/output -I target.com http://target.com", "Target only"),
+    ],
+    "testssl": [
+        ("https://target.com", "Full test"),
+        ("--each-cipher https://target.com", "Each cipher"),
+        ("--json https://target.com", "JSON output"),
+        ("--parallel https://target.com", "Fast parallel"),
+    ],
+    "sslyze": [
+        ("--regular target.com", "Regular scan"),
+        ("--json_out out.json target.com", "JSON output"),
+    ],
+    "responder": [
+        ("-I eth0", "Start on eth0"),
+        ("-I wlan0 -rdwv", "Full mode WiFi"),
+        ("-I eth0 -A", "Analyze mode"),
+    ],
+    "impacket": [
+        ("psexec.py domain/user:pass@target", "PSExec"),
+        ("wmiexec.py domain/user:pass@target", "WMIExec"),
+        ("smbexec.py domain/user:pass@target", "SMBExec"),
+        ("secretsdump.py domain/user:pass@target", "Dump secrets"),
+        ("ntlmrelayx.py -t smb://target -smb2support", "NTLM relay"),
+    ],
+    "crackmapexec": [
+        ("smb target -u user -p pass", "SMB check"),
+        ("smb 192.168.1.0/24 -u user -p pass --shares", "Network shares"),
+        ("winrm target -u user -p pass -x 'whoami'", "WinRM exec"),
+        ("mssql target -u sa -p password", "MSSQL check"),
+    ],
+    "bloodhound": [
+        ("-d domain -u user -p pass -ns nameserver -c all", "Full collection"),
+        ("-d domain -u user -p pass -ns nameserver", "Basic collection"),
+    ],
+    "mimikatz": [
+        ("privilege::debug sekurlsa::logonpasswords", "Dump passwords"),
+        ("lsadump::sam", "Dump SAM"),
+        ("lsadump::secrets", "Dump secrets"),
+        ("token::elevate", "Elevate token"),
+    ],
+    "chisel": [
+        ("server -p 8080 --reverse", "Server reverse"),
+        ("client server:8080 R:4444:localhost:4444", "Client reverse"),
+    ],
+    "ligolo": [
+        ("-bind 0.0.0.0:11601", "Start proxy"),
+        ("-connect proxy:11601 -ignore-cert", "Connect agent"),
+    ],
+    "proxychains": [
+        ("nmap -sT target.com", "Nmap via proxy"),
+        ("curl target.com", "Curl via proxy"),
+        ("firefox", "Browser via proxy"),
+    ],
+    "torify": [
+        ("nmap -sT target.com", "Nmap via Tor"),
+        ("curl target.com", "Curl via Tor"),
+    ],
+    "wifite": [
+        ("-i wlan0", "Basic scan"),
+        ("-i wlan0 --wpa", "WPA only"),
+        ("-i wlan0 --wep", "WEP only"),
+        ("-i wlan0 --kill", "Kill interfering"),
+    ],
+    "reaver": [
+        ("-i wlan0mon -b BSSID -vv", "WPS attack"),
+        ("-i wlan0mon -b BSSID -c 6 -vv", "Specific channel"),
+    ],
+    "kismet": [
+        ("-c wlan0", "Start capture"),
+        ("-c wlan0 --no-server", "No web server"),
+    ],
+    "hping3": [
+        ("-S target.com -p 80 --flood", "SYN flood"),
+        ("--udp target.com -p 53 --flood", "UDP flood"),
+        ("-1 target.com --flood", "ICMP flood"),
+        ("-S target.com -p 80 --rand-source", "Random source SYN"),
+    ],
+    "slowloris": [
+        ("-p 80 target.com", "HTTP slow"),
+        ("-p 443 --https target.com", "HTTPS slow"),
+        ("-s 500 target.com", "500 sockets"),
+    ],
+    "ab": [
+        ("-n 1000 -c 100 http://target.com/", "1000 requests 100 concurrent"),
+        ("-n 10000 -c 200 -t 30 http://target.com/", "30s stress test"),
+    ],
+    "siege": [
+        ("-c 100 -t 30s http://target.com", "100 users 30s"),
+        ("-c 200 -r 50 http://target.com", "200 users 50 reps"),
+        ("-f urls.txt", "URL list file"),
+    ],
+
+}' https://target.com/api", "JSON API"),
         ("-x http://proxy:8080 https://target.com", "Via proxy"),
         ("-k https://target.com", "Ignore SSL errors"),
         ("-u admin:password https://target.com", "Basic auth"),
@@ -622,6 +763,147 @@ BUILTIN_ARGS = {
     "gophish": [
         ("--port 3333", "Start on port 3333"),
         ("--config config.json", "With config"),
+    ],
+
+
+
+    # === MORE PRE-BUILT EXAMPLES ===
+    "masscan": [
+        ("-p80,443 192.168.1.0/24 --rate=1000", "Web ports fast"),
+        ("-p1-65535 target.com --rate=5000", "All ports fast"),
+        ("-p22,80,443,8080,8443 target.com", "Common ports"),
+        ("-p- target.com --rate=10000", "Full port max speed"),
+        ("-p80,443 192.168.1.0/24 -oJ scan.json", "JSON output"),
+    ],
+    "rustscan": [
+        ("-a target.com", "Fast scan"),
+        ("-a target.com -p 1-1000", "Port range"),
+        ("-a target.com --ulimit 5000 -t 2000", "Max speed"),
+        ("-a 192.168.1.0/24 -p 22,80,443", "Network scan"),
+    ],
+    "amass": [
+        ("enum -d target.com", "Basic enum"),
+        ("enum -passive -d target.com", "Passive only"),
+        ("enum -active -d target.com", "Active enum"),
+        ("enum -d target.com -o output.txt", "Save output"),
+        ("intel -d target.com", "Intelligence gather"),
+    ],
+    "subfinder": [
+        ("-d target.com", "Basic subdomain"),
+        ("-d target.com -silent", "Silent mode"),
+        ("-d target.com -o subs.txt", "Save to file"),
+        ("-dL domains.txt -o all_subs.txt", "Bulk domains"),
+    ],
+    "httpx": [
+        ("-l subs.txt -o live.txt", "Check live hosts"),
+        ("-l subs.txt -status-code -title", "Status and title"),
+        ("-l subs.txt -tech-detect", "Tech detection"),
+        ("-l subs.txt -silent -o live.txt", "Silent output"),
+    ],
+    "nuclei": [
+        ("-u http://target.com", "Basic scan"),
+        ("-u http://target.com -severity critical,high", "Critical/High only"),
+        ("-l targets.txt -t cves/", "CVE templates"),
+        ("-u http://target.com -t exposures/", "Exposure scan"),
+        ("-u http://target.com -o report.txt", "Save report"),
+    ],
+    "wapiti": [
+        ("-u http://target.com", "Basic scan"),
+        ("-u http://target.com --scope page", "Page scope"),
+        ("-u http://target.com -f txt -o report", "TXT report"),
+    ],
+    "skipfish": [
+        ("-o /tmp/output http://target.com", "Basic scan"),
+        ("-o /tmp/output -I target.com http://target.com", "Target only"),
+    ],
+    "testssl": [
+        ("https://target.com", "Full test"),
+        ("--each-cipher https://target.com", "Each cipher"),
+        ("--json https://target.com", "JSON output"),
+        ("--parallel https://target.com", "Fast parallel"),
+    ],
+    "sslyze": [
+        ("--regular target.com", "Regular scan"),
+        ("--json_out out.json target.com", "JSON output"),
+    ],
+    "responder": [
+        ("-I eth0", "Start on eth0"),
+        ("-I wlan0 -rdwv", "Full mode WiFi"),
+        ("-I eth0 -A", "Analyze mode"),
+    ],
+    "impacket": [
+        ("psexec.py domain/user:pass@target", "PSExec"),
+        ("wmiexec.py domain/user:pass@target", "WMIExec"),
+        ("smbexec.py domain/user:pass@target", "SMBExec"),
+        ("secretsdump.py domain/user:pass@target", "Dump secrets"),
+        ("ntlmrelayx.py -t smb://target -smb2support", "NTLM relay"),
+    ],
+    "crackmapexec": [
+        ("smb target -u user -p pass", "SMB check"),
+        ("smb 192.168.1.0/24 -u user -p pass --shares", "Network shares"),
+        ("winrm target -u user -p pass -x 'whoami'", "WinRM exec"),
+        ("mssql target -u sa -p password", "MSSQL check"),
+    ],
+    "bloodhound": [
+        ("-d domain -u user -p pass -ns nameserver -c all", "Full collection"),
+        ("-d domain -u user -p pass -ns nameserver", "Basic collection"),
+    ],
+    "mimikatz": [
+        ("privilege::debug sekurlsa::logonpasswords", "Dump passwords"),
+        ("lsadump::sam", "Dump SAM"),
+        ("lsadump::secrets", "Dump secrets"),
+        ("token::elevate", "Elevate token"),
+    ],
+    "chisel": [
+        ("server -p 8080 --reverse", "Server reverse"),
+        ("client server:8080 R:4444:localhost:4444", "Client reverse"),
+    ],
+    "ligolo": [
+        ("-bind 0.0.0.0:11601", "Start proxy"),
+        ("-connect proxy:11601 -ignore-cert", "Connect agent"),
+    ],
+    "proxychains": [
+        ("nmap -sT target.com", "Nmap via proxy"),
+        ("curl target.com", "Curl via proxy"),
+        ("firefox", "Browser via proxy"),
+    ],
+    "torify": [
+        ("nmap -sT target.com", "Nmap via Tor"),
+        ("curl target.com", "Curl via Tor"),
+    ],
+    "wifite": [
+        ("-i wlan0", "Basic scan"),
+        ("-i wlan0 --wpa", "WPA only"),
+        ("-i wlan0 --wep", "WEP only"),
+        ("-i wlan0 --kill", "Kill interfering"),
+    ],
+    "reaver": [
+        ("-i wlan0mon -b BSSID -vv", "WPS attack"),
+        ("-i wlan0mon -b BSSID -c 6 -vv", "Specific channel"),
+    ],
+    "kismet": [
+        ("-c wlan0", "Start capture"),
+        ("-c wlan0 --no-server", "No web server"),
+    ],
+    "hping3": [
+        ("-S target.com -p 80 --flood", "SYN flood"),
+        ("--udp target.com -p 53 --flood", "UDP flood"),
+        ("-1 target.com --flood", "ICMP flood"),
+        ("-S target.com -p 80 --rand-source", "Random source SYN"),
+    ],
+    "slowloris": [
+        ("-p 80 target.com", "HTTP slow"),
+        ("-p 443 --https target.com", "HTTPS slow"),
+        ("-s 500 target.com", "500 sockets"),
+    ],
+    "ab": [
+        ("-n 1000 -c 100 http://target.com/", "1000 requests 100 concurrent"),
+        ("-n 10000 -c 200 -t 30 http://target.com/", "30s stress test"),
+    ],
+    "siege": [
+        ("-c 100 -t 30s http://target.com", "100 users 30s"),
+        ("-c 200 -r 50 http://target.com", "200 users 50 reps"),
+        ("-f urls.txt", "URL list file"),
     ],
 
 }
@@ -1129,7 +1411,148 @@ BUILTIN_ARGS = {
         ("-v https://target.com", "Verbose"),
         ("-L https://target.com", "Follow redirects"),
         ("-X POST -d 'user=admin&pass=test' https://target.com/login", "POST data"),
-        ("-H 'Content-Type: application/json' -d '{"key":"value"}' https://target.com/api", "JSON API"),
+        ("-H 'Content-Type: application/json' -d '{"key":"value"
+
+    # === MORE PRE-BUILT EXAMPLES ===
+    "masscan": [
+        ("-p80,443 192.168.1.0/24 --rate=1000", "Web ports fast"),
+        ("-p1-65535 target.com --rate=5000", "All ports fast"),
+        ("-p22,80,443,8080,8443 target.com", "Common ports"),
+        ("-p- target.com --rate=10000", "Full port max speed"),
+        ("-p80,443 192.168.1.0/24 -oJ scan.json", "JSON output"),
+    ],
+    "rustscan": [
+        ("-a target.com", "Fast scan"),
+        ("-a target.com -p 1-1000", "Port range"),
+        ("-a target.com --ulimit 5000 -t 2000", "Max speed"),
+        ("-a 192.168.1.0/24 -p 22,80,443", "Network scan"),
+    ],
+    "amass": [
+        ("enum -d target.com", "Basic enum"),
+        ("enum -passive -d target.com", "Passive only"),
+        ("enum -active -d target.com", "Active enum"),
+        ("enum -d target.com -o output.txt", "Save output"),
+        ("intel -d target.com", "Intelligence gather"),
+    ],
+    "subfinder": [
+        ("-d target.com", "Basic subdomain"),
+        ("-d target.com -silent", "Silent mode"),
+        ("-d target.com -o subs.txt", "Save to file"),
+        ("-dL domains.txt -o all_subs.txt", "Bulk domains"),
+    ],
+    "httpx": [
+        ("-l subs.txt -o live.txt", "Check live hosts"),
+        ("-l subs.txt -status-code -title", "Status and title"),
+        ("-l subs.txt -tech-detect", "Tech detection"),
+        ("-l subs.txt -silent -o live.txt", "Silent output"),
+    ],
+    "nuclei": [
+        ("-u http://target.com", "Basic scan"),
+        ("-u http://target.com -severity critical,high", "Critical/High only"),
+        ("-l targets.txt -t cves/", "CVE templates"),
+        ("-u http://target.com -t exposures/", "Exposure scan"),
+        ("-u http://target.com -o report.txt", "Save report"),
+    ],
+    "wapiti": [
+        ("-u http://target.com", "Basic scan"),
+        ("-u http://target.com --scope page", "Page scope"),
+        ("-u http://target.com -f txt -o report", "TXT report"),
+    ],
+    "skipfish": [
+        ("-o /tmp/output http://target.com", "Basic scan"),
+        ("-o /tmp/output -I target.com http://target.com", "Target only"),
+    ],
+    "testssl": [
+        ("https://target.com", "Full test"),
+        ("--each-cipher https://target.com", "Each cipher"),
+        ("--json https://target.com", "JSON output"),
+        ("--parallel https://target.com", "Fast parallel"),
+    ],
+    "sslyze": [
+        ("--regular target.com", "Regular scan"),
+        ("--json_out out.json target.com", "JSON output"),
+    ],
+    "responder": [
+        ("-I eth0", "Start on eth0"),
+        ("-I wlan0 -rdwv", "Full mode WiFi"),
+        ("-I eth0 -A", "Analyze mode"),
+    ],
+    "impacket": [
+        ("psexec.py domain/user:pass@target", "PSExec"),
+        ("wmiexec.py domain/user:pass@target", "WMIExec"),
+        ("smbexec.py domain/user:pass@target", "SMBExec"),
+        ("secretsdump.py domain/user:pass@target", "Dump secrets"),
+        ("ntlmrelayx.py -t smb://target -smb2support", "NTLM relay"),
+    ],
+    "crackmapexec": [
+        ("smb target -u user -p pass", "SMB check"),
+        ("smb 192.168.1.0/24 -u user -p pass --shares", "Network shares"),
+        ("winrm target -u user -p pass -x 'whoami'", "WinRM exec"),
+        ("mssql target -u sa -p password", "MSSQL check"),
+    ],
+    "bloodhound": [
+        ("-d domain -u user -p pass -ns nameserver -c all", "Full collection"),
+        ("-d domain -u user -p pass -ns nameserver", "Basic collection"),
+    ],
+    "mimikatz": [
+        ("privilege::debug sekurlsa::logonpasswords", "Dump passwords"),
+        ("lsadump::sam", "Dump SAM"),
+        ("lsadump::secrets", "Dump secrets"),
+        ("token::elevate", "Elevate token"),
+    ],
+    "chisel": [
+        ("server -p 8080 --reverse", "Server reverse"),
+        ("client server:8080 R:4444:localhost:4444", "Client reverse"),
+    ],
+    "ligolo": [
+        ("-bind 0.0.0.0:11601", "Start proxy"),
+        ("-connect proxy:11601 -ignore-cert", "Connect agent"),
+    ],
+    "proxychains": [
+        ("nmap -sT target.com", "Nmap via proxy"),
+        ("curl target.com", "Curl via proxy"),
+        ("firefox", "Browser via proxy"),
+    ],
+    "torify": [
+        ("nmap -sT target.com", "Nmap via Tor"),
+        ("curl target.com", "Curl via Tor"),
+    ],
+    "wifite": [
+        ("-i wlan0", "Basic scan"),
+        ("-i wlan0 --wpa", "WPA only"),
+        ("-i wlan0 --wep", "WEP only"),
+        ("-i wlan0 --kill", "Kill interfering"),
+    ],
+    "reaver": [
+        ("-i wlan0mon -b BSSID -vv", "WPS attack"),
+        ("-i wlan0mon -b BSSID -c 6 -vv", "Specific channel"),
+    ],
+    "kismet": [
+        ("-c wlan0", "Start capture"),
+        ("-c wlan0 --no-server", "No web server"),
+    ],
+    "hping3": [
+        ("-S target.com -p 80 --flood", "SYN flood"),
+        ("--udp target.com -p 53 --flood", "UDP flood"),
+        ("-1 target.com --flood", "ICMP flood"),
+        ("-S target.com -p 80 --rand-source", "Random source SYN"),
+    ],
+    "slowloris": [
+        ("-p 80 target.com", "HTTP slow"),
+        ("-p 443 --https target.com", "HTTPS slow"),
+        ("-s 500 target.com", "500 sockets"),
+    ],
+    "ab": [
+        ("-n 1000 -c 100 http://target.com/", "1000 requests 100 concurrent"),
+        ("-n 10000 -c 200 -t 30 http://target.com/", "30s stress test"),
+    ],
+    "siege": [
+        ("-c 100 -t 30s http://target.com", "100 users 30s"),
+        ("-c 200 -r 50 http://target.com", "200 users 50 reps"),
+        ("-f urls.txt", "URL list file"),
+    ],
+
+}' https://target.com/api", "JSON API"),
         ("-x http://proxy:8080 https://target.com", "Via proxy"),
         ("-k https://target.com", "Ignore SSL errors"),
         ("-u admin:password https://target.com", "Basic auth"),
@@ -1233,6 +1656,147 @@ BUILTIN_ARGS = {
     "gophish": [
         ("--port 3333", "Start on port 3333"),
         ("--config config.json", "With config"),
+    ],
+
+
+
+    # === MORE PRE-BUILT EXAMPLES ===
+    "masscan": [
+        ("-p80,443 192.168.1.0/24 --rate=1000", "Web ports fast"),
+        ("-p1-65535 target.com --rate=5000", "All ports fast"),
+        ("-p22,80,443,8080,8443 target.com", "Common ports"),
+        ("-p- target.com --rate=10000", "Full port max speed"),
+        ("-p80,443 192.168.1.0/24 -oJ scan.json", "JSON output"),
+    ],
+    "rustscan": [
+        ("-a target.com", "Fast scan"),
+        ("-a target.com -p 1-1000", "Port range"),
+        ("-a target.com --ulimit 5000 -t 2000", "Max speed"),
+        ("-a 192.168.1.0/24 -p 22,80,443", "Network scan"),
+    ],
+    "amass": [
+        ("enum -d target.com", "Basic enum"),
+        ("enum -passive -d target.com", "Passive only"),
+        ("enum -active -d target.com", "Active enum"),
+        ("enum -d target.com -o output.txt", "Save output"),
+        ("intel -d target.com", "Intelligence gather"),
+    ],
+    "subfinder": [
+        ("-d target.com", "Basic subdomain"),
+        ("-d target.com -silent", "Silent mode"),
+        ("-d target.com -o subs.txt", "Save to file"),
+        ("-dL domains.txt -o all_subs.txt", "Bulk domains"),
+    ],
+    "httpx": [
+        ("-l subs.txt -o live.txt", "Check live hosts"),
+        ("-l subs.txt -status-code -title", "Status and title"),
+        ("-l subs.txt -tech-detect", "Tech detection"),
+        ("-l subs.txt -silent -o live.txt", "Silent output"),
+    ],
+    "nuclei": [
+        ("-u http://target.com", "Basic scan"),
+        ("-u http://target.com -severity critical,high", "Critical/High only"),
+        ("-l targets.txt -t cves/", "CVE templates"),
+        ("-u http://target.com -t exposures/", "Exposure scan"),
+        ("-u http://target.com -o report.txt", "Save report"),
+    ],
+    "wapiti": [
+        ("-u http://target.com", "Basic scan"),
+        ("-u http://target.com --scope page", "Page scope"),
+        ("-u http://target.com -f txt -o report", "TXT report"),
+    ],
+    "skipfish": [
+        ("-o /tmp/output http://target.com", "Basic scan"),
+        ("-o /tmp/output -I target.com http://target.com", "Target only"),
+    ],
+    "testssl": [
+        ("https://target.com", "Full test"),
+        ("--each-cipher https://target.com", "Each cipher"),
+        ("--json https://target.com", "JSON output"),
+        ("--parallel https://target.com", "Fast parallel"),
+    ],
+    "sslyze": [
+        ("--regular target.com", "Regular scan"),
+        ("--json_out out.json target.com", "JSON output"),
+    ],
+    "responder": [
+        ("-I eth0", "Start on eth0"),
+        ("-I wlan0 -rdwv", "Full mode WiFi"),
+        ("-I eth0 -A", "Analyze mode"),
+    ],
+    "impacket": [
+        ("psexec.py domain/user:pass@target", "PSExec"),
+        ("wmiexec.py domain/user:pass@target", "WMIExec"),
+        ("smbexec.py domain/user:pass@target", "SMBExec"),
+        ("secretsdump.py domain/user:pass@target", "Dump secrets"),
+        ("ntlmrelayx.py -t smb://target -smb2support", "NTLM relay"),
+    ],
+    "crackmapexec": [
+        ("smb target -u user -p pass", "SMB check"),
+        ("smb 192.168.1.0/24 -u user -p pass --shares", "Network shares"),
+        ("winrm target -u user -p pass -x 'whoami'", "WinRM exec"),
+        ("mssql target -u sa -p password", "MSSQL check"),
+    ],
+    "bloodhound": [
+        ("-d domain -u user -p pass -ns nameserver -c all", "Full collection"),
+        ("-d domain -u user -p pass -ns nameserver", "Basic collection"),
+    ],
+    "mimikatz": [
+        ("privilege::debug sekurlsa::logonpasswords", "Dump passwords"),
+        ("lsadump::sam", "Dump SAM"),
+        ("lsadump::secrets", "Dump secrets"),
+        ("token::elevate", "Elevate token"),
+    ],
+    "chisel": [
+        ("server -p 8080 --reverse", "Server reverse"),
+        ("client server:8080 R:4444:localhost:4444", "Client reverse"),
+    ],
+    "ligolo": [
+        ("-bind 0.0.0.0:11601", "Start proxy"),
+        ("-connect proxy:11601 -ignore-cert", "Connect agent"),
+    ],
+    "proxychains": [
+        ("nmap -sT target.com", "Nmap via proxy"),
+        ("curl target.com", "Curl via proxy"),
+        ("firefox", "Browser via proxy"),
+    ],
+    "torify": [
+        ("nmap -sT target.com", "Nmap via Tor"),
+        ("curl target.com", "Curl via Tor"),
+    ],
+    "wifite": [
+        ("-i wlan0", "Basic scan"),
+        ("-i wlan0 --wpa", "WPA only"),
+        ("-i wlan0 --wep", "WEP only"),
+        ("-i wlan0 --kill", "Kill interfering"),
+    ],
+    "reaver": [
+        ("-i wlan0mon -b BSSID -vv", "WPS attack"),
+        ("-i wlan0mon -b BSSID -c 6 -vv", "Specific channel"),
+    ],
+    "kismet": [
+        ("-c wlan0", "Start capture"),
+        ("-c wlan0 --no-server", "No web server"),
+    ],
+    "hping3": [
+        ("-S target.com -p 80 --flood", "SYN flood"),
+        ("--udp target.com -p 53 --flood", "UDP flood"),
+        ("-1 target.com --flood", "ICMP flood"),
+        ("-S target.com -p 80 --rand-source", "Random source SYN"),
+    ],
+    "slowloris": [
+        ("-p 80 target.com", "HTTP slow"),
+        ("-p 443 --https target.com", "HTTPS slow"),
+        ("-s 500 target.com", "500 sockets"),
+    ],
+    "ab": [
+        ("-n 1000 -c 100 http://target.com/", "1000 requests 100 concurrent"),
+        ("-n 10000 -c 200 -t 30 http://target.com/", "30s stress test"),
+    ],
+    "siege": [
+        ("-c 100 -t 30s http://target.com", "100 users 30s"),
+        ("-c 200 -r 50 http://target.com", "200 users 50 reps"),
+        ("-f urls.txt", "URL list file"),
     ],
 
 }
